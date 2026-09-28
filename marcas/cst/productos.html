@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos CST Tires — Radsport Geist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --red: #D32F2F; --red-dark: #B71C1C; --gray: #333333; --gray-light: #f5f5f5; --white: #ffffff; --black: #000000;
+            --brand-accent: #F47920; --brand-accent-hover: #d96a15;
+            --brand-accent-light: #fff5eb; --brand-subtle: #888888;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; color: var(--gray); background: var(--white); background-image: radial-gradient(circle, rgba(0,0,0,0.09) 1px, transparent 1px); background-size: 22px 22px; overflow-x: hidden; }
+
+        /* NAV */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s ease; }
+        .logo-text { display: flex; align-items: center; gap: 0; font-size: 1.3rem; letter-spacing: 0.15em; color: var(--gray); text-decoration: none; }
+        .logo-bold { font-weight: 900; } .logo-dot { color: var(--red); margin: 0 0.35em; } .logo-light { font-weight: 300; }
+        .nav-links { list-style: none; display: flex; gap: 2rem; }
+        .nav-links a { color: var(--gray); text-decoration: none; font-size: 0.75rem; font-weight: 300; letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--red); } .nav-links a.active { color: var(--red); font-weight: 600; }
+        .nav-links li { position: relative; }
+        .nav-dropdown { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: #ffffff; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); padding: 0.2rem 0.3rem; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 44px; gap: 0; min-width: 280px; opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s, transform 0.2s; transform: translateX(-50%) translateY(8px); z-index: 1001; margin-top: 0.5rem; }
+        .nav-links li:hover .nav-dropdown, .nav-dropdown:hover { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .nav-dropdown a { display: flex; align-items: center; justify-content: center; padding: 0.4rem 0.8rem; min-height: 44px; border-radius: 8px; transition: background 0.15s; opacity: 0.7; }
+        .nav-dropdown a:hover { opacity: 1; }
+        .nav-dropdown a img { max-height: 29px; max-width: 67px; width: auto; height: auto; object-fit: contain; mix-blend-mode: multiply; }
+        .nav-dropdown-segments { grid-template-columns: 1fr; min-width: 180px; gap: 0.1rem; }
+        .nav-dropdown-segments a { font-size: 0.82rem !important; font-weight: 500 !important; color: var(--gray) !important; padding: 0.5rem 0.8rem; border-radius: 8px; opacity: 1; }
+        .nav-dropdown-segments a:hover { background: var(--gray-light); color: var(--red) !important; }
+
+        /* PAGE HEADER */
+        .page-header { padding: 1.5rem 3rem 1rem; max-width: 1600px; margin: 0 auto; }
+        .page-header-breadcrumb { font-size: 0.72rem; color: var(--brand-subtle); margin-bottom: 1rem; }
+        .page-header-breadcrumb a { color: var(--brand-subtle); text-decoration: none; } .page-header-breadcrumb a:hover { color: var(--brand-accent); }
+        .page-header-breadcrumb span { margin: 0 0.4rem; }
+        .page-header-hero { background: url('hero.jpg') center/cover no-repeat; position: relative; display: flex; align-items: center; justify-content: center; padding-top: 3.5rem; height: 220px; }
+        .page-header-hero::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
+        .page-header-hero img { height: 90px; position: relative; z-index: 1; }
+        .brand-bar { background: var(--white); border-bottom: 1px solid #e5e5e5; padding: 1.2rem 1.5rem; display: flex; align-items: center; justify-content: center; gap: 1.4rem; flex-wrap: nowrap; overflow-x: auto; min-height: 80px; scrollbar-width: none; }
+        .brand-bar::-webkit-scrollbar { display: none; }
+        .brand-bar a { flex-shrink: 0; }
+        .brand-bar a img { max-height: 50px !important; max-width: 100px; }
+        .brand-bar a:not(.brand-all) { flex: 0 0 100px !important; width: 100px !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+        .brand-bar a:not(.brand-all) img { max-height: 50px !important; max-width: 100% !important; width: auto !important; height: auto !important; object-fit: contain !important; }
+
+        .brand-bar a { display: flex; align-items: center; justify-content: center; height: 100%; opacity: 0.15; transition: opacity 0.25s, transform 0.25s; text-decoration: none; }
+        .brand-bar a:hover { opacity: 0.7; transform: scale(1.08); }
+        .brand-bar a.active { opacity: 1; }
+        .brand-bar a.brand-hidden { display: none; }
+
+        /* "TODOS" badge en la brand-bar (vuelve al catálogo global) */
+        .brand-bar a.brand-all {
+            border: 2px solid var(--brand-accent);
+            border-radius: 50px;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--brand-accent);
+            height: auto;
+        }
+        .brand-bar a.brand-all:hover {
+            background: var(--brand-accent);
+            color: white;
+            opacity: 1;
+        }
+        .brand-bar a.brand-all.active {
+            background: var(--brand-accent);
+            color: white;
+            opacity: 1;
+        }
+        .brand-bar a img { height: 40px; width: auto; object-fit: contain; }
+        .page-header-count { font-size: 0.8rem; color: var(--brand-subtle); font-weight: 400; }
+
+        /* SEGMENT TABS */
+        .segment-tabs { background: #1a1a1a; display: flex; justify-content: center; gap: 0; }
+        .segment-tab { padding: 0.7rem 2rem; color: rgba(255,255,255,0.35); text-decoration: none; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.2s; border-bottom: 2px solid transparent; cursor: pointer; background: none; border-top: none; border-left: none; border-right: none; font-family: 'Inter', sans-serif; }
+        .segment-tab:hover { color: rgba(255,255,255,0.65); }
+        .segment-tab.active { color: white; border-bottom-color: var(--brand-accent); }
+
+        /* SEARCH */
+        .search-bar { padding: 0 3rem; max-width: 1600px; margin: 0 auto 1rem; }
+        .search-input { width: 100%; padding: 0.7rem 1.2rem 0.7rem 2.8rem; border: 1px solid var(--brand-accent); border-radius: 50px; font-size: 0.85rem; font-family: 'Inter', sans-serif; color: white; background: var(--brand-accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") 1rem center no-repeat; outline: none; }
+        .search-input:focus { border-color: white; }
+        .search-input::placeholder { color: rgba(255,255,255,0.5); }
+
+        /* FILTERS */
+        .filters { padding: 0 3rem; max-width: 1600px; margin: 0 auto 2rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .filter-btn { padding: 0.5rem 1.3rem; border-radius: 50px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.5px; border: 1px solid #ddd; background: white; color: var(--gray); cursor: pointer; transition: all 0.2s ease; }
+        .filter-btn:hover { border-color: var(--brand-accent); color: var(--brand-accent); }
+        .filter-btn.active { background: var(--brand-accent); color: white; border-color: var(--brand-accent); }
+
+        /* Variants and content tags */
+        .product-card-variants { margin-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.3rem; }
+        .variant-tag { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 0.2rem 0.5rem; border: 1px solid #ddd; border-radius: 3px; color: var(--brand-subtle); background: #fafafa; font-weight: 500; }
+        .product-card-content { margin-top: 0.5rem; font-size: 0.7rem; color: var(--brand-subtle); }
+        /* Color thumbs (mini fotos colores disponibles) */
+        .product-card-color-thumbs { display: flex; gap: 0.4rem; margin-top: 0.7rem; flex-wrap: wrap; align-items: center; }
+        .product-card-color-thumbs img { width: 56px; height: 56px; object-fit: contain; border-radius: 6px; border: 1px solid #e0e0e0; padding: 3px; background: white; }
+        .product-card-color-more { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 6px; background: #f5f5f5; border: 1px solid #ddd; font-size: 0.85rem; font-weight: 700; color: var(--brand-subtle); }
+        /* Conjunto: jersey arriba + pantalón abajo, compacto */
+        .product-card-img-dual { display: flex; flex-direction: column; gap: 0; padding: 0.5rem; align-items: center; justify-content: center; height: 240px; }
+        .product-card-img-dual img { max-height: 130px; max-width: 75%; object-fit: contain; margin: 0; }
+        .product-card-img-dual img:first-child { margin-bottom: -15px; }
+        /* Pagination */
+        .pagination { display: flex; justify-content: center; align-items: center; gap: 0.5rem; padding: 2rem; max-width: 1600px; margin: 0 auto; }
+        .pagination button { padding: 0.5rem 1rem; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 6px; font-size: 0.85rem; font-family: inherit; }
+        .pagination button:hover:not(:disabled) { border-color: var(--brand-accent); color: var(--brand-accent); }
+        .pagination button.active { background: var(--brand-accent); color: white; border-color: var(--brand-accent); }
+        .pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
+        .pagination-info { font-size: 0.8rem; color: var(--brand-subtle); margin: 0 1rem; }
+
+
+
+        /* PRODUCTS GRID */
+        .products-grid { max-width: 1600px; margin: 0 auto; padding: 0 3rem 4rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+        .product-card { background: white; border-radius: 14px; overflow: hidden; border: 1px solid #e8e8e8; transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; text-decoration: none; color: var(--gray); display: block; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.07); }
+        .product-card-img { height: 240px; background: var(--white); display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 1.5rem; }
+        .product-card-img img { max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.4s; }
+        .product-card:hover .product-card-img img { transform: scale(1.05); }
+        .product-card-body { padding: 1rem 1.3rem 1.2rem; }
+        .product-card-category { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--brand-subtle); font-weight: 500; margin-bottom: 0.3rem; }
+        .product-card-body h3 { font-size: 0.88rem; font-weight: 700; line-height: 1.3; }
+        .no-results { grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; color: var(--brand-subtle); font-size: 0.9rem; display: none; }
+
+        /* CTA */
+        .cta-bottom { max-width: 1600px; margin: 0 auto; padding: 0 3rem 4rem; }
+        .cta-bottom-box { background: var(--brand-accent-light); border-radius: 16px; padding: 2.5rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+        .cta-bottom-text h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.3rem; color: var(--brand-accent); }
+        .cta-bottom-text p { font-size: 0.82rem; color: var(--brand-subtle); }
+        .cta-bottom-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--brand-accent); color: white; padding: 0.8rem 2rem; border-radius: 50px; font-size: 0.78rem; font-weight: 600; text-decoration: none; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; transition: all 0.2s ease; }
+        .cta-bottom-btn:hover { background: var(--brand-accent-hover); transform: translateY(-2px); }
+
+        /* FOOTER */
+        footer { background: #1a1a1a; color: #888; padding: 3rem 2rem 1.5rem; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 2rem; }
+        .footer-section h4 { color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; }
+        .footer-section ul { list-style: none; } .footer-section li { margin-bottom: 0.5rem; }
+        .footer-section a { color: #888; text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+        .footer-section a:hover { color: var(--red); }
+        .footer-bottom { text-align: center; padding-top: 1.5rem; border-top: 1px solid #333; font-size: 0.72rem; color: #555; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .product-card { opacity: 0; animation: fadeInUp 0.4s ease forwards; }
+
+        @media (max-width: 1024px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) {
+            .products-grid { grid-template-columns: repeat(2, 1fr); padding: 0 1.5rem 3rem; }
+            .page-header { padding: 6rem 1.5rem 1.5rem; } .filters { padding: 0 1.5rem; }
+            .footer-content { grid-template-columns: repeat(2, 1fr); }
+            .cta-bottom-box { flex-direction: column; text-align: center; } .cta-bottom { padding: 0 1.5rem 3rem; }
+        }
+        @media (max-width: 480px) { .products-grid { grid-template-columns: 1fr; } }
+        /* brand-bar como primer elemento: clearance del nav fijo */
+        .brand-bar { padding-top: 5rem; }
+        /* separar barra de segmentos del buscador */
+        .segment-tabs { margin-bottom: 1.6rem; }
+        /* filtro de segmentos: mismo ancho que el buscador */
+        .segment-tabs { width: calc(100% - 6rem); max-width: calc(1600px - 6rem); margin: 1.2rem auto 1.6rem; border-radius: 50px; overflow: hidden; }
+        .product-card-sizes { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.5rem; }
+        .size-tag { font-size: 0.6rem; font-weight: 600; letter-spacing: 0.3px; color: var(--brand-subtle); background: var(--gray-light); border: 1px solid #e3e3e3; border-radius: 4px; padding: 0.18rem 0.4rem; white-space: nowrap; }
+        .product-card.no-photo .product-card-img img { max-width: 60%; opacity: 0.5; }
+            .footer-marcas ul { columns: 2; column-gap: 2rem; }
+            /* ===== CTA Distribuidores (global) ===== */
+        .brand-cta { padding: 4rem 2rem 5rem; }
+        .brand-cta-box { max-width: 1200px !important; margin: 0 auto; background: var(--brand-accent, #111) !important; color: #fff !important; padding: 2.8rem 3.5rem; border-radius: 24px; text-align: center; position: relative; overflow: hidden; }
+        .brand-cta-box .cta-eyebrow { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; opacity: 0.55 !important; color: #fff !important; font-weight: 400; margin-bottom: 1rem; }
+        .brand-cta-box h2 { color: #fff; }
+        .brand-cta-box h2 em { font-style: normal; }
+        .brand-cta-box .cta-buttons { display: flex; flex-direction: row; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 0; }
+        .brand-cta-box .btn-cta-donde, .brand-cta-box .btn-cta-comercio { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; padding: 0.9rem 2.5rem; border-radius: 50px; font-weight: 600; font-size: 0.8rem; text-decoration: none; letter-spacing: 1.5px; text-transform: uppercase; transition: all 0.3s ease; border: 2px solid transparent; cursor: pointer; }
+        .brand-cta-box .btn-cta-donde { background: #fff; color: var(--brand-accent, #111); }
+        .brand-cta-box .btn-cta-donde:hover { transform: translateY(-2px); }
+        .brand-cta-box .btn-cta-comercio { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.9); }
+        .brand-cta-box .btn-cta-comercio:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
+        @media (max-width: 600px){ .brand-cta-box .cta-buttons { flex-direction: column; align-items: center; } .brand-cta-box { padding: 3rem 1.5rem !important; } }
+            /* WHATSAPP FLOAT */
+        .whatsapp-float { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 55px; height: 55px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 4px 15px rgba(37,211,102,0.3); z-index: 999; transition: transform 0.2s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <a href="../../index.html" class="logo-text">
+            <span class="logo-bold">RADSPORT</span>
+            <span class="logo-dot">&bull;</span>
+            <span class="logo-light">GEIST</span>
+        </a>
+        <ul class="nav-links">
+            <li>
+                <a href="../../index.html#worlds">Segmentos</a>
+            </li>
+            <li>
+                <a href="../../index.html#brands">Marcas</a>
+            </li>
+            <li><a href="../../productos.html" class="active">Productos</a></li>
+            <li><a href="../../donde-comprar/moto.html">Dónde Comprar</a></li>
+            <li><a href="../../sobre-nosotros.html">Sobre Nosotros</a></li>
+            <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+
+    <!-- BRAND BAR -->
+    <div class="brand-bar">
+        <a href="../../productos.html" class="brand-all" data-brand="todos" title="Catálogo Completo">Todos</a>
+        <a href="#" class="active" data-brand="cst" title="CST"><img src="../../img/logos/cst.png" alt="CST"></a>
+        <a href="../leovince/productos.html" data-brand="leovince" title="Leo Vince"><img src="../../img/logos/leovince.png" alt="Leo Vince"></a>
+        <a href="../shot/productos.html" data-brand="shot" title="SHOT"><img src="../../img/logos/shot.png" alt="SHOT"></a>
+        <a href="../uswe/productos.html" data-brand="uswe" title="USWE"><img src="../../img/logos/uswe.png" alt="USWE"></a>
+        <a href="../giantloop/productos.html" data-brand="giantloop" title="Giant Loop"><img src="../../img/logos/giantloop.png" alt="Giant Loop"></a>
+        <a href="../nils/productos.html" data-brand="nils" title="NILS"><img src="../../img/logos/nils.png" alt="NILS"></a>
+        <a href="../nitromousse/productos.html" data-brand="nitromousse" title="NitroMousse"><img src="../../img/logos/nitromousse.png" alt="NitroMousse"></a>
+        <a href="../lucioli/productos.html" data-brand="lucioli" title="Lucioli"><img src="../../img/logos/lucioli.png" alt="Lucioli"></a>
+        <a href="../wrp/productos.html" data-brand="wrp" title="WRP"><img src="../../img/logos/wrp.png" alt="WRP"></a>
+        <a href="../sidi/productos.html" data-brand="sidi" title="SIDI"><img src="../../img/logos/sidi.png" alt="SIDI"></a>
+    </div>
+    <header class="page-header">
+        <div class="page-header-breadcrumb">
+            <a href="../../index.html">Inicio</a>
+            <span>&rsaquo;</span>
+            <a href="cst.html">CST Tires</a>
+            <span>&rsaquo;</span>
+            <span id="breadcrumbSegment">Productos</span>
+        </div>
+        <p class="page-header-count" id="productCount"></p>
+    </header>
+
+    <!-- SEGMENT TABS -->
+    <div class="segment-tabs" id="segmentTabs">
+        <button class="segment-tab active" data-segment="todos">Todos</button>
+        <button class="segment-tab" data-segment="moto">Moto</button>
+        <button class="segment-tab" data-segment="atv">ATV / UTV / SSV</button>
+        <button class="segment-tab" data-segment="bici">Bicicleta</button>
+        <button class="segment-tab" data-segment="industrial">Industrial</button>
+    </div>
+
+    <!-- BREADCRUMB -->
+
+    <!-- SEARCH -->
+    <div class="search-bar">
+        <input type="text" class="search-input" id="searchInput" placeholder="Buscar productos CST...">
+    </div>
+
+    <!-- FILTERS -->
+    <div class="filters" id="filters">
+        <button class="filter-btn active" data-filter="todos">Todos</button>
+        <button class="filter-btn" data-filter="off-road">Off-Road</button>
+        <button class="filter-btn" data-filter="on-road">On-Road</button>
+        <button class="filter-btn" data-filter="atv-utv-ssv">ATV/UTV/SSV</button>
+        <button class="filter-btn" data-filter="mtb">MTB</button>
+        <button class="filter-btn" data-filter="ruta">Ruta</button>
+        <button class="filter-btn" data-filter="industrial">Industrial</button>
+    </div>
+
+    <!-- PRODUCTS -->
+    <div class="products-grid" id="productsGrid">
+
+        <a href="producto.html?id=bite-enduro-ii-soft" class="product-card" data-category="off-road" data-segment="moto" data-name="bite enduro ii (soft) cm 742 off-road 140/80-18 90/90-21">
+            <div class="product-card-img"><img src="productos/Bite-Enduro-01-1920x1440-1.jpg" alt="CST Bite Enduro II (soft)" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · Off-Road</div>
+                <h3>Bite Enduro II (soft)</h3>
+                <div class="product-card-sizes"><span class="size-tag">140/80-18</span><span class="size-tag">90/90-21</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=bite-mx" class="product-card" data-category="off-road" data-segment="moto" data-name="bite mx cm 734 off-road 110/90-19">
+            <div class="product-card-img"><img src="productos/Bite-MX-1920x1440-1.jpg" alt="CST Bite MX" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · Off-Road</div>
+                <h3>Bite MX</h3>
+                <div class="product-card-sizes"><span class="size-tag">110/90-19</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=grand-prix" class="product-card" data-category="off-road" data-segment="moto" data-name="grand prix c 7203 off-road 110/100-18 80/100-21">
+            <div class="product-card-img"><img src="productos/C7203-1920-x-1440.jpg" alt="CST Grand Prix" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · Off-Road</div>
+                <h3>Grand Prix</h3>
+                <div class="product-card-sizes"><span class="size-tag">110/100-18</span><span class="size-tag">80/100-21</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=junior" class="product-card" data-category="off-road" data-segment="moto" data-name="junior cm 709 off-road 90/100-14 90/100-16 70/100-17 70/100-19">
+            <div class="product-card-img"><img src="productos/CM708-CM709-1920x1440-01.jpg" alt="CST Junior" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · Off-Road</div>
+                <h3>Junior</h3>
+                <div class="product-card-sizes"><span class="size-tag">90/100-14</span><span class="size-tag">90/100-16</span><span class="size-tag">70/100-17</span><span class="size-tag">70/100-19</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=legion-desert" class="product-card" data-category="off-road" data-segment="moto" data-name="legion desert cm 716 off-road 110/100-18 80/100-21">
+            <div class="product-card-img"><img src="productos/Legion-Desert-1920x1440-01.jpg" alt="CST Legion Desert" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · Off-Road</div>
+                <h3>Legion Desert</h3>
+                <div class="product-card-sizes"><span class="size-tag">110/100-18</span><span class="size-tag">80/100-21</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=legion-mx-vi" class="product-card" data-category="off-road" data-segment="moto" data-name="legion mx-vi cm 703 off-road 120/100-18 120/80-19 110/90-19 100/90-19 90/100-21 80/100-21">
+            <div class="product-card-img"><img src="productos/CM703-1920-x-1440.jpg" alt="CST Legion MX-VI" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · Off-Road</div>
+                <h3>Legion MX-VI</h3>
+                <div class="product-card-sizes"><span class="size-tag">120/100-18</span><span class="size-tag">120/80-19</span><span class="size-tag">110/90-19</span><span class="size-tag">100/90-19</span><span class="size-tag">90/100-21</span><span class="size-tag">80/100-21</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=semi-pala" class="product-card" data-category="off-road" data-segment="moto" data-name="semi pala c 7212 off-road 110/90-18 110/90-19 80/100-21">
+            <div class="product-card-img"><img src="productos/Semi-Pala-1920x1440-01.jpg" alt="CST Semi Pala" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · Off-Road</div>
+                <h3>Semi Pala</h3>
+                <div class="product-card-sizes"><span class="size-tag">110/90-18</span><span class="size-tag">110/90-19</span><span class="size-tag">80/100-21</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=surge-i" class="product-card" data-category="off-road" data-segment="moto" data-name="surge i c 7210 off-road 120/100-18 110/90-18 110/90-19 80/100-21">
+            <div class="product-card-img"><img src="productos/C7210-1920-x-1440.jpg" alt="CST Surge I" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · Off-Road</div>
+                <h3>Surge I</h3>
+                <div class="product-card-sizes"><span class="size-tag">120/100-18</span><span class="size-tag">110/90-18</span><span class="size-tag">110/90-19</span><span class="size-tag">80/100-21</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=ambro" class="product-card" data-category="on-road" data-segment="moto" data-name="ambro cm-a1 on-road 110/80 r19 120/70 r17 150/70 r17 90/90-21 110/80-19 120/70-17 120/70-19 150/70-17 150/70-18 160/60-17 170/60-17 90/90-21 140/70-18 150/70-18">
+            <div class="product-card-img"><img src="productos/cm-a3.png" alt="CST Ambro" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · On-Road</div>
+                <h3>Ambro</h3>
+                <div class="product-card-sizes"><span class="size-tag">110/80 R19</span><span class="size-tag">120/70 R17</span><span class="size-tag">150/70 R17</span><span class="size-tag">90/90-21</span><span class="size-tag">110/80-19</span><span class="size-tag">120/70-17</span><span class="size-tag">120/70-19</span><span class="size-tag">150/70-17</span><span class="size-tag">150/70-18</span><span class="size-tag">160/60-17</span><span class="size-tag">170/60-17</span><span class="size-tag">90/90-21</span><span class="size-tag">140/70-18</span><span class="size-tag">150/70-18</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=c6017" class="product-card" data-category="on-road" data-segment="moto" data-name="c6017 c6017 on-road 100/90-19 130/80-17">
+            <div class="product-card-img"><img src="productos/C60172.png" alt="CST C6017" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · On-Road</div>
+                <h3>C6017</h3>
+                <div class="product-card-sizes"><span class="size-tag">100/90-19</span><span class="size-tag">130/80-17</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=cm-ad01" class="product-card" data-category="on-road" data-segment="moto" data-name="cm-ad01 cm-ad01 on-road 110/70-17 110/80-19 130/70-17 140/70-17 150/60-17 150/70-17">
+            <div class="product-card-img"><img src="productos/cm-ad01.png" alt="CST CM-AD01" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · On-Road</div>
+                <h3>CM-AD01</h3>
+                <div class="product-card-sizes"><span class="size-tag">110/70-17</span><span class="size-tag">110/80-19</span><span class="size-tag">130/70-17</span><span class="size-tag">140/70-17</span><span class="size-tag">150/60-17</span><span class="size-tag">150/70-17</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=cm509" class="product-card" data-category="on-road" data-segment="moto" data-name="cm509 cm509 on-road 110/80 r19 120/70 r17 150/70 r17 160/60 r17">
+            <div class="product-card-img"><img src="productos/cst-cm509.png" alt="CST CM509" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · On-Road</div>
+                <h3>CM509</h3>
+                <div class="product-card-sizes"><span class="size-tag">110/80 R19</span><span class="size-tag">120/70 R17</span><span class="size-tag">150/70 R17</span><span class="size-tag">160/60 R17</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=migra" class="product-card" data-category="on-road" data-segment="moto" data-name="migra cm-s1 on-road 110/70 r17 120/70 zr17 140/60 r17 140/70 r17 150/60 r17 160/60 zr17 180/55 zr17 190/55 zr17 120/70-17 160/60-17 180/55-17 190/55-17">
+            <div class="product-card-img"><img src="productos/CM-S1-pair-936x1024-1.jpg" alt="CST Migra" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · On-Road</div>
+                <h3>Migra</h3>
+                <div class="product-card-sizes"><span class="size-tag">110/70 R17</span><span class="size-tag">120/70 ZR17</span><span class="size-tag">140/60 R17</span><span class="size-tag">140/70 R17</span><span class="size-tag">150/60 R17</span><span class="size-tag">160/60 ZR17</span><span class="size-tag">180/55 ZR17</span><span class="size-tag">190/55 ZR17</span><span class="size-tag">120/70-17</span><span class="size-tag">160/60-17</span><span class="size-tag">180/55-17</span><span class="size-tag">190/55-17</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=ride-scoop" class="product-card" data-category="on-road" data-segment="moto" data-name="ride scoop cm-sc01 on-road 120/80-14 150/70-13">
+            <div class="product-card-img"><img src="productos/cst-ride-scoop.png" alt="CST Ride Scoop" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · On-Road</div>
+                <h3>Ride Scoop</h3>
+                <div class="product-card-sizes"><span class="size-tag">120/80-14</span><span class="size-tag">150/70-13</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=scooter" class="product-card" data-category="on-road" data-segment="moto" data-name="scooter cm-sc11 on-road 110/70-17 150/70-14 120/70-15 140/70-14">
+            <div class="product-card-img"><img src="productos/cst-scooter.png" alt="CST Scooter" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · On-Road</div>
+                <h3>Scooter</h3>
+                <div class="product-card-sizes"><span class="size-tag">110/70-17</span><span class="size-tag">150/70-14</span><span class="size-tag">120/70-15</span><span class="size-tag">140/70-14</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=abuzz" class="product-card" data-category="atv-utv-ssv" data-segment="atv" data-name="abuzz cu 02 atv-utv-ssv 26x11-14 26x9-14 27x11-12 27x9-12 26x11-12 26x9-12 26x10-12 26x8-12 25x10-12 25x8-12">
+            <div class="product-card-img"><img src="productos/cst-abuzz.png" alt="CST Abuzz" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · ATV/UTV/SSV</div>
+                <h3>Abuzz</h3>
+                <div class="product-card-sizes"><span class="size-tag">26x11-14</span><span class="size-tag">26x9-14</span><span class="size-tag">27x11-12</span><span class="size-tag">27x9-12</span><span class="size-tag">26x11-12</span><span class="size-tag">26x9-12</span><span class="size-tag">26x10-12</span><span class="size-tag">26x8-12</span><span class="size-tag">25x10-12</span><span class="size-tag">25x8-12</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=ancla" class="product-card" data-category="atv-utv-ssv" data-segment="atv" data-name="ancla c 9312 atv-utv-ssv 25x10-12 25x8-12 24x10-11 24x8-12">
+            <div class="product-card-img"><img src="productos/cst-ancla.png" alt="CST Ancla" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · ATV/UTV/SSV</div>
+                <h3>Ancla</h3>
+                <div class="product-card-sizes"><span class="size-tag">25x10-12</span><span class="size-tag">25x8-12</span><span class="size-tag">24x10-11</span><span class="size-tag">24x8-12</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=apache" class="product-card" data-category="atv-utv-ssv" data-segment="atv" data-name="apache cu-at atv-utv-ssv 30x10-14">
+            <div class="product-card-img"><img src="productos/APACHE_3_4_1296x-1254x1536-1.jpg" alt="CST Apache" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · ATV/UTV/SSV</div>
+                <h3>Apache</h3>
+                <div class="product-card-sizes"><span class="size-tag">30x10-14</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=behemoth" class="product-card" data-category="atv-utv-ssv" data-segment="atv" data-name="behemoth cu 08 atv-utv-ssv 27x11-14 27x9-14">
+            <div class="product-card-img"><img src="productos/behemoth-meli.jpg" alt="CST Behemoth" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · ATV/UTV/SSV</div>
+                <h3>Behemoth</h3>
+                <div class="product-card-sizes"><span class="size-tag">27x11-14</span><span class="size-tag">27x9-14</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=dingo" class="product-card" data-category="atv-utv-ssv" data-segment="atv" data-name="dingo cu 47 atv-utv-ssv 30x10-14 29x11-14 29x9-14 28x11-14 28x9-14">
+            <div class="product-card-img"><img src="productos/cst-dingo.png" alt="CST Dingo" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · ATV/UTV/SSV</div>
+                <h3>Dingo</h3>
+                <div class="product-card-sizes"><span class="size-tag">30x10-14</span><span class="size-tag">29x11-14</span><span class="size-tag">29x9-14</span><span class="size-tag">28x11-14</span><span class="size-tag">28x9-14</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=pulse" class="product-card" data-category="atv-utv-ssv" data-segment="atv" data-name="pulse cs 04 atv-utv-ssv 22x10-10 22x11-9 22x10-9 20x11-9 20x10-9 23x7-10 22x7-10 21x7-10">
+            <div class="product-card-img"><img src="productos/cst-pulse.png" alt="CST Pulse" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · ATV/UTV/SSV</div>
+                <h3>Pulse</h3>
+                <div class="product-card-sizes"><span class="size-tag">22x10-10</span><span class="size-tag">22x11-9</span><span class="size-tag">22x10-9</span><span class="size-tag">20x11-9</span><span class="size-tag">20x10-9</span><span class="size-tag">23x7-10</span><span class="size-tag">22x7-10</span><span class="size-tag">21x7-10</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=pulse-mx" class="product-card" data-category="atv-utv-ssv" data-segment="atv" data-name="pulse mx cs 08 atv-utv-ssv 18x10-8">
+            <div class="product-card-img"><img src="productos/cst-pulse-mx.png" alt="CST Pulse MX" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · ATV/UTV/SSV</div>
+                <h3>Pulse MX</h3>
+                <div class="product-card-sizes"><span class="size-tag">18x10-8</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=pulse-mxr" class="product-card" data-category="atv-utv-ssv" data-segment="atv" data-name="pulse mxr cs 13 atv-utv-ssv 20x6-10">
+            <div class="product-card-img"><img src="productos/cst-pulse-mxr.png" alt="CST Pulse MXR" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · ATV/UTV/SSV</div>
+                <h3>Pulse MXR</h3>
+                <div class="product-card-sizes"><span class="size-tag">20x6-10</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=pulse-mxr-firm" class="product-card" data-category="atv-utv-ssv" data-segment="atv" data-name="pulse mxr (firm) cs 14 atv-utv-ssv 18x10-8">
+            <div class="product-card-img"><img src="productos/cst-pulse-mxr.png" alt="CST Pulse MXR (Firm)" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · ATV/UTV/SSV</div>
+                <h3>Pulse MXR (Firm)</h3>
+                <div class="product-card-sizes"><span class="size-tag">18x10-8</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=pulse-mxr-soft" class="product-card" data-category="atv-utv-ssv" data-segment="atv" data-name="pulse mxr (soft) cs 14 atv-utv-ssv 18x10-8">
+            <div class="product-card-img"><img src="productos/cst-pulse-mxr.png" alt="CST Pulse MXR (Soft)" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · ATV/UTV/SSV</div>
+                <h3>Pulse MXR (Soft)</h3>
+                <div class="product-card-sizes"><span class="size-tag">18x10-8</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=stag" class="product-card" data-category="atv-utv-ssv" data-segment="atv" data-name="stag cu 58 atv-utv-ssv 30x10-14 27x11-14 27x9-14 26x11-14 26x9-14 26x11-12 26x9-12">
+            <div class="product-card-img"><img src="productos/cst-stag.png" alt="CST Stag" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · ATV/UTV/SSV</div>
+                <h3>Stag</h3>
+                <div class="product-card-sizes"><span class="size-tag">30x10-14</span><span class="size-tag">27x11-14</span><span class="size-tag">27x9-14</span><span class="size-tag">26x11-14</span><span class="size-tag">26x9-14</span><span class="size-tag">26x11-12</span><span class="size-tag">26x9-12</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=b-trail" class="product-card" data-category="mtb" data-segment="bici" data-name="b-trail c1861p mtb 27.5x2.25">
+            <div class="product-card-img"><img src="productos/B-Trail-01-1.jpg" alt="CST B-Trail" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · MTB</div>
+                <h3>B-Trail</h3>
+                <div class="product-card-sizes"><span class="size-tag">27.5x2.25</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=jack-rabbit-ii" class="product-card" data-category="mtb" data-segment="bici" data-name="jack rabbit ii c1747n mtb 29x2.25">
+            <div class="product-card-img"><img src="productos/Jack-Rabbit-II-01.jpeg" alt="CST Jack Rabbit II" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · MTB</div>
+                <h3>Jack Rabbit II</h3>
+                <div class="product-card-sizes"><span class="size-tag">29x2.25</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=patrol" class="product-card" data-category="mtb" data-segment="bici" data-name="patrol c1846 mtb 29x2.25">
+            <div class="product-card-img"><img src="productos/Patrol-01.jpeg" alt="CST Patrol" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · MTB</div>
+                <h3>Patrol</h3>
+                <div class="product-card-sizes"><span class="size-tag">29x2.25</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=cito" class="product-card" data-category="ruta" data-segment="bici" data-name="cito c1922 ruta 700x28c 700x25c">
+            <div class="product-card-img"><img src="productos/Cito-01.jpeg" alt="CST Cito" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · Ruta</div>
+                <h3>Cito</h3>
+                <div class="product-card-sizes"><span class="size-tag">700x28C</span><span class="size-tag">700x25C</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=conquistare" class="product-card" data-category="ruta" data-segment="bici" data-name="conquistare c1761 ruta 700x25c">
+            <div class="product-card-img"><img src="productos/Conquistare-01-1.jpeg" alt="CST Conquistare" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · Ruta</div>
+                <h3>Conquistare</h3>
+                <div class="product-card-sizes"><span class="size-tag">700x25C</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=czar" class="product-card" data-category="ruta" data-segment="bici" data-name="czar c1406 ruta 700x25c">
+            <div class="product-card-img"><img src="productos/Czar-01.jpg" alt="CST Czar" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · Ruta</div>
+                <h3>Czar</h3>
+                <div class="product-card-sizes"><span class="size-tag">700x25C</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=energia" class="product-card" data-category="ruta" data-segment="bici" data-name="energia c3045 ruta 700x28c">
+            <div class="product-card-img"><img src="productos/Energia-01.jpeg" alt="CST Energia" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · Ruta</div>
+                <h3>Energia</h3>
+                <div class="product-card-sizes"><span class="size-tag">700x28C</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=c-352" class="product-card" data-category="industrial" data-segment="industrial" data-name="c 352 c 352 industrial ">
+            <div class="product-card-img"><img src="productos/C-352.jpg" alt="CST C 352" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · Industrial</div>
+                <h3>C 352</h3>
+            </div>
+        </a>
+
+        <a href="producto.html?id=c-8808" class="product-card" data-category="industrial" data-segment="industrial" data-name="c 8808 c 8808 industrial ">
+            <div class="product-card-img"><img src="productos/C-8808.jpg" alt="CST C 8808" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · Industrial</div>
+                <h3>C 8808</h3>
+            </div>
+        </a>
+
+        <a href="producto.html?id=c-8909" class="product-card" data-category="industrial" data-segment="industrial" data-name="c 8909 c 8909 industrial ">
+            <div class="product-card-img"><img src="productos/C-8909-1920x1440-01.jpg" alt="CST C 8909" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · Industrial</div>
+                <h3>C 8909</h3>
+            </div>
+        </a>
+
+        <a href="producto.html?id=ci-02" class="product-card" data-category="industrial" data-segment="industrial" data-name="ci 02 ci 02 industrial ">
+            <div class="product-card-img"><img src="productos/CI02-02.jpg" alt="CST CI 02" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta · Industrial</div>
+                <h3>CI 02</h3>
+            </div>
+        </a>
+
+        <div class="no-results" id="noResults">No hay productos en esta categoría.</div>
+    </div>
+
+    <!-- CTA -->
+    <section class="cta-bottom">
+        <div class="cta-bottom-box">
+            <div class="cta-bottom-text">
+                <h3>¿Querés comprar nuestros productos?</h3>
+                <p>Encontrá tu punto de venta más cercano.</p>
+            </div>
+            <a href="../../donde-comprar/moto.html" class="cta-bottom-btn">Dónde comprar &rarr;</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Segmentos</h4>
+                <ul>
+                    <li><a href="../../segmentos/moto.html">Moto</a></li>
+                    <li><a href="../../segmentos/atv.html">ATV / UTV / SSV</a></li>
+                    <li><a href="../../segmentos/bici.html">Bicicleta</a></li>
+                    <li><a href="../../segmentos/industrial.html">Industrial</a></li>
+                </ul>
+            </div>
+            <div class="footer-section footer-marcas">
+                <h4>Marcas</h4>
+                <ul>
+                    <li><a href="../../marcas/cst/cst.html">CST</a></li>
+                    <li><a href="../../marcas/leovince/leovince.html">Leo Vince</a></li>
+                    <li><a href="../../marcas/shot/shot.html">SHOT</a></li>
+                    <li><a href="../../marcas/uswe/uswe.html">USWE</a></li>
+                    <li><a href="../../marcas/giantloop/giantloop.html">Giant Loop</a></li>
+                    <li><a href="../../marcas/nils/nils.html">NILS</a></li>
+                    <li><a href="../../marcas/nitromousse/nitromousse.html">Nitro Mousse</a></li>
+                    <li><a href="../../marcas/lucioli/lucioli.html">Lucioli</a></li>
+                    <li><a href="../../marcas/wrp/wrp.html">WRP</a></li>
+                    <li><a href="../../marcas/sidi/sidi.html">SIDI</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="../../sobre-nosotros.html">Quiénes Somos</a></li>
+                    <li><a href="../../donde-comprar/moto.html">Dónde Comprar</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Redes</h4>
+                <ul>
+                    <li><a href="https://www.instagram.com/radsport_geist/" target="_blank">Instagram</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Radsport Geist. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- JS: Simple filter -->
+    <script>
+        const filters = document.getElementById('filters');
+        const countEl = document.getElementById('productCount');
+        const noResults = document.getElementById('noResults');
+        const cards = document.querySelectorAll('.product-card');
+        const segmentTabs = document.getElementById('segmentTabs');
+        const searchInput = document.getElementById('searchInput');
+        let activeSegment = 'todos', activeCategory = 'todos', searchQuery = '';
+
+        function updateCount(n) { countEl.textContent = n + (n === 1 ? ' producto' : ' productos'); }
+
+        function filterProducts() {
+            let visible = 0;
+            cards.forEach(card => {
+                const segMatch = activeSegment === 'todos' || card.dataset.segment === activeSegment;
+                const catMatch = activeCategory === 'todos' || card.dataset.category === activeCategory;
+                const searchMatch = !searchQuery || card.querySelector('h3').textContent.toLowerCase().includes(searchQuery);
+                const show = segMatch && catMatch && searchMatch;
+                card.style.display = show ? 'block' : 'none';
+                if (show) { card.style.animationDelay = (visible * 0.05) + 's'; visible++; }
+            });
+            noResults.style.display = visible === 0 ? 'block' : 'none';
+            updateCount(visible);
+        }
+
+        // Mostrar solo los filtros de categoria que existen en el segmento activo
+        function updateFilterButtons() {
+            const cats = new Set();
+            cards.forEach(c => { if (activeSegment === 'todos' || c.dataset.segment === activeSegment) cats.add(c.dataset.category); });
+            filters.querySelectorAll('.filter-btn').forEach(b => {
+                const f = b.dataset.filter;
+                b.style.display = (f === 'todos' || cats.has(f)) ? '' : 'none';
+            });
+        }
+
+        segmentTabs?.addEventListener('click', e => {
+            const tab = e.target.closest('.segment-tab');
+            if (!tab) return;
+            segmentTabs.querySelectorAll('.segment-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            activeSegment = tab.dataset.segment;
+            activeCategory = 'todos';
+            filters.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'todos'));
+            updateFilterButtons();
+            filterProducts();
+        });
+
+        filters?.addEventListener('click', e => {
+            if (!e.target.classList.contains('filter-btn')) return;
+            filters.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            e.target.classList.add('active');
+            activeCategory = e.target.dataset.filter;
+            filterProducts();
+        });
+
+        searchInput?.addEventListener('input', e => {
+            searchQuery = e.target.value.trim().toLowerCase();
+            if (searchQuery.length >= 2) { activeSegment = 'todos'; activeCategory = 'todos'; }
+            filterProducts();
+        });
+
+        // URL params
+        const params = new URLSearchParams(window.location.search);
+        const catP = params.get('cat');
+        if (catP) {
+            const btn = document.querySelector(`[data-filter="${catP}"]`);
+            if (btn) { filters.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); activeCategory = catP; }
+        }
+        updateFilterButtons();
+        filterProducts();
+    </script>
+    <!-- PAGINACION (16 productos por pagina, integrada con filtros existentes) -->
+    <script>
+    (function() {
+        const PAGE_SIZE = 16;
+        let currentPage = 1;
+        const grid = document.getElementById('productsGrid');
+        if (!grid) return;
+        const allCards = Array.from(grid.querySelectorAll('.product-card'));
+
+        function applyPagination() {
+            const visible = allCards.filter(c => c.style.display !== 'none');
+            const totalPages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+            visible.forEach((c, i) => {
+                const page = Math.floor(i / PAGE_SIZE) + 1;
+                if (page !== currentPage) c.style.display = 'none';
+            });
+            renderPagination(totalPages);
+        }
+
+        function renderPagination(totalPages) {
+            let pag = document.getElementById('pagination');
+            if (!pag) {
+                pag = document.createElement('div');
+                pag.id = 'pagination';
+                pag.className = 'pagination';
+                grid.parentNode.insertBefore(pag, grid.nextSibling);
+            }
+            if (totalPages <= 1) { pag.innerHTML = ''; return; }
+            let html = '<button onclick="goToPage(' + (currentPage-1) + ')" '
+                + (currentPage===1?'disabled':'') + '>&larr; Anterior</button>';
+            for (let i = 1; i <= totalPages; i++) {
+                html += '<button class="' + (i===currentPage?'active':'')
+                    + '" onclick="goToPage(' + i + ')">' + i + '</button>';
+            }
+            html += '<button onclick="goToPage(' + (currentPage+1) + ')" '
+                + (currentPage===totalPages?'disabled':'') + '>Siguiente &rarr;</button>';
+            html += '<span class="pagination-info">Pagina ' + currentPage
+                + ' de ' + totalPages + '</span>';
+            pag.innerHTML = html;
+        }
+
+        function reRunFilter() {
+            // Vuelve a correr el filter existente (filterProducts o filter)
+            // para resetear display de todas las cards segun criterios actuales
+            if (typeof window.filterProducts === 'function') window.filterProducts();
+            else if (typeof window.filter === 'function') window.filter();
+        }
+
+        window.goToPage = function(p) {
+            currentPage = p;
+            reRunFilter();
+            applyPagination();
+            window.scrollTo({top: grid.offsetTop - 100, behavior: 'smooth'});
+        };
+
+        // Cuando el usuario cambia filtros/segmentos/busqueda, resetear a pagina 1
+        // y paginar luego de que el filtro existente haya hecho su trabajo (bubble phase)
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.filter-btn, .segment-tab, .brand-bar a:not(.brand-all)')) {
+                currentPage = 1;
+                setTimeout(applyPagination, 10);
+            }
+        });
+        document.addEventListener('input', function(e) {
+            if (e.target.matches('.search-input, #searchInput, input[type="search"]')) {
+                currentPage = 1;
+                setTimeout(applyPagination, 10);
+            }
+        });
+
+        // Paginacion inicial despues de que el filter inicial haya corrido
+        setTimeout(applyPagination, 50);
+    })();
+    </script>
+
+    <a href="https://wa.me/5491135713234" class="whatsapp-float" target="_blank" rel="noopener" title="Contactar por WhatsApp" aria-label="WhatsApp"><svg viewBox="0 0 32 32" width="28" height="28" fill="#fff" aria-hidden="true"><path d="M16.04 3C9.4 3 4 8.4 4 15.04c0 2.12.55 4.19 1.6 6.02L4 29l8.13-1.55a12 12 0 0 0 3.9.65h.01C22.68 28.1 28.08 22.7 28.08 16.06 28.08 8.4 22.68 3 16.04 3zm0 21.9h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.75.72.72-3.66-.24-.38a9.86 9.86 0 0 1-1.51-5.25c0-5.46 4.45-9.9 9.92-9.9 2.65 0 5.14 1.03 7.01 2.9a9.82 9.82 0 0 1 2.9 7 9.9 9.9 0 0 1-9.9 9.84zm5.44-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg></a>
+</body>
+</html>

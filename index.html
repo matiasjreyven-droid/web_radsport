@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radsport Geist - Importación y Distribución de Marcas Líderes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --red: #D32F2F;
+            --red-dark: #B71C1C;
+            --red-light: #FFEBEE;
+            --gray: #333333;
+            --gray-light: #f5f5f5;
+            --white: #ffffff;
+            --black: #000000;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            /* Scroll por secciones: snapea al acercarse pero deja llegar al footer */
+            scroll-snap-type: y proximity;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--gray);
+            background: var(--white);
+            background-image: radial-gradient(circle, rgba(0,0,0,0.09) 1px, transparent 1px);
+            background-size: 22px 22px;
+            overflow-x: hidden;
+        }
+
+        /* ============================================
+           SCROLL SNAP: cada seccion ocupa el viewport y frena el scroll
+           Secciones: hero -> banner(marcas+segmentos) -> marcas que
+           representamos -> por que elegirnos
+           ============================================ */
+        .snap-sec {
+            scroll-snap-align: start;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .hero { scroll-snap-align: start; }
+        @media (max-width: 768px) {
+            html { scroll-snap-type: y proximity; }
+            .snap-sec { min-height: 0; display: block; }
+        }
+
+        /* NAVIGATION */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 100%);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        nav.scrolled .logo-text img {
+            filter: none;
+        }
+
+        nav.scrolled .nav-links a {
+            color: var(--gray);
+        }
+
+        nav.scrolled .hamburger span {
+            background: var(--gray);
+        }
+
+        .logo-text {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            font-size: 1.3rem;
+            color: var(--white);
+            transition: color 0.3s ease;
+            letter-spacing: 0.15em;
+        }
+
+        .logo-text .logo-bold {
+            font-weight: 900;
+        }
+
+        .logo-text .logo-dot {
+            color: var(--red);
+            margin: 0 0.35em;
+            font-size: 1.1em;
+        }
+
+        .logo-text .logo-light {
+            font-weight: 300;
+        }
+
+        nav.scrolled .logo-text {
+            color: var(--gray);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 300;
+            transition: color 0.3s ease;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+        }
+
+        .nav-links a:hover {
+            color: var(--red-light);
+        }
+
+        .nav-links a.active {
+            color: var(--red);
+            font-weight: 600;
+        }
+
+        nav.scrolled .nav-links a.active {
+            color: var(--red);
+        }
+
+        /* Dropdown Marcas */
+        .nav-links li {
+            position: relative;
+        }
+        .nav-dropdown {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            padding: 0.2rem 0.3rem;
+            display: grid; grid-template-columns: 1fr 1fr;
+            grid-auto-rows: 44px;
+            gap: 0;
+            min-width: 280px;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+            transform: translateX(-50%) translateY(8px);
+            z-index: 1001;
+            margin-top: 0.5rem;
+        }
+        .nav-links li:hover .nav-dropdown,
+        .nav-dropdown:hover {
+            opacity: 1; visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        .nav-dropdown a {
+            display: flex; align-items: center; justify-content: center;
+            padding: 0.4rem 0.8rem;
+            min-height: 44px;
+            border-radius: 8px;
+            transition: background 0.15s, transform 0.15s;
+            opacity: 0.7;
+        }
+        .nav-dropdown a:hover {
+            opacity: 1;
+        }
+        .nav-dropdown a img {
+            max-height: 29px;
+            max-width: 67px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            mix-blend-mode: multiply;
+        }
+
+        /* Dropdown Segmentos */
+        .nav-dropdown-segments {
+            grid-template-columns: 1fr;
+            min-width: 180px;
+            gap: 0.1rem;
+        }
+        .nav-dropdown-segments a {
+            font-size: 0.82rem !important;
+            font-weight: 500 !important;
+            color: var(--gray) !important;
+            padding: 0.5rem 0.8rem;
+            border-radius: 8px;
+            transition: background 0.15s, color 0.15s;
+            opacity: 1;
+        }
+        .nav-dropdown-segments a:hover {
+            background: var(--gray-light);
+            color: var(--red) !important;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--white);
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+
+        /* HERO SECTION */
+        .hero {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--white);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.4) 100%);
+            z-index: 2;
+        }
+
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        .hero-video {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            max-width: 90%;
+        }
+
+        .hero-title {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.2em;
+            margin-bottom: 0;
+        }
+
+        .hero-title-part1 {
+            font-size: clamp(44px, 8vw, 110px);
+            font-weight: 300;
+            font-style: italic;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
+        .hero-title-part2 {
+            font-size: clamp(52px, 10vw, 130px);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            line-height: 1;
+        }
+
+        .hero-divider {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+            margin: 1.8rem auto 1.5rem;
+        }
+
+        .hero-tagline {
+            font-size: clamp(0.78rem, 1.92vw, 1.65rem);
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.96);
+            white-space: nowrap;
+            line-height: 1.2;
+            margin: 0 auto;
+            text-shadow: 0 2px 24px rgba(0,0,0,0.5);
+        }
+
+        .hero-categories {
+            margin-top: 1.8rem;
+            display: flex;
+            justify-content: center;
+            gap: 0;
+            flex-wrap: wrap;
+        }
+
+        .hero-categories span {
+            display: inline-flex;
+            align-items: center;
+            font-size: clamp(0.8rem, 1.5vw, 1rem);
+            font-weight: 500;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.7);
+            padding: 0 2rem;
+            border-right: 1px solid rgba(255,255,255,0.2);
+            transition: color 0.3s ease;
+        }
+
+        .hero-categories span:last-child {
+            border-right: none;
+        }
+
+        .hero-categories span:hover {
+            color: rgba(255,255,255,1);
+        }
+
+        /* BRANDS TICKER */
+        .brands-ticker {
+            background: transparent;
+            padding: 2rem 0;
+            border-top: 1px solid #e0e0e0;
+            border-bottom: 1px solid #e0e0e0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .brands-ticker-track {
+            display: flex;
+            width: max-content;
+            animation: scroll-ticker 20s linear infinite;
+        }
+
+        .brands-ticker-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll-ticker {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .brand-ticker-item {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100px;
+            padding: 0 2.5rem;
+            opacity: 0.85;
+            transition: opacity 0.3s ease;
+        }
+
+        .brand-ticker-item:hover {
+            opacity: 1;
+        }
+
+        .brand-ticker-item img {
+            max-height: 70px;
+            max-width: 180px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .brand-ticker-item img.big {
+            max-height: 95px;
+            max-width: 220px;
+        }
+
+        /* WORLDS SECTION */
+        .worlds {
+            background: transparent;
+            padding: 4rem 2rem;
+        }
+
+        .worlds-title {
+            text-align: center;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 3rem;
+            color: var(--gray);
+        }
+
+        .worlds-title span {
+            color: var(--red);
+        }
+
+        .worlds-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .world-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            aspect-ratio: 4 / 5;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .world-card-image {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.6s ease;
+        }
+
+        .world-card:hover .world-card-image {
+            transform: scale(1.08);
+        }
+
+        .world-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 100%);
+            z-index: 2;
+        }
+
+        .world-card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            color: var(--white);
+            z-index: 3;
+        }
+
+        .world-card-title {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        /* BRANDS SECTION */
+        .brands-section {
+            background: transparent;
+            padding: 5rem 2rem;
+        }
+
+        .brands-section .section-title {
+            font-style: italic;
+            letter-spacing: 1px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            color: var(--gray);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .brands-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1.5rem;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .brand-card {
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .brand-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .brand-card-image {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            padding: 1.2rem;
+            margin-bottom: 0;
+            overflow: hidden;
+            position: relative;
+            border-radius: 16px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .brand-card:hover .brand-card-image {
+            background: transparent;
+        }
+
+        .brand-card-image img {
+            max-height: 85%;
+            max-width: 85%;
+            object-fit: contain;
+            position: relative;
+            z-index: 2;
+            transition: all 0.4s ease;
+        }
+
+        .brand-card-image img[alt="USWE"] {
+            max-height: 55%;
+            max-width: 65%;
+        }
+
+        .brand-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1.2rem;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            padding: 2rem;
+            text-align: center;
+            z-index: 3;
+            overflow: hidden;
+        }
+
+        .brand-card:hover .brand-card-overlay {
+            opacity: 1;
+        }
+
+        .brand-card:hover .brand-card-image img {
+            transform: scale(1.05);
+        }
+
+        .brand-card-overlay-bg {
+            position: absolute;
+            inset: 0;
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.15;
+            z-index: 1;
+        }
+
+        .brand-card-overlay-desc {
+            font-size: clamp(0.7rem, 0.95vw, 0.85rem);
+            color: #fff;
+            line-height: 1.4;
+            font-weight: 300;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-card-overlay-segments {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-card-overlay-segments span {
+            background: rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.9);
+            padding: 0.3rem 0.7rem;
+            border-radius: 4px;
+            font-size: clamp(0.6rem, 0.75vw, 0.72rem);
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+        }
+
+        .brand-card-overlay-cta {
+            display: inline-flex;
+            align-items: center;
+            color: rgba(255,255,255,0.9);
+            font-size: clamp(0.7rem, 0.9vw, 0.82rem);
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background: var(--red);
+            padding: 0.5rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            text-decoration: none;
+        }
+
+        .brand-card-overlay-cta:hover {
+            background: var(--red-dark);
+        }
+
+        .brand-card-name {
+            font-weight: 900;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-style: italic;
+            color: var(--gray);
+            margin-bottom: 0.2rem;
+            display: none;
+        }
+
+        .brand-card-desc {
+            font-size: 0.7rem;
+            color: #999;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+            display: none;
+        }
+
+        .brand-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+        }
+
+        .brand-tag {
+            background: transparent;
+            color: #999;
+            padding: 0;
+            font-size: 0.6rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .brand-tag::after {
+            content: ' ·';
+            color: #ccc;
+        }
+
+        .brand-tag:last-child::after {
+            content: '';
+        }
+
+        /* WHY US SECTION */
+        .why-us {
+            background: linear-gradient(180deg, #f7f7f7 0%, #ececec 100%);
+            padding: 7rem 2rem;
+            position: relative;
+        }
+        .why-us-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+        .why-us-label {
+            font-size: 1.9rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #1a1a1a;
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+        }
+        .why-us-label::before {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: var(--red);
+            margin: 0 auto 1.2rem;
+        }
+        .why-us-title {
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 900;
+            color: var(--gray);
+            letter-spacing: -0.02em;
+        }
+
+        .why-us-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1.5rem;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .why-us-card {
+            text-align: center;
+            padding: 2.8rem 1.6rem 2.4rem;
+            border-radius: 18px;
+            background: var(--white);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: box-shadow 0.3s, transform 0.3s;
+            border: 1px solid rgba(0,0,0,0.04);
+            position: relative;
+            overflow: hidden;
+        }
+        .why-us-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--red);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+        .why-us-card:hover {
+            box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+            transform: translateY(-6px);
+        }
+        .why-us-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .why-us-icon {
+            width: 76px;
+            height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.6rem;
+            background: linear-gradient(135deg, var(--red-light) 0%, #ffd6d6 100%);
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+        .why-us-card:hover .why-us-icon {
+            transform: scale(1.08);
+        }
+        .why-us-icon svg {
+            width: 40px;
+            height: 40px;
+            stroke: var(--red);
+            stroke-width: 1.8;
+            fill: none;
+        }
+
+        .why-us-card-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 0.7rem;
+            color: var(--gray);
+            letter-spacing: 0.01em;
+        }
+
+        .why-us-card-text {
+            color: #555;
+            line-height: 1.6;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        /* ABOUT SECTION */
+        .about {
+            background: transparent;
+            color: var(--gray);
+            padding: 6rem 4rem;
+            position: relative;
+        }
+
+        .about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--red), transparent);
+        }
+
+        .about-content {
+            max-width: 100%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .about-text {
+            max-width: 100%;
+            animation: aboutFadeIn 0.8s ease forwards;
+        }
+
+        @keyframes aboutFadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .about-text h2 {
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .about-text .about-subtitle {
+            font-size: 1.9rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #1a1a1a;
+            font-weight: 700;
+            margin-bottom: 2rem;
+        }
+        .about-text .about-subtitle::before {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 3px;
+            background: var(--red);
+            margin-bottom: 1.2rem;
+        }
+
+        .about-text p {
+            font-size: 0.98rem;
+            line-height: 1.9;
+            margin-bottom: 1.2rem;
+            color: #555;
+        }
+
+        .about-text span {
+            color: var(--red);
+        }
+
+        .about-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 1.8rem 2rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            animation: aboutFadeIn 0.6s ease forwards;
+        }
+
+        .stat-card:nth-child(1) {
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+
+        .stat-card:nth-child(2) {
+            animation-delay: 0.4s;
+            opacity: 0;
+        }
+
+        .stat-card:nth-child(3) {
+            animation-delay: 0.6s;
+            opacity: 0;
+        }
+
+        .stat-icon {
+            font-size: 2.8rem;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--red);
+            min-width: 80px;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        /* PRODUCTS SECTION */
+        .products {
+            background: transparent;
+            padding: 5rem 2rem;
+        }
+
+        .products-header {
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+
+        .filter-btn {
+            padding: 0.8rem 1.5rem;
+            border: 2px solid var(--gray);
+            background: var(--white);
+            color: var(--gray);
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--red);
+            color: var(--white);
+            border-color: var(--red);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #bbb;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--gray);
+        }
+
+        .product-price {
+            color: var(--red);
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--red);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .product-btn:hover {
+            background: var(--red-dark);
+            transform: scale(1.02);
+        }
+
+        /* STORES SECTION */
+        .stores {
+            background: transparent;
+            padding: 5rem 2rem;
+        }
+
+        .stores-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 100%;
+            margin: 0 auto 3rem;
+        }
+
+        .store-card {
+            background: linear-gradient(135deg, #f9f9f9 0%, #f5f5f5 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--red);
+        }
+
+        .store-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--gray);
+        }
+
+        .store-address {
+            color: #666;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .store-phone {
+            color: var(--red);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .store-btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: #25D366;
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .store-btn:hover {
+            background: #1fa85c;
+            transform: scale(1.05);
+        }
+
+        .cta-stores {
+            text-align: center;
+            padding: 2rem;
+            background: var(--red-light);
+            border-radius: 12px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-stores p {
+            color: var(--red);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .cta-stores a {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: var(--red);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .cta-stores a:hover {
+            background: var(--red-dark);
+            transform: scale(1.05);
+        }
+
+        /* INSTAGRAM SECTION */
+        .instagram-section {
+            background: transparent;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .instagram-handle {
+            font-size: 2rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            font-weight: 700;
+        }
+
+        .instagram-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        .instagram-item {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .instagram-item:hover {
+            transform: scale(0.95);
+        }
+
+        /* CONTACT SECTION */
+        .contact {
+            background: transparent;
+            padding: 4rem 2rem;
+        }
+
+        .contact-cta {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 20px;
+            padding: 3.5rem 3rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            border: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .contact-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--red);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .contact-question {
+            font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+            font-weight: 900;
+            color: var(--gray);
+            margin-bottom: 0.6rem;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .contact-sub {
+            font-size: 0.95rem;
+            color: #888;
+            font-weight: 300;
+            margin-bottom: 2rem;
+        }
+
+        .contact-whatsapp {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: #25D366;
+            color: var(--white);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.3s;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.2);
+        }
+        .contact-whatsapp svg {
+            width: 22px;
+            height: 22px;
+        }
+        .contact-whatsapp:hover {
+            background: #1da851;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 30px rgba(37, 211, 102, 0.3);
+        }
+
+        .selector-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .selector-btn {
+            padding: 1rem;
+            border: 2px solid #ddd;
+            background: var(--white);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .selector-btn.active {
+            background: var(--red);
+            color: var(--white);
+            border-color: var(--red);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--gray);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--red);
+            box-shadow: 0 0 0 3px var(--red-light);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 1rem;
+            background: var(--red);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-submit:hover {
+            background: var(--red-dark);
+            transform: scale(1.02);
+        }
+
+        /* FOOTER */
+        footer {
+            background: #000;
+            color: var(--white);
+            padding: 4.5rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 100%;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 2fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .footer-section h4 {
+            font-size: 0.85rem;
+            margin-bottom: 1.2rem;
+            color: var(--red);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.6rem;
+        }
+
+        .footer-section a {
+            color: #bbb;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .footer-section a:hover {
+            color: var(--red);
+        }
+
+        .footer-section.footer-marcas ul {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.4rem 1.5rem;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 2rem;
+            text-align: center;
+            color: #777;
+            font-size: 0.85rem;
+        }
+
+        /* WHATSAPP FLOAT */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--white);
+            font-size: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            z-index: 500;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ANIMATIONS */
+        .fade-in {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero-title {
+                margin-bottom: 1rem;
+            }
+
+            .hero-title-part1 {
+                font-size: clamp(40px, 10vw, 80px);
+            }
+
+            .hero-title-part2 {
+                font-size: clamp(50px, 12vw, 100px);
+            }
+
+            .hero-tagline {
+                font-size: clamp(0.9rem, 3.4vw, 1.3rem);
+                white-space: normal;
+                letter-spacing: 0.08em;
+                max-width: 18ch;
+            }
+
+            .hero-categories {
+                gap: 0.5rem;
+            }
+
+            .worlds-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .brands-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .world-card:nth-child(4) {
+                aspect-ratio: 1;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .about-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-buttons {
+                justify-content: flex-start;
+                overflow-x: auto;
+            }
+
+            .filter-btn {
+                flex-shrink: 0;
+            }
+
+            .brand-ticker-item {
+                padding: 0 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav {
+                padding: 1rem;
+            }
+
+            .logo-text {
+                font-size: 1.2rem;
+            }
+
+            .hero {
+                height: 70vh;
+            }
+
+            .hero-bottom {
+                bottom: 1.5rem;
+            }
+
+            .hero-title-part1 {
+                font-size: clamp(30px, 8vw, 60px);
+            }
+
+            .hero-title-part2 {
+                font-size: clamp(36px, 10vw, 80px);
+            }
+
+            .worlds {
+                padding: 2rem 1rem;
+            }
+
+            .worlds-title {
+                font-size: clamp(1.5rem, 4vw, 2.5rem);
+            }
+
+            .brands-section,
+            .why-us,
+            .about,
+            .products,
+            .stores,
+            .contact {
+                padding: 2rem 1rem;
+            }
+
+            .section-title {
+                font-size: clamp(1.5rem, 4vw, 2.5rem);
+            }
+
+            .selector-group {
+                grid-template-columns: 1fr;
+            }
+
+            .whatsapp-float {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .instagram-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        /* ============================================
+           SECCIÓN REDES (Instagram) — estilo Furygan
+           ============================================ */
+        .social { width: 100%; margin: 0 auto; text-align: center; }
+        .social-title { font-size: clamp(2.2rem, 5vw, 3.4rem); font-weight: 900; color: var(--gray); margin-bottom: 0.25rem; letter-spacing: -0.01em; line-height: 1; }
+        .social-eyebrow { font-size: 0.78rem; letter-spacing: 4px; text-transform: uppercase; color: var(--red); font-weight: 700; margin-bottom: 3rem; }
+        .social-wrap { padding: 7rem 2rem 4rem; }
+        .social-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; max-width: 100%; margin: 0 auto; }
+        .social-card { position: relative; display: flex; flex-direction: column;
+            background: white; border: 1px solid #ececec; border-radius: 16px; overflow: hidden;
+            text-decoration: none; color: var(--gray);
+            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s; }
+        .social-card:hover { transform: translateY(-6px); box-shadow: 0 16px 36px rgba(0,0,0,0.14); border-color: transparent; }
+        .social-photo { position: relative; height: 345px; width: 100%;
+            background-size: cover; background-position: center; transition: transform 0.45s ease; }
+        .social-photo::after { content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.30), transparent 55%); }
+        .social-card:hover .social-photo { transform: scale(1.07); }
+        .social-body { display: flex; align-items: center; gap: 0.7rem; padding: 0.9rem 1rem 1.1rem; }
+        .social-icon { flex-shrink: 0; width: 38px; height: 38px; border-radius: 11px;
+            display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #feda75 0%, #fa7e1e 25%, #d62976 50%, #962fbf 75%, #4f5bd5 100%); }
+        .social-icon svg { width: 21px; height: 21px; fill: white; }
+        .social-text { display: flex; flex-direction: column; line-height: 1.25; text-align: left; min-width: 0; }
+        .social-name { font-size: 0.9rem; font-weight: 800; letter-spacing: 0.2px; }
+        .social-handle { font-size: 0.74rem; color: #999; font-weight: 500;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .social-card-soon { opacity: 0.6; cursor: default; pointer-events: none; }
+        .social-card-soon .social-handle { font-style: italic; }
+        @media (max-width: 980px) { .social-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 620px) { .social-grid { grid-template-columns: repeat(2, 1fr); } .social-photo { height: 210px; } }
+    </style>
+</head>
+<body>
+    <!-- NAVIGATION -->
+    <nav id="navbar">
+        <div class="logo-text"><span class="logo-bold">RADSPORT</span><span class="logo-dot">•</span><span class="logo-light">GEIST</span></div>
+        <ul class="nav-links">
+            <li>
+                <a href="#worlds">Segmentos</a>
+            </li>
+            <li>
+                <a href="#brands">Marcas</a>
+            </li>
+            <li><a href="productos.html">Productos</a></li>
+            <li><a href="donde-comprar/moto.html">Dónde Comprar</a></li>
+            <li><a href="sobre-nosotros.html">Sobre Nosotros</a></li>
+            <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <!-- VIDEO DE FONDO: clips de SHOT + NILS -->
+        <video class="hero-video" autoplay muted loop playsinline>
+            <source src="radsport-hero-video.mp4" type="video/mp4">
+        </video>
+
+        <div class="hero-content">
+            <div class="hero-tagline">LLEVAMOS LAS MEJORES MARCAS DEL MUNDO HASTA TU NEGOCIO</div>
+            <div class="hero-categories">
+                <span>Moto</span>
+                <span>ATV / UTV</span>
+                <span>Bicicleta</span>
+                <span>Industrial</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- BANNER: MARCAS (ticker) + SEGMENTOS (worlds) -->
+    <div class="snap-sec">
+    <!-- BRANDS TICKER -->
+    <div class="brands-ticker">
+        <div class="brands-ticker-track">
+            <div class="brand-ticker-item"><img src="img/logos/cst.png" alt="CST"></div>
+            <div class="brand-ticker-item"><img src="img/logos/leovince.png" alt="Leo Vince"></div>
+            <div class="brand-ticker-item"><img src="img/logos/shot.png" alt="SHOT" class="big"></div>
+            <div class="brand-ticker-item"><img src="img/logos/uswe.png" alt="USWE"></div>
+            <div class="brand-ticker-item"><img src="img/logos/giantloop.png" alt="Giant Loop"></div>
+            <div class="brand-ticker-item"><img src="img/logos/nils.png" alt="NILS" class="big"></div>
+            <div class="brand-ticker-item"><img src="img/logos/nitromousse.png" alt="Nitromousse"></div>
+            <div class="brand-ticker-item"><img src="img/logos/lucioli.png" alt="Lucioli"></div>
+            <div class="brand-ticker-item"><img src="img/logos/wrp.png" alt="WRP"></div>
+            <div class="brand-ticker-item"><img src="img/logos/sidi.png" alt="SIDI"></div>
+            <!-- Duplicado -->
+            <div class="brand-ticker-item"><img src="img/logos/cst.png" alt="CST"></div>
+            <div class="brand-ticker-item"><img src="img/logos/leovince.png" alt="Leo Vince"></div>
+            <div class="brand-ticker-item"><img src="img/logos/shot.png" alt="SHOT" class="big"></div>
+            <div class="brand-ticker-item"><img src="img/logos/uswe.png" alt="USWE"></div>
+            <div class="brand-ticker-item"><img src="img/logos/giantloop.png" alt="Giant Loop"></div>
+            <div class="brand-ticker-item"><img src="img/logos/nils.png" alt="NILS" class="big"></div>
+            <div class="brand-ticker-item"><img src="img/logos/nitromousse.png" alt="Nitromousse"></div>
+            <div class="brand-ticker-item"><img src="img/logos/lucioli.png" alt="Lucioli"></div>
+            <div class="brand-ticker-item"><img src="img/logos/wrp.png" alt="WRP"></div>
+            <div class="brand-ticker-item"><img src="img/logos/sidi.png" alt="SIDI"></div>
+        </div>
+    </div>
+
+    <!-- WORLDS SECTION -->
+    <section class="worlds" id="worlds">
+        <div class="worlds-grid">
+            <a href="segmentos/moto.html" class="world-card">
+                <div class="world-card-image" style="background-image: url('https://images.unsplash.com/photo-1716332119981-57e31d5c9b80?w=800&q=80');"></div>
+                <div class="world-card-content">
+                    <h3 class="world-card-title">Moto</h3>
+                </div>
+            </a>
+            <a href="segmentos/atv.html" class="world-card">
+                <div class="world-card-image" style="background-image: url('https://images.unsplash.com/photo-1765542280777-968ae7dc9368?w=800&q=80');"></div>
+                <div class="world-card-content">
+                    <h3 class="world-card-title">ATV / UTV</h3>
+                </div>
+            </a>
+            <a href="segmentos/bici.html" class="world-card">
+                <div class="world-card-image" style="background-image: url('https://images.unsplash.com/photo-1544191696-102dbdaeeaa0?w=800&q=80');"></div>
+                <div class="world-card-content">
+                    <h3 class="world-card-title">Bicicleta</h3>
+                </div>
+            </a>
+            <a href="segmentos/industrial.html" class="world-card">
+                <div class="world-card-image" style="background-image: url('img/hero-industrial.jpg'); background-position: center 80%;"></div>
+                <div class="world-card-content">
+                    <h3 class="world-card-title">Industrial</h3>
+                </div>
+            </a>
+        </div>
+    </section>
+    </div><!-- /snap-sec banner -->
+
+    <!-- BRANDS SECTION -->
+    <section class="brands-section snap-sec" id="brands">
+        <div class="why-us-header">
+            <div class="why-us-label">Marcas que representamos</div>
+        </div>
+        <div class="brands-grid">
+            <!-- 1. CST -->
+            <a href="marcas/cst/cst.html" class="brand-card">
+                <div class="brand-card-image">
+                    <img src="img/logos/cst.png" alt="CST">
+                    <div class="brand-card-overlay">
+                        <div class="brand-card-overlay-desc">Cubiertas de alto rendimiento</div>
+                        <div class="brand-card-overlay-segments">
+                            <span>Moto</span><span>ATV/UTV</span><span>Bicicleta</span><span>Industrial</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <!-- 2. Leo Vince -->
+            <a href="marcas/leovince/leovince.html" class="brand-card">
+                <div class="brand-card-image">
+                    <img src="img/logos/leovince.png" alt="Leo Vince">
+                    <div class="brand-card-overlay">
+                        <div class="brand-card-overlay-desc">Sistemas de escape de alta performance</div>
+                        <div class="brand-card-overlay-segments">
+                            <span>Moto</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <!-- 3. SHOT -->
+            <a href="marcas/shot/shot.html" class="brand-card">
+                <div class="brand-card-image">
+                    <img src="img/logos/shot.png" alt="SHOT">
+                    <div class="brand-card-overlay">
+                        <div class="brand-card-overlay-desc">Indumentaria y accesorios para Enduro, Motocross y Off-road</div>
+                        <div class="brand-card-overlay-segments">
+                            <span>Moto</span><span>ATV/UTV</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <!-- 4. USWE -->
+            <a href="marcas/uswe/uswe.html" class="brand-card">
+                <div class="brand-card-image">
+                    <img src="img/logos/uswe.png" alt="USWE">
+                    <div class="brand-card-overlay">
+                        <div class="brand-card-overlay-desc">Mochilas de hidratación con sistema anti-rebote NDLM</div>
+                        <div class="brand-card-overlay-segments">
+                            <span>Moto</span><span>Bicicleta</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <!-- 5. Giant Loop -->
+            <a href="marcas/giantloop/giantloop.html" class="brand-card">
+                <div class="brand-card-image">
+                    <img src="img/logos/giantloop.png" alt="Giant Loop">
+                    <div class="brand-card-overlay">
+                        <div class="brand-card-overlay-desc">Equipajes y alforjas para moto adventure</div>
+                        <div class="brand-card-overlay-segments">
+                            <span>Moto</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <!-- 6. NILS -->
+            <a href="marcas/nils/nils.html" class="brand-card">
+                <div class="brand-card-image">
+                    <img src="img/logos/nils.png" alt="NILS">
+                    <div class="brand-card-overlay">
+                        <div class="brand-card-overlay-desc">Lubricantes premium para motos on-road y off-road</div>
+                        <div class="brand-card-overlay-segments">
+                            <span>Moto</span><span>Industrial</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <!-- 7. Nitro Mousse -->
+            <a href="marcas/nitromousse/nitromousse.html" class="brand-card">
+                <div class="brand-card-image">
+                    <img src="img/logos/nitromousse.png" alt="Nitro Mousse">
+                    <div class="brand-card-overlay">
+                        <div class="brand-card-overlay-desc">Mousse antipinchazos de alta densidad para enduro y motocross</div>
+                        <div class="brand-card-overlay-segments">
+                            <span>Moto</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <!-- 8. Lucioli -->
+            <a href="marcas/lucioli/lucioli.html" class="brand-card">
+                <div class="brand-card-image">
+                    <img src="img/logos/lucioli.png" alt="Lucioli">
+                    <div class="brand-card-overlay">
+                        <div class="brand-card-overlay-desc">Cámaras italianas de caucho premium para máxima resistencia y durabilidad</div>
+                        <div class="brand-card-overlay-segments">
+                            <span>Moto</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <!-- 9. WRP -->
+            <a href="marcas/wrp/wrp.html" class="brand-card">
+                <div class="brand-card-image">
+                    <img src="img/logos/wrp.png" alt="WRP">
+                    <div class="brand-card-overlay">
+                        <div class="brand-card-overlay-desc">Pastillas de freno para on-road y off-road</div>
+                        <div class="brand-card-overlay-segments">
+                            <span>Moto</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+            <!-- 10. SIDI -->
+            <a href="marcas/sidi/sidi.html" class="brand-card">
+                <div class="brand-card-image">
+                    <img src="img/logos/sidi.png" alt="SIDI">
+                    <div class="brand-card-overlay">
+                        <div class="brand-card-overlay-desc">Botas italianas de alta gama para motocross, enduro y adventure</div>
+                        <div class="brand-card-overlay-segments">
+                            <span>Moto</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- WHY US SECTION -->
+    <section class="why-us snap-sec">
+        <div class="why-us-header">
+            <div class="why-us-label">Por qué elegirnos</div>
+        </div>
+        <div class="why-us-grid">
+            <div class="why-us-card fade-in">
+                <div class="why-us-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+                <h3 class="why-us-card-title">Marcas Líderes</h3>
+                <p class="why-us-card-text">Representamos marcas internacionales con trayectoria y prestigio mundial.</p>
+            </div>
+            <div class="why-us-card fade-in">
+                <div class="why-us-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg></div>
+                <h3 class="why-us-card-title">Garantía Oficial</h3>
+                <p class="why-us-card-text">Distribuidores autorizados con garantía oficial en todos los productos que comercializamos.</p>
+            </div>
+            <div class="why-us-card fade-in">
+                <div class="why-us-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+                <h3 class="why-us-card-title">Marketing & Desarrollo</h3>
+                <p class="why-us-card-text">Acciones de marketing y soporte para potenciar la marca en tu punto de venta.</p>
+            </div>
+            <div class="why-us-card fade-in">
+                <div class="why-us-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+                <h3 class="why-us-card-title">Atención Directa</h3>
+                <p class="why-us-card-text">Asesoramiento personalizado de nuestro equipo para ayudarte a potenciar tu negocio.</p>
+            </div>
+            <div class="why-us-card fade-in">
+                <div class="why-us-icon"><svg viewBox="0 0 24 24"><rect x="1" y="6" width="22" height="16" rx="2"/><polyline points="1 10 12 16 23 10"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="8" y1="2" x2="16" y2="2"/></svg></div>
+                <h3 class="why-us-card-title">Envíos a Todo el País</h3>
+                <p class="why-us-card-text">Despachos a toda la Argentina con seguimiento en tiempo real.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECCIÓN REDES (Instagram) -->
+    <section class="social-wrap">
+        <div class="social">
+            <div class="why-us-header">
+                <div class="why-us-label">Seguinos en nuestras redes</div>
+            </div>
+            <div class="social-grid">
+                <a href="https://www.instagram.com/radsport_geist/" target="_blank" rel="noopener" class="social-card">
+                    <div class="social-photo" style="background-image: url('marcas/leovince/racing-team.jpg');"></div>
+                    <div class="social-body">
+                        <div class="social-icon"><svg viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3Z"/></svg></div>
+                        <div class="social-text">
+                            <div class="social-name">Radsport Moto</div>
+                            <div class="social-handle">@radsport_geist</div>
+                        </div>
+                    </div>
+                </a>
+                <a href="https://www.instagram.com/csttiresargentina/" target="_blank" rel="noopener" class="social-card">
+                    <div class="social-photo" style="background-image: url('marcas/cst/hero.jpg');"></div>
+                    <div class="social-body">
+                        <div class="social-icon"><svg viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3Z"/></svg></div>
+                        <div class="social-text">
+                            <div class="social-name">CST Tires</div>
+                            <div class="social-handle">@csttiresargentina</div>
+                        </div>
+                    </div>
+                </a>
+                <a href="https://www.instagram.com/shotracegear_arg/" target="_blank" rel="noopener" class="social-card">
+                    <div class="social-photo" style="background-image: url('marcas/shot/hero.jpg');"></div>
+                    <div class="social-body">
+                        <div class="social-icon"><svg viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3Z"/></svg></div>
+                        <div class="social-text">
+                            <div class="social-name">SHOT Race Gear</div>
+                            <div class="social-handle">@shotracegear_arg</div>
+                        </div>
+                    </div>
+                </a>
+                <a href="https://www.instagram.com/nils.argentina/" target="_blank" rel="noopener" class="social-card">
+                    <div class="social-photo" style="background-image: url('marcas/nils/hero-fantic.jpg');"></div>
+                    <div class="social-body">
+                        <div class="social-icon"><svg viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3Z"/></svg></div>
+                        <div class="social-text">
+                            <div class="social-name">Nils Argentina</div>
+                            <div class="social-handle">@nils.argentina</div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Segmentos</h4>
+                <ul>
+                    <li><a href="segmentos/moto.html">Moto</a></li>
+                    <li><a href="segmentos/atv.html">ATV / UTV / SSV</a></li>
+                    <li><a href="segmentos/bici.html">Bicicleta</a></li>
+                    <li><a href="segmentos/industrial.html">Industrial</a></li>
+                </ul>
+            </div>
+            <div class="footer-section footer-marcas">
+                <h4>Marcas</h4>
+                <ul>
+                    <li><a href="marcas/cst/cst.html">CST</a></li>
+                    <li><a href="marcas/leovince/leovince.html">Leo Vince</a></li>
+                    <li><a href="marcas/shot/shot.html">SHOT</a></li>
+                    <li><a href="marcas/uswe/uswe.html">USWE</a></li>
+                    <li><a href="marcas/giantloop/giantloop.html">Giant Loop</a></li>
+                    <li><a href="marcas/nils/nils.html">NILS</a></li>
+                    <li><a href="marcas/nitromousse/nitromousse.html">Nitro Mousse</a></li>
+                    <li><a href="marcas/lucioli/lucioli.html">Lucioli</a></li>
+                    <li><a href="marcas/wrp/wrp.html">WRP</a></li>
+                    <li><a href="marcas/sidi/sidi.html">SIDI</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="sobre-nosotros.html">Quiénes Somos</a></li>
+                    <li><a href="donde-comprar/moto.html">Dónde Comprar</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Redes</h4>
+                <ul>
+                    <li><a href="https://www.instagram.com/radsport_geist/" target="_blank">Instagram</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Radsport Geist. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- WHATSAPP FLOAT -->
+    <a href="https://wa.me/5491135713234" class="whatsapp-float" target="_blank" rel="noopener" title="Contactar por WhatsApp" aria-label="WhatsApp"><svg viewBox="0 0 32 32" width="28" height="28" fill="#fff" aria-hidden="true"><path d="M16.04 3C9.4 3 4 8.4 4 15.04c0 2.12.55 4.19 1.6 6.02L4 29l8.13-1.55a12 12 0 0 0 3.9.65h.01C22.68 28.1 28.08 22.7 28.08 16.06 28.08 8.4 22.68 3 16.04 3zm0 21.9h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.75.72.72-3.66-.24-.38a9.86 9.86 0 0 1-1.51-5.25c0-5.46 4.45-9.9 9.92-9.9 2.65 0 5.14 1.03 7.01 2.9a9.82 9.82 0 0 1 2.9 7 9.9 9.9 0 0 1-9.9 9.84zm5.44-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg></a>
+
+    <script>
+        // NAVIGATION SCROLL EFFECT
+        const navbar = document.getElementById('navbar');
+        const hamburger = document.getElementById('hamburger');
+        let lastScrollTop = 0;
+
+        window.addEventListener('scroll', () => {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        });
+
+        // HAMBURGER MENU
+        hamburger.addEventListener('click', () => {
+            const navLinks = document.querySelector('.nav-links');
+            if (!navLinks) return;
+            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // VIDEO: el video se reproduce automáticamente con autoplay muted loop
+
+        // FADE IN ON SCROLL
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.brand-card, .why-us-card, .store-card, .product-card').forEach(card => {
+            observer.observe(card);
+        });
+
+        // ANIMATED COUNTERS FOR KPIs
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                var nums = document.querySelectorAll('.stat-number');
+                for (var i = 0; i < nums.length; i++) {
+                    (function(el, delay) {
+                        var text = el.textContent.trim();
+                        var num = parseInt(text);
+                        var suffix = text.replace(/[0-9]/g, '');
+                        var current = 0;
+                        var steps = 60;
+                        var increment = num / steps;
+                        el.textContent = '0' + suffix;
+                        setTimeout(function() {
+                            var timer = setInterval(function() {
+                                current += increment;
+                                if (current >= num) {
+                                    current = num;
+                                    clearInterval(timer);
+                                }
+                                el.textContent = Math.round(current) + suffix;
+                            }, 30);
+                        }, delay);
+                    })(nums[i], i * 400);
+                }
+            }, 500);
+        });
+
+        // CONTACT FORM SELECTOR
+        const selectorBtns = document.querySelectorAll('.selector-btn');
+        selectorBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                selectorBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // FILTER BUTTONS
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // SMOOTH SCROLL FOR ANCHOR LINKS
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

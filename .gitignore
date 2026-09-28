@@ -1,0 +1,18 @@
+# --- Fuentes pesadas que NO van al deploy ---
+video-sources/
+
+# --- Config de herramientas / dev ---
+.claude/
+
+# --- HTML de preview / wireframes (no linkeados, no publicar) ---
+hero-preview-editorial.html
+pattern-preview.html
+radsport-hero-preview.html
+wireframe-marca.html
+descargar-imagenes-shot.html
+
+# --- Basura del sistema ---
+Thumbs.db
+desktop.ini
+.DS_Store
+*.tmp

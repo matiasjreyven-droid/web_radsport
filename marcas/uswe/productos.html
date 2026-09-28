@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Productos USWE — Radsport Geist</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --red: #D32F2F; --red-dark: #B71C1C; --gray: #333333; --gray-light: #f5f5f5;
+            --white: #ffffff; --black: #000000;
+            --brand-accent: #1a1a1a; --brand-accent-hover: #333333;
+            --brand-accent-light: #f5f5f5; --brand-subtle: #888888;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; color: var(--gray); background: var(--white);
+            background-image: radial-gradient(circle, rgba(0,0,0,0.09) 1px, transparent 1px);
+            background-size: 22px 22px; overflow-x: hidden; }
+
+        /* NAV */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .logo-text { display: flex; align-items: center; gap: 0; font-size: 1.3rem;
+            letter-spacing: 0.15em; color: var(--gray); text-decoration: none; }
+        .logo-bold { font-weight: 900; } .logo-dot { color: var(--red); margin: 0 0.35em; }
+        .logo-light { font-weight: 300; }
+        .nav-links { list-style: none; display: flex; gap: 2rem; }
+        .nav-links a { color: var(--gray); text-decoration: none; font-size: 0.75rem;
+            font-weight: 300; letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--red); }
+        .nav-links a.active { color: var(--red); font-weight: 600; }
+        .nav-links li { position: relative; }
+        .nav-dropdown { position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            background: #ffffff; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            padding: 0.2rem 0.3rem; display: grid; grid-template-columns: 1fr 1fr;
+            grid-auto-rows: 44px; gap: 0; min-width: 280px; opacity: 0; visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+            transform: translateX(-50%) translateY(8px); z-index: 1001; margin-top: 0.5rem; }
+        .nav-links li:hover .nav-dropdown, .nav-dropdown:hover { opacity: 1; visibility: visible;
+            transform: translateX(-50%) translateY(0); }
+        .nav-dropdown a { display: flex; align-items: center; justify-content: center;
+            padding: 0.4rem 0.8rem; min-height: 44px; border-radius: 8px;
+            transition: background 0.15s; opacity: 0.7; }
+        .nav-dropdown a:hover { opacity: 1; }
+        .nav-dropdown a img { max-height: 29px; max-width: 67px; width: auto; height: auto;
+            object-fit: contain; mix-blend-mode: multiply; }
+        .nav-dropdown-segments { grid-template-columns: 1fr; min-width: 180px; gap: 0.1rem; }
+        .nav-dropdown-segments a { font-size: 0.82rem !important; font-weight: 500 !important;
+            color: var(--gray) !important; padding: 0.5rem 0.8rem; border-radius: 8px; opacity: 1; }
+        .nav-dropdown-segments a:hover { background: var(--gray-light); color: var(--red) !important; }
+
+        /* PAGE HEADER */
+        .page-header { padding: 1.5rem 3rem 1rem; max-width: 1600px; margin: 0 auto; }
+        .page-header-breadcrumb { font-size: 0.72rem; color: var(--brand-subtle); margin-bottom: 1rem; }
+        .page-header-breadcrumb a { color: var(--brand-subtle); text-decoration: none; }
+        .page-header-breadcrumb a:hover { color: var(--brand-accent); }
+        .page-header-breadcrumb span { margin: 0 0.4rem; }
+        .page-header-hero { background: #0a0a0a; position: relative; display: flex;
+            align-items: center; justify-content: center; padding-top: 3.5rem; height: 220px; }
+        .page-header-hero img { height: 70px; position: relative; z-index: 1; filter: brightness(0) invert(1); }
+        .brand-bar { background: var(--white); border-bottom: 1px solid #e5e5e5;
+            padding: 5rem 1.5rem 1.2rem; display: flex; align-items: center; justify-content: center;
+            gap: 1.4rem; flex-wrap: nowrap; overflow-x: auto; min-height: 80px; scrollbar-width: none; }
+        .brand-bar::-webkit-scrollbar { display: none; }
+        .brand-bar a { flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+            height: 100%; opacity: 0.15; transition: opacity 0.25s, transform 0.25s; text-decoration: none; }
+        .brand-bar a:hover { opacity: 0.7; transform: scale(1.08); }
+        .brand-bar a.active { opacity: 1; }
+        .brand-bar a:not(.brand-all) { flex: 0 0 100px !important; }
+        .brand-bar a img { max-height: 50px !important; max-width: 100px !important;
+            width: auto !important; height: auto !important; object-fit: contain !important; }
+        .brand-bar a.brand-all { border: 2px solid var(--brand-accent); border-radius: 50px;
+            padding: 0.6rem 1.4rem; font-size: 0.8rem; font-weight: 700;
+            letter-spacing: 3px; text-transform: uppercase; color: var(--brand-accent);
+            opacity: 1; height: auto; }
+        .brand-bar a.brand-all:hover { background: var(--brand-accent); color: white; transform: scale(1.05); }
+
+        /* SEGMENT TABS */
+        .segment-tabs { background: #1a1a1a; display: flex; justify-content: center; gap: 0; }
+        .segment-tab { padding: 0.7rem 2rem; color: rgba(255,255,255,0.35); text-decoration: none;
+            font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+            transition: all 0.2s; border-bottom: 2px solid transparent; cursor: pointer;
+            background: none; border-top: none; border-left: none; border-right: none;
+            font-family: 'Inter', sans-serif; }
+        .segment-tab:hover { color: rgba(255,255,255,0.65); }
+        .segment-tab.active { color: white; border-bottom-color: var(--brand-accent); }
+
+        /* SEARCH */
+        .search-bar { padding: 0 3rem; max-width: 1600px; margin: 0 auto 1rem; }
+        .search-input { width: 100%; padding: 0.7rem 1.2rem 0.7rem 2.8rem;
+            border: 1px solid var(--brand-accent); border-radius: 50px; font-size: 0.85rem;
+            font-family: 'Inter', sans-serif; color: white;
+            background: var(--brand-accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") 1rem center no-repeat;
+            outline: none; }
+        .search-input:focus { border-color: white; }
+        .search-input::placeholder { color: rgba(255,255,255,0.5); }
+
+        /* FILTERS */
+        .filters { padding: 0 3rem; max-width: 1600px; margin: 0 auto 2rem;
+            display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .filter-btn { padding: 0.5rem 1.3rem; border-radius: 50px; font-size: 0.75rem;
+            font-weight: 500; letter-spacing: 0.5px; border: 1px solid #ddd; background: white;
+            color: var(--gray); cursor: pointer; transition: all 0.2s; font-family: inherit; }
+        .filter-btn:hover { border-color: var(--brand-accent); color: var(--brand-accent); }
+        .filter-btn.active { background: var(--brand-accent); color: white; border-color: var(--brand-accent); }
+
+        /* Variants */
+        .product-card-variants { margin-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.3rem; }
+        .variant-tag { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.5px;
+            padding: 0.2rem 0.5rem; border: 1px solid #ddd; border-radius: 3px;
+            color: var(--brand-subtle); background: #fafafa; font-weight: 500; }
+
+        /* Color thumbs (mini fotos de colores disponibles - SHOT pattern) */
+        .product-card-color-thumbs { display: flex; gap: 0.4rem; margin-top: 0.7rem;
+            flex-wrap: wrap; align-items: center; }
+        .product-card-color-thumbs img { width: 50px; height: 50px; object-fit: contain;
+            border-radius: 6px; border: 1px solid #e0e0e0; padding: 3px; background: white;
+            cursor: pointer; transition: border-color 0.15s, transform 0.15s; }
+        .product-card-color-thumbs img:hover { border-color: var(--brand-accent);
+            transform: translateY(-1px); }
+        .product-card-color-thumbs img.thumb-active { border-color: var(--brand-accent);
+            border-width: 2px; padding: 2px; }
+        .product-card-color-more { display: inline-flex; align-items: center;
+            justify-content: center; width: 50px; height: 50px; border-radius: 6px;
+            background: #f5f5f5; border: 1px solid #ddd; font-size: 0.8rem; font-weight: 700;
+            color: var(--brand-subtle); }
+
+        /* PRODUCTS GRID */
+        .products-grid { max-width: 1600px; margin: 0 auto; padding: 0 3rem 4rem;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+        .product-card { background: white; border-radius: 14px; overflow: hidden;
+            border: 1px solid #e8e8e8; transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer; text-decoration: none; color: var(--gray); display: block; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.07); }
+        .product-card-img { height: 240px; background: var(--white); display: flex;
+            align-items: center; justify-content: center; overflow: hidden; padding: 1.5rem; }
+        .product-card-img img { max-width: 100%; max-height: 100%; object-fit: contain;
+            transition: transform 0.4s; }
+        .product-card:hover .product-card-img img { transform: scale(1.05); }
+        .product-card-body { padding: 1rem 1.3rem 1.2rem; }
+        .product-card-category { font-size: 0.62rem; text-transform: uppercase;
+            letter-spacing: 1.5px; color: var(--brand-subtle); font-weight: 500;
+            margin-bottom: 0.3rem; }
+        .product-card-body h3 { font-size: 0.95rem; font-weight: 700; line-height: 1.3; }
+        .no-results { grid-column: 1 / -1; text-align: center; padding: 4rem 2rem;
+            color: var(--brand-subtle); font-size: 0.9rem; display: none; }
+        .page-header-count { font-size: 0.8rem; color: var(--brand-subtle); font-weight: 400; }
+
+        /* CTA */
+        .cta-bottom { max-width: 1600px; margin: 0 auto; padding: 0 3rem 4rem; }
+        .cta-bottom-box { background: var(--brand-accent-light); border-radius: 16px;
+            padding: 2.5rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+        .cta-bottom-text h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.3rem;
+            color: var(--brand-accent); }
+        .cta-bottom-text p { font-size: 0.82rem; color: var(--brand-subtle); }
+        .cta-bottom-btn { display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--brand-accent); color: white; padding: 0.8rem 2rem;
+            border-radius: 50px; font-size: 0.78rem; font-weight: 600; text-decoration: none;
+            letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;
+            transition: all 0.2s; }
+        .cta-bottom-btn:hover { background: var(--brand-accent-hover); transform: translateY(-2px); }
+
+        /* FOOTER */
+        footer { background: #1a1a1a; color: #888; padding: 3rem 2rem 1.5rem; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: grid;
+            grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 2rem; }
+        .footer-section h4 { color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; }
+        .footer-section ul { list-style: none; }
+        .footer-section li { margin-bottom: 0.5rem; }
+        .footer-section a { color: #888; text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+        .footer-section a:hover { color: var(--red); }
+        .footer-bottom { text-align: center; padding-top: 1.5rem; border-top: 1px solid #333;
+            font-size: 0.72rem; color: #555; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .product-card { opacity: 0; animation: fadeInUp 0.4s ease forwards; }
+
+        @media (max-width: 1024px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) {
+            .products-grid { grid-template-columns: repeat(2, 1fr); padding: 0 1.5rem 3rem; }
+            .filters { padding: 0 1.5rem; }
+            .footer-content { grid-template-columns: repeat(2, 1fr); }
+            .cta-bottom-box { flex-direction: column; text-align: center; }
+        }
+        @media (max-width: 480px) { .products-grid { grid-template-columns: 1fr; } }
+        /* separar barra de segmentos del buscador */
+        .segment-tabs { margin-bottom: 1.6rem; }
+        /* filtro de segmentos: mismo ancho que el buscador */
+        .segment-tabs { width: calc(100% - 6rem); max-width: calc(1600px - 6rem); margin: 1.2rem auto 1.6rem; border-radius: 50px; overflow: hidden; }
+        .footer-marcas ul { columns: 2; column-gap: 2rem; }
+            /* ===== CTA Distribuidores (global) ===== */
+        .brand-cta { padding: 4rem 2rem 5rem; }
+        .brand-cta-box { max-width: 1200px !important; margin: 0 auto; background: var(--brand-accent, #111) !important; color: #fff !important; padding: 2.8rem 3.5rem; border-radius: 24px; text-align: center; position: relative; overflow: hidden; }
+        .brand-cta-box .cta-eyebrow { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; opacity: 0.55 !important; color: #fff !important; font-weight: 400; margin-bottom: 1rem; }
+        .brand-cta-box h2 { color: #fff; }
+        .brand-cta-box h2 em { font-style: normal; }
+        .brand-cta-box .cta-buttons { display: flex; flex-direction: row; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 0; }
+        .brand-cta-box .btn-cta-donde, .brand-cta-box .btn-cta-comercio { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: .2rem; padding: 1.05rem 3rem; border-radius: 50px; text-decoration: none; transition: all 0.3s ease; border: 2px solid transparent; cursor: pointer; min-width: 250px; }
+        .brand-cta-box .cta-btn-title { font-weight: 700; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; }
+        .brand-cta-box .cta-btn-sub { font-size: 0.72rem; letter-spacing: 0.2px; opacity: 0.85; text-transform: none; font-weight: 400; }
+        .brand-cta-box .cta-note { margin: 1.4rem 0 0; color: rgba(255,255,255,0.9); font-size: 0.8rem; text-align: center; }
+        .brand-cta-box .btn-cta-donde { background: #fff; color: var(--brand-accent, #111); }
+        .brand-cta-box .btn-cta-donde:hover { transform: translateY(-2px); }
+        .brand-cta-box .btn-cta-comercio { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.9); }
+        .brand-cta-box .btn-cta-comercio:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
+        @media (max-width: 600px){ .brand-cta-box .cta-buttons { flex-direction: column; align-items: center; } .brand-cta-box { padding: 3rem 1.5rem !important; } }
+            /* WHATSAPP FLOAT */
+        .whatsapp-float { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 55px; height: 55px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 4px 15px rgba(37,211,102,0.3); z-index: 999; transition: transform 0.2s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="../../index.html" class="logo-text">
+            <span class="logo-bold">RADSPORT</span>
+            <span class="logo-dot">&bull;</span>
+            <span class="logo-light">GEIST</span>
+        </a>
+        <ul class="nav-links">
+            <li>
+                <a href="../../index.html#worlds">Segmentos</a>
+            </li>
+            <li>
+                <a href="../../index.html#brands">Marcas</a>
+            </li>
+            <li><a href="../../productos.html" class="active">Productos</a></li>
+            <li><a href="../../donde-comprar/moto.html">Dónde Comprar</a></li>
+            <li><a href="../../sobre-nosotros.html">Sobre Nosotros</a></li>
+            <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+        </ul>
+    </nav>
+
+
+    <div class="brand-bar">
+        <a href="../../productos.html" class="brand-all" data-brand="todos" title="Catálogo Completo">Todos</a>
+        <a href="../cst/productos.html" data-brand="cst" title="CST"><img src="../../img/logos/cst.png" alt="CST"></a>
+        <a href="../leovince/productos.html" data-brand="leovince" title="Leo Vince"><img src="../../img/logos/leovince.png" alt="Leo Vince"></a>
+        <a href="../shot/productos.html" data-brand="shot" title="SHOT"><img src="../../img/logos/shot.png" alt="SHOT"></a>
+        <a href="#" class="active" data-brand="uswe" title="USWE"><img src="../../img/logos/uswe.png" alt="USWE"></a>
+        <a href="../giantloop/productos.html" data-brand="giantloop" title="Giant Loop"><img src="../../img/logos/giantloop.png" alt="Giant Loop"></a>
+        <a href="../nils/productos.html" data-brand="nils" title="NILS"><img src="../../img/logos/nils.png" alt="NILS"></a>
+        <a href="../nitromousse/productos.html" data-brand="nitromousse" title="NitroMousse"><img src="../../img/logos/nitromousse.png" alt="NitroMousse"></a>
+        <a href="../lucioli/productos.html" data-brand="lucioli" title="Lucioli"><img src="../../img/logos/lucioli.png" alt="Lucioli"></a>
+        <a href="../wrp/productos.html" data-brand="wrp" title="WRP"><img src="../../img/logos/wrp.png" alt="WRP"></a>
+        <a href="../sidi/productos.html" data-brand="sidi" title="SIDI"><img src="../../img/logos/sidi.png" alt="SIDI"></a>
+    </div>
+    <header class="page-header">
+        <div class="page-header-breadcrumb">
+            <a href="../../index.html">Inicio</a>
+            <span>&rsaquo;</span>
+            <a href="uswe.html">USWE</a>
+            <span>&rsaquo;</span>
+            <span id="breadcrumbSegment">Productos</span>
+        </div>
+        <p class="page-header-count" id="productCount"></p>
+    </header>
+
+    <div class="segment-tabs" id="segmentTabs">
+        <button class="segment-tab active" data-segment="todos">Todos</button>
+        <button class="segment-tab" data-segment="moto">Moto</button>
+        <button class="segment-tab" data-segment="bici">Bicicleta</button>
+    </div>
+
+
+    <div class="search-bar">
+        <input type="text" class="search-input" id="searchInput" placeholder="Buscar productos USWE...">
+    </div>
+
+    <div class="filters" id="filters">
+        <button class="filter-btn active" data-filter="todos">Todos</button>
+        <button class="filter-btn" data-filter="mochila-hidratacion">Mochila de Hidratación</button>
+        <button class="filter-btn" data-filter="mochila-running">Running</button>
+    </div>
+
+    <div class="products-grid" id="productsGrid">
+
+        <a href="producto.html?id=outlander-2" class="product-card" data-category="mochila-hidratacion" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-outlander-2-carbon-black.jpg" alt="USWE Outlander 2 Carbon Black" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>Outlander 2</h3>
+                <div class="product-card-variants"><span class="variant-tag">1.5 L</span></div>
+                <div class="product-card-color-thumbs"><img src="productos/uswe-outlander-2-crazy-yellow.jpg" alt="Outlander 2 Crazy Yellow" title="Crazy Yellow"><img src="productos/uswe-outlander-2-factory-orange.png" alt="Outlander 2 Factory Orange" title="Factory Orange"></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=outlander-moto-2" class="product-card" data-category="mochila-hidratacion" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-outlander-moto-2-crazy-yellow.png" alt="USWE Outlander Moto 2 Crazy Yellow" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>Outlander Moto 2</h3>
+                <div class="product-card-variants"><span class="variant-tag">1.5 L</span></div>
+                <div class="product-card-color-thumbs"><img src="productos/uswe-outlander-moto-2-sand.png" alt="Outlander Moto 2 Sand" title="Sand"></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=outlander-xc-2" class="product-card" data-category="mochila-hidratacion" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-outlander-xc-2-factory-orange.png" alt="USWE Outlander XC 2 Factory Orange" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>Outlander XC 2</h3>
+                <div class="product-card-variants"><span class="variant-tag">1.5 L</span></div>
+                <div class="product-card-color-thumbs"><img src="productos/uswe-outlander-xc-2-blue.png" alt="Outlander XC 2 Blue" title="Blue"><img src="productos/uswe-outlander-xc-2-black.png" alt="Outlander XC 2 Black" title="Black"></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=outlander-3" class="product-card" data-category="mochila-hidratacion" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-outlander-3-carbon-black.png" alt="USWE Outlander 3 Carbon Black" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>Outlander 3</h3>
+                <div class="product-card-variants"><span class="variant-tag">1.5 L</span></div>
+                <div class="product-card-color-thumbs"><img src="productos/uswe-outlander-2-crazy-yellow.jpg" alt="Outlander 3 Crazy Yellow" title="Crazy Yellow"><img src="productos/uswe-outlander-3-factory-orange.png" alt="Outlander 3 Factory Orange" title="Factory Orange"></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=outlander-4" class="product-card" data-category="mochila-hidratacion" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-outlander-4-crazy-yellow.jpg" alt="USWE Outlander 4 Crazy Yellow" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>Outlander 4</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=outlander-moto-4" class="product-card" data-category="mochila-hidratacion" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-outlander-moto-4-black.png" alt="USWE Outlander Moto 4 Black" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>Outlander Moto 4</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span></div>
+                <div class="product-card-color-thumbs"><img src="productos/uswe-outlander-moto-4-sand.png" alt="Outlander Moto 4 Sand" title="Sand"></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=outlander-xc-4" class="product-card" data-category="mochila-hidratacion" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-outlander-xc-4-black.png" alt="USWE Outlander XC 4 Black" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>Outlander XC 4</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=outlander-moto-9" class="product-card" data-category="mochila-hidratacion" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-outlander-moto-9-black.png" alt="USWE Outlander Moto 9 Black" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>Outlander Moto 9</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span></div>
+                <div class="product-card-color-thumbs"><img src="productos/uswe-outlander-moto-9-sand.png" alt="Outlander Moto 9 Sand" title="Sand"></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=outlander-xc-10" class="product-card" data-category="mochila-hidratacion" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-outlander-xc-4-black.png" alt="USWE Outlander XC 10 Black" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>Outlander XC 10</h3>
+                <div class="product-card-variants"><span class="variant-tag">1.5 L</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=race-2-0" class="product-card" data-category="mochila-hidratacion" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-race-2-0-white.png" alt="USWE Race 2.0 White" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>Race 2.0</h3>
+                <div class="product-card-variants"><span class="variant-tag">2.0 L</span></div>
+                <div class="product-card-color-thumbs"><img src="productos/uswe-race-2-0-bronze.png" alt="Race 2.0 Bronze" title="Bronze"></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=mtb-hydro-3" class="product-card" data-category="mochila-hidratacion" data-segment="bici">
+            <div class="product-card-img"><img src="productos/uswe-mtb-hydro-3-bronze.png" alt="USWE MTB Hydro 3 Bronze" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>MTB Hydro 3</h3>
+                <div class="product-card-variants"><span class="variant-tag">1.5 L</span></div>
+                <div class="product-card-color-thumbs"><img src="productos/uswe-mtb-hydro-3-black-red.png" alt="MTB Hydro 3 Black/Red" title="Black/Red"></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=mtb-hydro-9" class="product-card" data-category="mochila-hidratacion" data-segment="bici">
+            <div class="product-card-img"><img src="productos/uswe-mtb-hydro-9-black.png" alt="USWE MTB Hydro 9 Black" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>MTB Hydro 9</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span></div>
+                <div class="product-card-color-thumbs"><img src="productos/uswe-mtb-hydro-9-bronze.png" alt="MTB Hydro 9 Bronze" title="Bronze"></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=mtb-hydro-12" class="product-card" data-category="mochila-hidratacion" data-segment="bici">
+            <div class="product-card-img"><img src="productos/uswe-mtb-hydro-12-black.png" alt="USWE MTB Hydro 12 Black" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>MTB Hydro 12</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span></div>
+                <div class="product-card-color-thumbs"><img src="productos/uswe-mtb-hydro-12-bronze.png" alt="MTB Hydro 12 Bronze" title="Bronze"></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=moto-hydro-3" class="product-card" data-category="mochila-hidratacion" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-moto-hydro-3-carbon-black.png" alt="USWE Moto Hydro 3 Carbon Black" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>Moto Hydro 3</h3>
+                <div class="product-card-variants"><span class="variant-tag">2.0 L</span></div>
+                <div class="product-card-color-thumbs"><img src="productos/uswe-moto-hydro-3-factory-orange.png" alt="Moto Hydro 3 Factory Orange" title="Factory Orange"></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=moto-hydro-4" class="product-card" data-category="mochila-hidratacion" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-moto-hydro-4-factory-orange.png" alt="USWE Moto Hydro 4 Factory Orange" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>Moto Hydro 4</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=moto-hydro-8" class="product-card" data-category="mochila-hidratacion" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-moto-hydro-8-carbon-black.png" alt="USWE Moto Hydro 8 Carbon Black" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>Moto Hydro 8</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span></div>
+                <div class="product-card-color-thumbs"><img src="productos/uswe-moto-hydro-8-factory-orange.png" alt="Moto Hydro 8 Factory Orange" title="Factory Orange"></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=moto-hydro-12" class="product-card" data-category="mochila-hidratacion" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-moto-hydro-12-carbon-black.png" alt="USWE Moto Hydro 12 Carbon Black" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>Moto Hydro 12</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span></div>
+                <div class="product-card-color-thumbs"><img src="productos/uswe-moto-hydro-12-factory-orange.png" alt="Moto Hydro 12 Factory Orange" title="Factory Orange"></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=zulo" class="product-card" data-category="mochila-running" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-zulo-crazy-yellow.png" alt="USWE Zulo Crazy Yellow" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Running</div>
+                <h3>Zulo</h3>
+                <div class="product-card-variants"><span class="variant-tag">1.0 L</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=pace-2" class="product-card" data-category="mochila-running" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-pace-2-uswe-red-black.png" alt="USWE Pace 2 USWE Red Black" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Running</div>
+                <h3>Pace 2</h3>
+                <div class="product-card-variants"><span class="variant-tag">2 x 0.5</span></div>
+                
+            </div>
+        </a>
+
+        <a href="producto.html?id=pace-8" class="product-card" data-category="mochila-running" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-pace-8-uswe-red-black.png" alt="USWE Pace 8 - L USWE Red Black" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Running</div>
+                <h3>Pace 8</h3>
+                <div class="product-card-variants"><span class="variant-tag">2 x 0.5</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=core-16" class="product-card" data-category="mochila-hidratacion" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-core-16-black---uswe-red.png" alt="USWE Core 16 Black" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>Core 16</h3>
+                <div class="product-card-variants"><span class="variant-tag">16 L</span></div>
+            </div>
+        </a>
+
+        <a href="producto.html?id=buddy-40" class="product-card" data-category="mochila-hidratacion" data-segment="moto">
+            <div class="product-card-img"><img src="productos/uswe-buddy-40-black---uswe-red.png" alt="USWE Buddy 40 Black / USWE Red" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila de Hidratación</div>
+                <h3>Buddy 40</h3>
+                <div class="product-card-variants"><span class="variant-tag">40 L</span></div>
+            </div>
+        </a>
+        <div class="no-results" id="noResults">No hay productos que coincidan con la búsqueda.</div>
+    </div>
+
+    <section class="brand-cta">
+        <div class="brand-cta-box">
+            <div class="cta-buttons">
+                <a href="../../donde-comprar/moto.html" class="btn-cta-donde">
+                    <span class="cta-btn-title">Dónde comprar</span>
+                    <span class="cta-btn-sub">mapa de comercios</span>
+                </a>
+                <a href="https://wa.me/5491135713234?text=Hola%2C%20quiero%20vender%20USWE" class="btn-cta-comercio" target="_blank">
+                    <span class="cta-btn-title">Soy comercio</span>
+                    <span class="cta-btn-sub">quiero vender USWE</span>
+                </a>
+            </div>
+            <p class="cta-note">Contamos con una red exclusiva de comercios por zona. Si querés ser parte, escribinos.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Segmentos</h4>
+                <ul>
+                    <li><a href="../../segmentos/moto.html">Moto</a></li>
+                    <li><a href="../../segmentos/atv.html">ATV / UTV / SSV</a></li>
+                    <li><a href="../../segmentos/bici.html">Bicicleta</a></li>
+                    <li><a href="../../segmentos/industrial.html">Industrial</a></li>
+                </ul>
+            </div>
+            <div class="footer-section footer-marcas">
+                <h4>Marcas</h4>
+                <ul>
+                    <li><a href="../../marcas/cst/cst.html">CST</a></li>
+                    <li><a href="../../marcas/leovince/leovince.html">Leo Vince</a></li>
+                    <li><a href="../../marcas/shot/shot.html">SHOT</a></li>
+                    <li><a href="../../marcas/uswe/uswe.html">USWE</a></li>
+                    <li><a href="../../marcas/giantloop/giantloop.html">Giant Loop</a></li>
+                    <li><a href="../../marcas/nils/nils.html">NILS</a></li>
+                    <li><a href="../../marcas/nitromousse/nitromousse.html">Nitro Mousse</a></li>
+                    <li><a href="../../marcas/lucioli/lucioli.html">Lucioli</a></li>
+                    <li><a href="../../marcas/wrp/wrp.html">WRP</a></li>
+                    <li><a href="../../marcas/sidi/sidi.html">SIDI</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="../../sobre-nosotros.html">Quiénes Somos</a></li>
+                    <li><a href="../../donde-comprar/moto.html">Dónde Comprar</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Redes</h4>
+                <ul>
+                    <li><a href="https://www.instagram.com/radsport_geist/" target="_blank">Instagram</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Radsport Geist. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+<script>
+// =======================================================
+// COLOR THUMBS swappable (SHOT pattern adaptado)
+// =======================================================
+document.querySelectorAll('.product-card').forEach(card => {
+    const wrap = card.querySelector('.product-card-img');
+    if (!wrap) return;
+    const mainImg = wrap.querySelector('img');
+    if (!mainImg) return;
+    const thumbsWrap = card.querySelector('.product-card-color-thumbs');
+    if (!thumbsWrap) return;
+
+    const defaultSrc = mainImg.getAttribute('src');
+    const defaultAlt = mainImg.getAttribute('alt');
+
+    // Insertar el color principal como primer thumb activo
+    const mainThumb = document.createElement('img');
+    mainThumb.src = defaultSrc;
+    mainThumb.alt = defaultAlt;
+    mainThumb.classList.add('thumb-active');
+    thumbsWrap.insertBefore(mainThumb, thumbsWrap.firstChild);
+
+    const thumbs = Array.from(thumbsWrap.querySelectorAll('img'));
+    if (thumbs.length <= 1) {
+        // No hay más colores que mostrar — ocultar el container
+        thumbsWrap.style.display = 'none';
+        return;
+    }
+
+    // Preload todas las variantes
+    thumbs.forEach(t => {
+        const tmp = new Image();
+        tmp.src = t.src;
+    });
+
+    let activeThumb = thumbs[0];
+
+    function swap(thumb) {
+        if (mainImg.src !== thumb.src) mainImg.src = thumb.src;
+        mainImg.alt = thumb.alt || defaultAlt;
+    }
+    function highlight(thumb) {
+        thumbs.forEach(x => x.classList.toggle('thumb-active', x === thumb));
+    }
+
+    thumbs.forEach(t => {
+        t.addEventListener('mouseenter', () => { highlight(t); swap(t); });
+        t.addEventListener('click', (e) => {
+            e.preventDefault(); e.stopPropagation();
+            activeThumb = t; highlight(t); swap(t);
+        });
+    });
+    thumbsWrap.addEventListener('mouseleave', () => {
+        highlight(activeThumb); swap(activeThumb);
+    });
+});
+
+// =======================================================
+// Filtros, búsqueda, segment tabs
+// =======================================================
+const state = { segment: 'todos', filter: 'todos', search: '' };
+const productCards = Array.from(document.querySelectorAll('.product-card'));
+const productCount = document.getElementById('productCount');
+const noResults = document.getElementById('noResults');
+const breadcrumbSegment = document.getElementById('breadcrumbSegment');
+
+function applyFilters() {
+    let visible = 0;
+    productCards.forEach(card => {
+        const cat = card.dataset.category || '';
+        const seg = card.dataset.segment || '';
+        const txt = (card.textContent || '').toLowerCase();
+        const matchSeg = state.segment === 'todos' || seg === state.segment;
+        const matchCat = state.filter === 'todos' || cat === state.filter;
+        const matchSrch = !state.search || txt.includes(state.search);
+        const show = matchSeg && matchCat && matchSrch;
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+    });
+    productCount.textContent = `${visible} producto${visible !== 1 ? 's' : ''}`;
+    noResults.style.display = visible === 0 ? '' : 'none';
+}
+
+document.querySelectorAll('.segment-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.segment-tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.segment = btn.dataset.segment;
+        breadcrumbSegment.textContent = btn.textContent;
+        applyFilters();
+    });
+});
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.filter = btn.dataset.filter;
+        applyFilters();
+    });
+});
+document.getElementById('searchInput').addEventListener('input', (e) => {
+    state.search = e.target.value.trim().toLowerCase();
+    applyFilters();
+});
+
+applyFilters();
+</script>
+
+    <a href="https://wa.me/5491135713234" class="whatsapp-float" target="_blank" rel="noopener" title="Contactar por WhatsApp" aria-label="WhatsApp"><svg viewBox="0 0 32 32" width="28" height="28" fill="#fff" aria-hidden="true"><path d="M16.04 3C9.4 3 4 8.4 4 15.04c0 2.12.55 4.19 1.6 6.02L4 29l8.13-1.55a12 12 0 0 0 3.9.65h.01C22.68 28.1 28.08 22.7 28.08 16.06 28.08 8.4 22.68 3 16.04 3zm0 21.9h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.75.72.72-3.66-.24-.38a9.86 9.86 0 0 1-1.51-5.25c0-5.46 4.45-9.9 9.92-9.9 2.65 0 5.14 1.03 7.01 2.9a9.82 9.82 0 0 1 2.9 7 9.9 9.9 0 0 1-9.9 9.84zm5.44-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg></a>
+</body>
+</html>

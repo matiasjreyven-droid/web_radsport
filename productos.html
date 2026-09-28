@@ -1,0 +1,2684 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Completo — Radsport Geist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================
+           ESTILOS BASE (compartidos con index)
+           ============================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --red: #D32F2F;
+            --red-dark: #B71C1C;
+            --red-light: #FFEBEE;
+            --gray: #333333;
+            --gray-light: #f5f5f5;
+            --white: #ffffff;
+            --black: #000000;
+
+            /* Catálogo global — usa rojo Radsport como acento */
+            --brand-accent: #1a1a1a;
+            --brand-accent-hover: #333333;
+            --brand-accent-light: #f0f0f0;
+            --brand-subtle: #888888;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--gray);
+            background: var(--white);
+            background-image: radial-gradient(circle, rgba(0,0,0,0.09) 1px, transparent 1px);
+            background-size: 22px 22px;
+            overflow-x: hidden;
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .logo-text {
+            display: flex; align-items: center; gap: 0;
+            font-size: 1.3rem; letter-spacing: 0.15em;
+            color: var(--gray); text-decoration: none;
+        }
+        .logo-bold { font-weight: 900; }
+        .logo-dot { color: var(--red); margin: 0 0.35em; }
+        .logo-light { font-weight: 300; }
+        .nav-links {
+            list-style: none; display: flex; gap: 2rem;
+        }
+        .nav-links a {
+            color: var(--gray); text-decoration: none;
+            font-size: 0.75rem; font-weight: 300;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--red); }
+        .nav-links a.active { color: var(--red); font-weight: 600; }
+
+        /* Dropdown Marcas */
+        .nav-links li { position: relative; }
+        .nav-dropdown {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            padding: 0.2rem 0.3rem;
+            display: grid; grid-template-columns: 1fr 1fr;
+            grid-auto-rows: 44px;
+            gap: 0;
+            min-width: 280px;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+            transform: translateX(-50%) translateY(8px);
+            z-index: 1001;
+            margin-top: 0.5rem;
+        }
+        .nav-links li:hover .nav-dropdown,
+        .nav-dropdown:hover {
+            opacity: 1; visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        .nav-dropdown a {
+            display: flex; align-items: center; justify-content: center;
+            padding: 0.4rem 0.8rem;
+            min-height: 44px;
+            border-radius: 8px;
+            transition: background 0.15s, transform 0.15s;
+            opacity: 0.7;
+        }
+        .nav-dropdown a:hover { opacity: 1; }
+        .nav-dropdown a img {
+            max-height: 29px; max-width: 67px;
+            width: auto; height: auto;
+            object-fit: contain;
+            mix-blend-mode: multiply;
+        }
+        .nav-dropdown-segments {
+            grid-template-columns: 1fr;
+            min-width: 180px;
+            gap: 0.1rem;
+        }
+        .nav-dropdown-segments a {
+            font-size: 0.82rem !important;
+            font-weight: 500 !important;
+            color: var(--gray) !important;
+            padding: 0.5rem 0.8rem;
+            border-radius: 8px;
+            transition: background 0.15s, color 0.15s;
+            opacity: 1;
+        }
+        .nav-dropdown-segments a:hover {
+            background: var(--gray-light);
+            color: var(--red) !important;
+        }
+
+        /* ============================================
+           PAGE HEADER HERO
+           ============================================ */
+        .page-header-hero {
+            background: url('img/hero-moto.jpg') center/cover no-repeat;
+            position: relative;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding-top: 4.5rem;
+            height: 240px;
+        }
+        .page-header-hero::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: rgba(0,0,0,0.65);
+        }
+        .page-header-hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+        }
+        .page-header-hero-kicker {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: var(--red);
+            margin-bottom: 0.6rem;
+        }
+        .page-header-hero h1 {
+            font-size: clamp(2rem, 4.5vw, 3.4rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+        .page-header-hero h1 em {
+            color: var(--red);
+            font-style: normal;
+        }
+
+        /* ============================================
+           BRAND BAR
+           ============================================ */
+        .brand-bar {
+            background: var(--white);
+            border-bottom: 1px solid #e5e5e5;
+            padding: 5rem 1.5rem 1.2rem;
+            display: flex; align-items: center; justify-content: center;
+            gap: 1.4rem;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            min-height: 80px;
+            scrollbar-width: none;
+        }
+        .brand-bar::-webkit-scrollbar { display: none; }
+        .brand-bar a { flex-shrink: 0; }
+        .brand-bar a {
+            display: flex; align-items: center; justify-content: center;
+            height: 100%;
+            opacity: 0.15;
+            transition: opacity 0.25s, transform 0.25s;
+            text-decoration: none;
+        }
+        .brand-bar a:hover {
+            opacity: 0.7;
+            transform: scale(1.08);
+        }
+        .brand-bar a.active {
+            opacity: 1;
+        }
+        .brand-bar a img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+            max-height: 50px !important;
+            max-width: 100px;
+        }
+        .brand-bar a:not(.brand-all) { flex: 0 0 100px !important; width: 100px !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+        .brand-bar a:not(.brand-all) img { max-height: 50px !important; max-width: 100% !important; width: auto !important; height: auto !important; object-fit: contain !important; }
+
+
+        /* "TODOS" badge en la brand-bar */
+        .brand-bar a.brand-all {
+            border: 2px solid var(--brand-accent);
+            border-radius: 50px;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--brand-accent);
+            height: auto;
+        }
+        .brand-bar a.brand-all.active {
+            background: var(--brand-accent);
+            color: white;
+            opacity: 1;
+        }
+        .brand-bar a.brand-all:hover {
+            background: var(--brand-accent);
+            color: white;
+            opacity: 1;
+        }
+
+        /* ============================================
+           SEGMENT TABS
+           ============================================ */
+        .segment-tabs {
+            background: #1a1a1a;
+            display: flex; justify-content: center;
+            gap: 0;
+            flex-wrap: wrap;
+        }
+        .segment-tab {
+            padding: 0.7rem 2rem;
+            color: rgba(255,255,255,0.35);
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+            cursor: pointer;
+            background: none; border-top: none; border-left: none; border-right: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .segment-tab:hover { color: rgba(255,255,255,0.65); }
+        .segment-tab.active {
+            color: white;
+            border-bottom-color: var(--red);
+        }
+
+        /* ============================================
+           PAGE HEADER (breadcrumb + count)
+           ============================================ */
+        .page-header {
+            padding: 1.5rem 3rem 1rem;
+            max-width: 1600px; margin: 0 auto;
+        }
+        .page-header-breadcrumb {
+            font-size: 0.72rem; color: var(--brand-subtle);
+            margin-bottom: 1rem;
+        }
+        .page-header-breadcrumb a {
+            color: var(--brand-subtle); text-decoration: none;
+            transition: color 0.2s;
+        }
+        .page-header-breadcrumb a:hover { color: var(--brand-accent); }
+        .page-header-breadcrumb span { margin: 0 0.4rem; }
+        .page-header-count {
+            font-size: 0.8rem; color: var(--brand-subtle); font-weight: 400;
+        }
+
+        /* ============================================
+           BUSCADOR
+           ============================================ */
+        .search-bar {
+            padding: 0 3rem;
+            max-width: 1600px; margin: 0 auto 2rem;
+        }
+        .search-input {
+            width: 100%;
+            padding: 0.7rem 1.2rem 0.7rem 2.8rem;
+            border: 1px solid var(--brand-accent);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+            color: white;
+            background: var(--brand-accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") 1rem center no-repeat;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-input:focus { border-color: var(--red); }
+        .search-input::placeholder { color: rgba(255,255,255,0.5); }
+
+        /* ============================================
+           GRILLA DE PRODUCTOS
+           ============================================ */
+        .products-grid {
+            max-width: 1600px; margin: 0 auto;
+            padding: 0 3rem 4rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+        .product-card {
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid #e8e8e8;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--gray);
+            display: block;
+            position: relative;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.07);
+        }
+        .product-card-img {
+            height: 240px;
+            background: var(--white);
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            padding: 1.5rem;
+        }
+        .product-card-img img {
+            max-width: 100%; max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.4s;
+        }
+        .product-card:hover .product-card-img img {
+            transform: scale(1.05);
+        }
+        .product-card-brand {
+            position: absolute;
+            top: 0.8rem;
+            left: 0.8rem;
+            background: white;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.6rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--gray);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            z-index: 2;
+        }
+        .product-card-body {
+            padding: 1rem 1.3rem 1.2rem;
+        }
+        .product-card-category {
+            font-size: 0.62rem; text-transform: uppercase;
+            letter-spacing: 1.5px; color: var(--brand-subtle);
+            font-weight: 500; margin-bottom: 0.3rem;
+        }
+        .product-card-body h3 {
+            font-size: 0.88rem; font-weight: 700;
+            line-height: 1.3;
+        }
+
+        /* Fitments (motos compatibles) */
+
+        /* SHOT conjuntos: imagen composite horizontal (jersey + pant lado
+           a lado), mismo height (240px) que el resto. */
+        .product-card[data-category="conjuntos"] .product-card-img {
+            height: 240px;
+            padding: 0.8rem 1rem;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .product-card[data-category="conjuntos"] .product-card-img img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+        .product-card[data-category="conjuntos"] .product-card-color-thumbs {
+            gap: 0.4rem;
+        }
+        .product-card[data-category="conjuntos"] .product-card-color-thumbs img {
+            width: 64px; height: 56px; object-fit: contain;
+            border-radius: 6px; border: 1px solid #e0e0e0; padding: 3px; background: white;
+            cursor: pointer; transition: border-color 0.15s, transform 0.15s;
+        }
+        .product-card[data-category="conjuntos"] .product-card-color-thumbs img:hover {
+            border-color: var(--brand-accent); transform: translateY(-1px);
+        }
+        .product-card[data-category="conjuntos"] .product-card-color-thumbs img.thumb-active {
+            border-color: var(--brand-accent); border-width: 2px; padding: 2px;
+        }
+        /* Hover/active states de thumbs (no-conjuntos) */
+        .product-card-color-thumbs img { cursor: pointer; transition: border-color 0.15s, transform 0.15s; }
+        .product-card-color-thumbs img:hover { border-color: var(--brand-accent); transform: translateY(-1px); }
+        .product-card-color-thumbs img.thumb-active { border-color: var(--brand-accent); border-width: 2px; padding: 2px; }
+
+
+        /* Variants and content tags */
+        .product-card-variants { margin-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.3rem; }
+        .variant-tag { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 0.2rem 0.5rem; border: 1px solid #ddd; border-radius: 3px; color: var(--brand-subtle); background: #fafafa; font-weight: 500; }
+        .product-card-content { margin-top: 0.5rem; font-size: 0.7rem; color: var(--brand-subtle); }
+        /* Color thumbs (mini fotos colores disponibles) */
+        .product-card-color-thumbs { display: flex; gap: 0.4rem; margin-top: 0.7rem; flex-wrap: wrap; align-items: center; }
+        .product-card-color-thumbs img { width: 56px; height: 56px; object-fit: contain; border-radius: 6px; border: 1px solid #e0e0e0; padding: 3px; background: white; }
+        .product-card-color-more { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 6px; background: #f5f5f5; border: 1px solid #ddd; font-size: 0.85rem; font-weight: 700; color: var(--brand-subtle); }
+        /* Conjunto: jersey arriba + pantalón abajo, compacto */
+        .product-card-img-dual { display: flex; flex-direction: column; gap: 0; padding: 0.5rem; align-items: center; justify-content: center; height: 240px; }
+        .product-card-img-dual img { max-height: 130px; max-width: 75%; object-fit: contain; margin: 0; }
+        .product-card-img-dual img:first-child { margin-bottom: -15px; }
+        /* Pagination */
+        .pagination { display: flex; justify-content: center; align-items: center; gap: 0.5rem; padding: 2rem; max-width: 1600px; margin: 0 auto; }
+        .pagination button { padding: 0.5rem 1rem; border: 1px solid #ddd; background: white; cursor: pointer; border-radius: 6px; font-size: 0.85rem; font-family: inherit; }
+        .pagination button:hover:not(:disabled) { border-color: var(--brand-accent); color: var(--brand-accent); }
+        .pagination button.active { background: var(--brand-accent); color: white; border-color: var(--brand-accent); }
+        .pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
+        .pagination-info { font-size: 0.8rem; color: var(--brand-subtle); margin: 0 1rem; }
+
+
+
+        .product-card-fitments {
+            margin-top: 0.6rem;
+            padding-top: 0.6rem;
+            border-top: 1px solid #eee;
+            font-size: 0.7rem;
+            line-height: 1.5;
+            color: #777;
+        }
+        .fitment-models { display: block; }
+
+        /* No results */
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--brand-subtle);
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        /* ============================================
+           CTA DONDE COMPRAR
+           ============================================ */
+        .cta-bottom {
+            max-width: 1600px; margin: 0 auto;
+            padding: 0 3rem 4rem;
+        }
+        .cta-bottom-box {
+            background: var(--brand-accent-light);
+            border-radius: 16px;
+            padding: 2.5rem;
+            display: flex; align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+        }
+        .cta-bottom-text h3 {
+            font-size: 1.1rem; font-weight: 800;
+            margin-bottom: 0.3rem; color: var(--brand-accent);
+        }
+        .cta-bottom-text p {
+            font-size: 0.82rem; color: var(--brand-subtle);
+        }
+        .cta-bottom-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--red); color: white;
+            padding: 0.8rem 2rem; border-radius: 50px;
+            font-size: 0.78rem; font-weight: 600;
+            text-decoration: none; letter-spacing: 1px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        .cta-bottom-btn:hover { background: var(--red-dark); transform: translateY(-2px); }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer {
+            background: #000;
+            color: var(--white);
+            padding: 4.5rem 2rem 2rem;
+        }
+        .footer-content {
+            max-width: 100%; margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.2fr 2fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2.5rem;
+        }
+        .footer-section h4 {
+            font-size: 0.85rem;
+            margin-bottom: 1.2rem;
+            color: var(--red);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+        }
+        .footer-section ul { list-style: none; }
+        .footer-section ul li { margin-bottom: 0.6rem; }
+        .footer-section a {
+            color: #bbb; text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+        }
+        .footer-section a:hover { color: var(--red); }
+        .footer-section.footer-marcas ul {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.4rem 1.5rem;
+        }
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 2rem;
+            text-align: center;
+            color: #777;
+            font-size: 0.85rem;
+        }
+
+        /* ============================================
+           ANIMACIONES
+           ============================================ */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .product-card {
+            opacity: 0;
+            animation: fadeInUp 0.4s ease forwards;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1024px) {
+            .products-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .products-grid { grid-template-columns: repeat(2, 1fr); padding: 0 1.5rem 3rem; }
+            .page-header { padding: 1.5rem; }
+            .search-bar { padding: 0 1.5rem; }
+            .footer-content { grid-template-columns: 1fr 1fr; gap: 2rem; }
+            .cta-bottom-box { flex-direction: column; text-align: center; }
+            .cta-bottom { padding: 0 1.5rem 3rem; }
+            .brand-bar { gap: 1.5rem; height: auto; padding: 1.5rem 1rem; }
+        }
+        @media (max-width: 480px) {
+            .products-grid { grid-template-columns: 1fr; }
+        }
+        /* separar barra de segmentos del buscador */
+        .segment-tabs { margin-bottom: 1.6rem; }
+        /* filtro de segmentos: mismo ancho que el buscador */
+        .segment-tabs { width: calc(100% - 6rem); max-width: calc(1600px - 6rem); margin: 1.2rem auto 1.6rem; border-radius: 50px; overflow: hidden; }
+            /* ===== CTA Distribuidores (global) ===== */
+        .brand-cta { padding: 4rem 2rem 5rem; }
+        .brand-cta-box { max-width: 1200px !important; margin: 0 auto; background: var(--brand-accent, #111) !important; color: #fff !important; padding: 2.8rem 3.5rem; border-radius: 24px; text-align: center; position: relative; overflow: hidden; }
+        .brand-cta-box .cta-eyebrow { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; opacity: 0.55 !important; color: #fff !important; font-weight: 400; margin-bottom: 1rem; }
+        .brand-cta-box h2 { color: #fff; }
+        .brand-cta-box h2 em { font-style: normal; }
+        .brand-cta-box .cta-buttons { display: flex; flex-direction: row; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 0; }
+        .brand-cta-box .btn-cta-donde, .brand-cta-box .btn-cta-comercio { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; padding: 0.9rem 2.5rem; border-radius: 50px; font-weight: 600; font-size: 0.8rem; text-decoration: none; letter-spacing: 1.5px; text-transform: uppercase; transition: all 0.3s ease; border: 2px solid transparent; cursor: pointer; }
+        .brand-cta-box .btn-cta-donde { background: #fff; color: var(--brand-accent, #111); }
+        .brand-cta-box .btn-cta-donde:hover { transform: translateY(-2px); }
+        .brand-cta-box .btn-cta-comercio { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.9); }
+        .brand-cta-box .btn-cta-comercio:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
+        @media (max-width: 600px){ .brand-cta-box .cta-buttons { flex-direction: column; align-items: center; } .brand-cta-box { padding: 3rem 1.5rem !important; } }
+            /* WHATSAPP FLOAT */
+        .whatsapp-float { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 55px; height: 55px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 4px 15px rgba(37,211,102,0.3); z-index: 999; transition: transform 0.2s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <a href="index.html" class="logo-text">
+            <span class="logo-bold">RADSPORT</span>
+            <span class="logo-dot">&bull;</span>
+            <span class="logo-light">GEIST</span>
+        </a>
+        <ul class="nav-links">
+            <li>
+                <a href="index.html#worlds">Segmentos</a>
+            </li>
+            <li>
+                <a href="index.html#brands">Marcas</a>
+            </li>
+            <li><a href="productos.html" class="active">Productos</a></li>
+            <li><a href="donde-comprar/moto.html">Dónde Comprar</a></li>
+            <li><a href="sobre-nosotros.html">Sobre Nosotros</a></li>
+            <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <!-- BRAND BAR (con TODOS activo) -->
+    <div class="brand-bar">
+        <a href="#" class="brand-all active" data-brand="todos">Todos</a>
+        <a href="marcas/cst/productos.html" data-brand="cst" title="CST"><img src="img/logos/cst.png" alt="CST"></a>
+        <a href="marcas/leovince/productos.html" data-brand="leovince" title="Leo Vince"><img src="img/logos/leovince.png" alt="Leo Vince"></a>
+        <a href="marcas/shot/productos.html" data-brand="shot" title="SHOT"><img src="img/logos/shot.png" alt="SHOT"></a>
+        <a href="marcas/uswe/productos.html" data-brand="uswe" title="USWE"><img src="img/logos/uswe.png" alt="USWE"></a>
+        <a href="marcas/giantloop/productos.html" data-brand="giantloop" title="Giant Loop"><img src="img/logos/giantloop.png" alt="Giant Loop"></a>
+        <a href="marcas/nils/productos.html" data-brand="nils" title="NILS"><img src="img/logos/nils.png" alt="NILS"></a>
+        <a href="marcas/nitromousse/productos.html" data-brand="nitromousse" title="NitroMousse"><img src="img/logos/nitromousse.png" alt="NitroMousse"></a>
+        <a href="marcas/lucioli/productos.html" data-brand="lucioli" title="Lucioli"><img src="img/logos/lucioli.png" alt="Lucioli"></a>
+        <a href="marcas/wrp/productos.html" data-brand="wrp" title="WRP"><img src="img/logos/wrp.png" alt="WRP"></a>
+        <a href="marcas/sidi/productos.html" data-brand="sidi" title="SIDI"><img src="img/logos/sidi.png" alt="SIDI"></a>
+    </div>
+
+    <!-- HEADER IDENTIFICADOR (que estas viendo) — oculto en "Todos" -->
+    <div class="page-header-hero" id="headerHero" style="display: none;">
+        <div class="page-header-hero-content">
+            <div class="page-header-hero-kicker">Catálogo</div>
+            <h1 id="heroTitle">Toda la <em>línea</em></h1>
+        </div>
+    </div>
+
+    <div class="page-header">
+        <div class="page-header-breadcrumb">
+            <a href="index.html">Inicio</a>
+            <span>&rsaquo;</span>
+            <span id="breadcrumbSegment">Todos los productos</span>
+        </div>
+        <div class="page-header-count" id="productCount">0 productos</div>
+    </div>
+
+    <!-- SEGMENT TABS -->
+    <div class="segment-tabs">
+        <button class="segment-tab active" data-segment="todos">Todos</button>
+        <button class="segment-tab" data-segment="moto">Moto</button>
+        <button class="segment-tab" data-segment="atv">ATV / UTV</button>
+        <button class="segment-tab" data-segment="bici">Bicicleta</button>
+        <button class="segment-tab" data-segment="industrial">Industrial</button>
+    </div>
+
+    <!-- BUSCADOR -->
+    <div class="search-bar">
+        <input type="text" id="searchInput" class="search-input" placeholder="Buscar producto, marca, modelo...">
+    </div>
+
+    <!-- GRILLA DE PRODUCTOS -->
+    <div class="products-grid" id="productsGrid">
+
+        <a href="marcas/shot/producto-casco-lite.html" class="product-card" data-category="cascos" data-subcategory="cross-enduro" data-segment="moto" data-brand="shot" data-name="shot lite casco">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/Lite-ultra-orange-pearly.png" alt="SHOT Cascos Lite" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Casco</div>
+                <h3>Lite</h3>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/productos/Lite-ultra-neon-yellow-matt.png" alt="SHOT Lite Ultra Neon Yellow Matt"><img src="marcas/shot/productos/Lite-challenger-black-white-pearly.png" alt="SHOT Lite Challenger Black White Pearly"><img src="marcas/shot/productos/Lite-challenger-red-pearly.png" alt="SHOT Lite Challenger Red Pearly"><img src="marcas/shot/productos/Lite-challenger-holographic-Matt.png" alt="SHOT Lite Challenger Holographic Matt"></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-casco-race.html" class="product-card" data-category="cascos" data-subcategory="cross-enduro" data-segment="moto" data-brand="shot" data-name="shot race casco">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/Race-camo-tactic-black-grey-matt.png" alt="SHOT Cascos Race" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Casco</div>
+                <h3>Race</h3>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/productos/Race-sprint-black-neon-yellow-matt.png" alt="SHOT Race Sprint Black Yellow Matt"><img src="marcas/shot/productos/Race-phaser-blue-turquioise-pearly.png" alt="SHOT Race Phaser Blue Turquoise Pearly"><img src="marcas/shot/productos/Race-phaser-blue-red-pearly.png" alt="SHOT Race Phaser Blue Red Pearly"><img src="marcas/shot/productos/Race-phaser-black-blue-pink-pearly.png" alt="SHOT Race Phaser Black Blue Pink Pearly"></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-casco-furious.html" class="product-card" data-category="cascos" data-subcategory="cross-enduro" data-segment="moto" data-brand="shot" data-name="shot furious casco">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/Furious-League-orange-Glossy.png" alt="SHOT Cascos Furious" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Casco</div>
+                <h3>Furious</h3>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/productos/LEAGUE-BLUE-NEON-YELLOW-GLOSSY.png" alt="SHOT Furious League Blue Neon Yellow Glossy"><img src="marcas/shot/productos/Furious-League-Red-Glossy.png" alt="SHOT Furious League Red Glossy"><img src="marcas/shot/productos/Furious-apex-blue-glossy.png" alt="SHOT Furious Apex Blue Glossy"><span class="product-card-color-more">+3</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-casco-trek.html" class="product-card" data-category="cascos" data-subcategory="touring" data-segment="moto" data-brand="shot" data-name="shot trek casco">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/Trek-rally-black-neon-yellow-matt.png" alt="SHOT Cascos Trek" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Casco</div>
+                <h3>Trek</h3>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/productos/Trek-rally-black-red-matt.png" alt="SHOT Trek Rally Black Red Matt"><img src="marcas/shot/productos/Trek-rally-black-sand-glossy.png" alt="SHOT Trek Rally Black Sand Glossy"><img src="marcas/shot/productos/Trek-solid-black-matt.png" alt="SHOT Trek Solid Black Matt"></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-conjunto-aerolite.html" class="product-card" data-category="conjuntos" data-segment="moto" data-brand="shot" data-name="shot aerolite conjunto jersey + pantalón">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/conjuntos/conjunto-aerolite-hva-blue.png" alt="SHOT Conjunto Aerolite HVA Blue" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Conjunto</div>
+                <h3>Aerolite</h3>
+                <div class="product-card-content">4 colores disponibles</div>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/conjuntos/conjunto-aerolite-hva-black-grey.png" alt="HVA Black Grey" title="HVA Black Grey"><img src="marcas/shot/conjuntos/conjunto-aerolite-ultra-red.png" alt="Ultra Red" title="Ultra Red"><img src="marcas/shot/conjuntos/conjunto-aerolite-ultra-neon-yellow.png" alt="Ultra Neon Yellow" title="Ultra Neon Yellow"></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-conjunto-contact.html" class="product-card" data-category="conjuntos" data-segment="moto" data-brand="shot" data-name="shot contact conjunto jersey + pantalón">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/conjuntos/conjunto-contact-apex-neon-yellow.png" alt="SHOT Conjunto Contact Apex Neon Yellow" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Conjunto</div>
+                <h3>Contact</h3>
+                <div class="product-card-content">3 colores disponibles</div>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/conjuntos/conjunto-contact-shield-orange.png" alt="Shield Orange" title="Shield Orange"><img src="marcas/shot/conjuntos/conjunto-contact-shield-red.png" alt="Shield Red" title="Shield Red"></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-conjunto-devo.html" class="product-card" data-category="conjuntos" data-segment="moto" data-brand="shot" data-name="shot devo conjunto jersey + pantalón">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/conjuntos/conjunto-devo-league-red.png" alt="SHOT Conjunto Devo League Red" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Conjunto</div>
+                <h3>Devo</h3>
+                <div class="product-card-content">3 colores disponibles</div>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/conjuntos/conjunto-devo-league-neon-yellow.png" alt="League Neon Yellow" title="League Neon Yellow"><img src="marcas/shot/conjuntos/conjunto-devo-league-orange.png" alt="League Orange" title="League Orange"></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-conjunto-draw.html" class="product-card" data-category="conjuntos" data-segment="moto" data-brand="shot" data-name="shot draw conjunto jersey + pantalón">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/conjuntos/conjunto-draw-instinct-blue.png" alt="SHOT Conjunto Draw Instinct Blue" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Conjunto</div>
+                <h3>Draw</h3>
+                <div class="product-card-content">2 colores disponibles</div>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/conjuntos/conjunto-draw-instinct-orange.png" alt="Instinct Orange" title="Instinct Orange"></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-bota-race-8.html" class="product-card" data-category="botas" data-segment="moto" data-brand="shot" data-name="shot race 8 bota">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/Race-8-White-Black-Chrome-1.png" alt="SHOT Botas Race 8" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Bota</div>
+                <h3>Race 8</h3>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/productos/Race-8-Holographic-1.png" alt="SHOT Race 8 Holographic"></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-bota-race-2.html" class="product-card" data-category="botas" data-segment="moto" data-brand="shot" data-name="shot race 2 bota">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/Race-2-White-1-alt.png" alt="SHOT Botas Race 2" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Bota</div>
+                <h3>Race 2</h3>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/productos/Race-2-Black-Grey-1.png" alt="SHOT Race 2 Black Grey"><img src="marcas/shot/productos/Race-2-Blue-Neon-Yellow-1.png" alt="SHOT Race 2 Blue Neon Yellow"><img src="marcas/shot/productos/Race-2-Camo-Neon-Orange-1.png" alt="SHOT Race 2 Camo Neon Orange"></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-bota-atv-trail.html" class="product-card" data-category="botas" data-segment="moto" data-brand="shot" data-name="shot atv / trail bota">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/ATV-Trail-Black-1.jpg" alt="SHOT Botas ATV/Trail" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Bota</div>
+                <h3>ATV / Trail</h3>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-antiparras-core.html" class="product-card" data-category="antiparras" data-segment="moto" data-brand="shot" data-name="shot core antiparra">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/CORE_Goggles_Neon-Yellow_Matt_SILVER-IRIDIUM-LENS_1_A0A-29E1-A03_0-1.png" alt="SHOT Antiparras Core" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Antiparra</div>
+                <h3>Core</h3>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/productos/CORE_Goggles_Red_Glossy_RED-IRIDIUM-LENS_1_A0A-29E1-A06_0-1.png" alt="SHOT Antiparras Core | Solid Red"><img src="marcas/shot/productos/CORE_Goggles_Black_Matt_SILVER-IRIDIUM-LENS_1_A0A-29E1-A01_0-2.png" alt="SHOT Antiparras Core | Silver Iridium"><img src="marcas/shot/productos/CORE_GOGGLES_STRIPE_ORANGE_GLOSSY_ORANGE-IRIDIUM-LENS_1_A07-29E1-D01-1.png" alt="SHOT Antiparras Core | Stripe Orange Glossy"><img src="marcas/shot/productos/CORE_GOGGLES_WEAL_GOLD_MATT_ILVER-IRIDIUM-LENS_1_A07-29E1-C02-1.png" alt="SHOT Antiparras Core | Weal Gold Matt"></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-antiparras-iris.html" class="product-card" data-category="antiparras" data-segment="moto" data-brand="shot" data-name="shot iris 2.0 antiparra">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/IRIS-2.0_Goggles_Solid_Blue_Matt_BLUE-IRIDIUM-LENS_1_A09-29A1-D02-1.png" alt="SHOT Antiparras Iris 2.0" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Antiparra</div>
+                <h3>Iris 2.0</h3>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/productos/IRIS-2.0_Goggles_Solid_Orange_Matt_RAINBOW-IRIDIUM-LENS_1_A09-29A1-D05-1.png" alt="SHOT Antiparras Iris 2.0 | Solid Orange Matt"><img src="marcas/shot/productos/IRIS-2.0_Goggles_Solid_Black_Glossy_SILVER-IRIDIUM-LENS_1_A09-29A1-D01-1.png" alt="SHOT Antiparras Iris 2.0 | Solid Black Glossy"><img src="marcas/shot/productos/IRIS-2.0_Goggles_Tech_White-Red_Glossy_RED-IRIDIUM-LENS_1_A09-29A1-C10-1.png" alt="SHOT Antiparras Iris 2.0 | Tech White Red Glossy"><span class="product-card-color-more">+8</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-antiparras-assault.html" class="product-card" data-category="antiparras" data-segment="moto" data-brand="shot" data-name="shot assault 2.0 antiparra">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/ASSAULT-2.0_Goggles_Solar_Green_Glossy_CLEAR-LENS_1_A09-29B1-D03.png" alt="SHOT Antiparras Assault 2.0" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Antiparra</div>
+                <h3>Assault 2.0</h3>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/productos/ASSAULT-2.0_CLAW_GOGGLES_NEON-YELLOW_GLOSSY_CLEAR-LENS_1_A06-29OD-A03.png" alt="SHOT Antiparras Assault 2.0 | Claw Neon Yellow"><img src="marcas/shot/productos/ASSAULT-2.0_CLAW_GOGGLES_NEON-ORANGE_GLOSSY_CLEAR-LENS_1_A06-29OD-A02.png" alt="SHOT Antiparras Assault 2.0 | Claw Neon Orange"><img src="marcas/shot/productos/ASSAULT-2.0_Goggles_Solid_Neon-Orange_Glossy_CLEAR-LENS_1_A09-29B1-C05.png" alt="SHOT Antiparras Assault 2.0 | Solid Neon Orange Glossy"><span class="product-card-color-more">+6</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-guantes-lite.html" class="product-card" data-category="guantes" data-segment="moto" data-brand="shot" data-name="shot lite guante">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/Lite_Pro_Gloves_Neon-Yellow_1_A06-13A1-B05.png" alt="SHOT Guantes Lite" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Guante</div>
+                <h3>Lite</h3>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/productos/Lite_Pro_Gloves_White_1_A06-13A1-B04.png" alt="SHOT Guantes Lite | Pro White"><img src="marcas/shot/productos/Lite_Pro_Gloves_Red_1_A06-13A1-B02.png" alt="SHOT Guantes Lite | Pro Red"><img src="marcas/shot/productos/Lite_Pro_Gloves_Blue_1_A06-13A1-B01.png" alt="SHOT Guantes Lite | Pro Blue"></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-guantes-core.html" class="product-card" data-category="guantes" data-segment="moto" data-brand="shot" data-name="shot core guante">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/CORE_GLOVES_Red_1_A08-13C1-C05.png" alt="SHOT Guantes Core" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Guante</div>
+                <h3>Core</h3>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/productos/CORE_GLOVES_Orange_1_A08-13C1-C07.png" alt="SHOT Guantes Core | Orange"><img src="marcas/shot/productos/CORE_GLOVES_Neon-Yellow_1_A08-13C1-C08.png" alt="SHOT Guantes Core | Neon Yellow"></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-guantes-race.html" class="product-card" data-category="guantes" data-segment="moto" data-brand="shot" data-name="shot race guante">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/RACE_GLOVES_Orange_1_A08-13B2-B07.png" alt="SHOT Guantes Race" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Guante</div>
+                <h3>Race</h3>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/productos/RACE_GLOVES_Black_1_A08-13B2-B01.png" alt="SHOT Guantes Race | Black"><img src="marcas/shot/productos/RACE_GLOVES_Neon-Yellow_1_A08-13B2-B08.png" alt="SHOT Guantes Race | Neon Yellow"></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-guantes-draw.html" class="product-card" data-category="guantes" data-segment="moto" data-brand="shot" data-name="shot draw guante">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/DRAW_Sky_Gloves_Red_1_A06-13D1-A06_0.png" alt="SHOT Guantes Draw" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Guante</div>
+                <h3>Draw</h3>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/productos/DRAW_Sky_Gloves_Black_1_A06-13D1-A02.png" alt="SHOT Guantes Draw | Sky Black"></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-proteccion-knee-guard.html" class="product-card" data-category="protecciones" data-segment="moto" data-brand="shot" data-name="shot knee guard airflow protección">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/lp-protecciones-knee-guard-airflow.png" alt="SHOT Knee Guard Airflow" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Protección</div>
+                <h3>Knee Guard Airflow</h3>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-proteccion-chest-protector.html" class="product-card" data-category="protecciones" data-segment="moto" data-brand="shot" data-name="shot airflow chest protector protección">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/lp-protecciones-chest-protector-airflow.png" alt="SHOT Chest Protector Airflow" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Protección</div>
+                <h3>Airflow Chest Protector</h3>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-campera-softshell-lite.html" class="product-card" data-category="camperas" data-segment="moto" data-brand="shot" data-name="shot softshell lite campera">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/lp-camperas-lite-black-red.png" alt="SHOT Campera Softshell Lite" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Campera</div>
+                <h3>Softshell Lite</h3>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/productos/lp-camperas-lite-black-white.png" alt="Softshell Lite Black White"><img src="marcas/shot/productos/lp-camperas-lite-black-orange.png" alt="Softshell Lite Black Orange"></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-campera-contact-assault.html" class="product-card" data-category="camperas" data-segment="moto" data-brand="shot" data-name="shot contact assault jacket campera">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/lp-camperas-contact-assault-black-white.png" alt="SHOT Campera Contact Assault" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Campera</div>
+                <h3>Contact Assault Jacket</h3>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/productos/lp-camperas-contact-assault-grey-neon-yellow.png" alt="Contact Assault Grey Neon Yellow"><img src="marcas/shot/productos/lp-camperas-contact-assault-black-orange.png" alt="Contact Assault Black Orange"></div>
+            </div>
+        </a>
+
+        <a href="marcas/shot/producto-campera-racetech.html" class="product-card" data-category="camperas" data-segment="moto" data-brand="shot" data-name="shot racetech campera">
+            <div class="product-card-brand">SHOT</div>
+            <div class="product-card-img"><img src="marcas/shot/productos/lp-camperas-racetech-black-grey.png" alt="SHOT Campera Racetech" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Campera</div>
+                <h3>Racetech</h3>
+                <div class="product-card-color-thumbs"><img src="marcas/shot/productos/lp-camperas-racetech-black-sand.png" alt="Racetech Black Sand"></div>
+            </div>
+        </a>
+
+
+
+
+
+        <!-- ====== LEO VINCE ====== -->
+        <a href="marcas/leovince/producto.html?id=lv-one-evo-acero-negro-aprilia" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv one evo acero negro aprilia tuareg 660">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/Foto-9.jpeg" alt="LV One Evo Acero Negro · Aprilia" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Aprilia</div>
+                <h3>LV One Evo Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Tuareg 660</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-one-evo-acero-inoxidable-bmw" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv one evo acero inoxidable bmw f 850 gs / f 750 gs">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/LV-One-Evo-Acero-02.jpg" alt="LV One Evo Acero Inoxidable · BMW" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">BMW</div>
+                <h3>LV One Evo Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">F 850 GS / F 750 GS</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-one-evo-black-edition-acero-negro-bmw" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv one evo black edition acero negro bmw f 850 gs / f 750 gs">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/LV-ONE-EVO-BLACK-EDITION.jpg" alt="LV One Evo Black Edition Acero Negro · BMW" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">BMW</div>
+                <h3>LV One Evo Black Edition Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">F 850 GS / F 750 GS</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-14-acero-negro-bmw" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv-14 acero negro bmw r 1300 gs">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-6.jpg" alt="LV-14 Acero Negro · BMW" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">BMW</div>
+                <h3>LV-14 Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">R 1300 GS</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-one-evo-acero-inoxidable-benelli" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv one evo acero inoxidable benelli bn 302 s tnt 300 trk 502 trk 502 x trk 702 trk 702 x">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/LV-One-Evo-Acero-02.jpg" alt="LV One Evo Acero Inoxidable · Benelli" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Benelli</div>
+                <h3>LV One Evo Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">BN 302 S · TNT 300 · TRK 502 · TRK 502 X · TRK 702 · TRK 702 X</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-10-acero-inoxidable-benelli" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv-10 acero inoxidable benelli leoncino 500 752 s">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-7.jpg" alt="LV-10 Acero Inoxidable · Benelli" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Benelli</div>
+                <h3>LV-10 Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Leoncino 500 · 752 S</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-one-evo-acero-inoxidable-cfmoto" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv one evo acero inoxidable cfmoto 800 nk 800 mt touring sport explorer">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/LV-One-Evo-Acero-02.jpg" alt="LV One Evo Acero Inoxidable · CFMoto" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">CFMoto</div>
+                <h3>LV One Evo Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">800 NK · 800 MT Touring · Sport · Explorer</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-one-evo-black-edition-acero-negro-cfmoto" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv one evo black edition acero negro cfmoto 800 nk 800 mt touring sport explorer">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/LV-ONE-EVO-BLACK-EDITION.jpg" alt="LV One Evo Black Edition Acero Negro · CFMoto" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">CFMoto</div>
+                <h3>LV One Evo Black Edition Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">800 NK · 800 MT Touring · Sport · Explorer</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-10-black-acero-negro-cfmoto" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv-10 black acero negro cfmoto 450 sr 700 cl-x">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-6.jpg" alt="LV-10 Black Acero Negro · CFMoto" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">CFMoto</div>
+                <h3>LV-10 Black Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">450 SR · 700 CL-X</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-14-acero-inoxidable-cfmoto" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv-14 acero inoxidable cfmoto 450 mt">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-3.jpg" alt="LV-14 Acero Inoxidable · CFMoto" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">CFMoto</div>
+                <h3>LV-14 Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">450 MT</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-14-black-edition-acero-negro-cfmoto" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv-14 black edition acero negro cfmoto 450 mt">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-6.jpg" alt="LV-14 Black Edition Acero Negro · CFMoto" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">CFMoto</div>
+                <h3>LV-14 Black Edition Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">450 MT</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-10-acero-inoxidable-ducati" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv-10 acero inoxidable ducati scrambler 800 icon classic">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-7.jpg" alt="LV-10 Acero Inoxidable · Ducati" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Ducati</div>
+                <h3>LV-10 Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Scrambler 800 Icon · Classic</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-10-black-acero-negro-ducati" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv-10 black acero negro ducati scrambler 800 icon classic">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-6.jpg" alt="LV-10 Black Acero Negro · Ducati" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Ducati</div>
+                <h3>LV-10 Black Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Scrambler 800 Icon · Classic</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=tubo-supresor-de-catalizador-ducati" class="product-card" data-brand="leovince" data-segment="moto" data-name="tubo supresor de catalizador ducati scrambler 800 icon classic">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-3.jpg" alt="Tubo supresor de catalizador · Ducati" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Ducati</div>
+                <h3>Tubo supresor de catalizador</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Scrambler 800 Icon · Classic</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-one-evo-acero-inoxidable-gas-gas" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv one evo acero inoxidable gas gas es 700 sm 700">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/LV-One-Evo-Acero-02.jpg" alt="LV One Evo Acero Inoxidable · Gas Gas" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Gas Gas</div>
+                <h3>LV One Evo Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">ES 700 · SM 700</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-x-evo-acero-inoxidable-gas-gas" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv-x evo acero inoxidable gas gas ec 250 f ec 350 f">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-9.jpg" alt="LV-X Evo Acero Inoxidable · Gas Gas" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Gas Gas</div>
+                <h3>LV-X Evo Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">EC 250 F · EC 350 F</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-one-evo-black-edition-acero-negro-honda" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv one evo black edition acero negro honda nc 750 x crf 1000 - africa twin">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/LV-ONE-EVO-BLACK-EDITION.jpg" alt="LV One Evo Black Edition Acero Negro · Honda" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Honda</div>
+                <h3>LV One Evo Black Edition Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">NC 750 X · CRF 1000 - Africa Twin</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-one-evo-acero-inoxidable-husqvarna" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv one evo acero inoxidable husqvarna norden 901">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/LV-One-Evo-Acero-02.jpg" alt="LV One Evo Acero Inoxidable · Husqvarna" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Husqvarna</div>
+                <h3>LV One Evo Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Norden 901</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-one-evo-black-edition-acero-negro-husqvarna" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv one evo black edition acero negro husqvarna norden 901">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/LV-ONE-EVO-BLACK-EDITION.jpg" alt="LV One Evo Black Edition Acero Negro · Husqvarna" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Husqvarna</div>
+                <h3>LV One Evo Black Edition Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Norden 901</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-10-acero-inoxidable-husqvarna" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv-10 acero inoxidable husqvarna svartpilen 401 vitpilen 401">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-7.jpg" alt="LV-10 Acero Inoxidable · Husqvarna" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Husqvarna</div>
+                <h3>LV-10 Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Svartpilen 401 · Vitpilen 401</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-10-black-acero-negro-husqvarna" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv-10 black acero negro husqvarna svartpilen 401 vitpilen 401">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-6.jpg" alt="LV-10 Black Acero Negro · Husqvarna" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Husqvarna</div>
+                <h3>LV-10 Black Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Svartpilen 401 · Vitpilen 401</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-x-evo-acero-inoxidable-husqvarna" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv-x evo acero inoxidable husqvarna fe 250 fe 350 fe 450 fe 501">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-9.jpg" alt="LV-X Evo Acero Inoxidable · Husqvarna" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Husqvarna</div>
+                <h3>LV-X Evo Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">FE 250 · FE 350 · FE 450 · FE 501</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=gp-corsa-evo-carbono-ktm" class="product-card" data-brand="leovince" data-segment="moto" data-name="gp corsa evo carbono ktm 390 duke 390 rc">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/Foto-2.jpeg" alt="GP Corsa Evo Carbono · KTM" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">KTM</div>
+                <h3>GP Corsa Evo Carbono</h3>
+                <div class="product-card-fitments"><div class="fitment-models">390 Duke · 390 RC</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-one-evo-acero-inoxidable-ktm" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv one evo acero inoxidable ktm 390 adventure 250 adventure 690 enduro/r 690 smc/r 790/890 adventure 1290 super adv r/s/t 1190 adv/r 1090 adv/r">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/LV-One-Evo-Acero-02.jpg" alt="LV One Evo Acero Inoxidable · KTM" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">KTM</div>
+                <h3>LV One Evo Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">390 Adventure · 250 Adventure · 690 Enduro/R · 690 SMC/R · 790/890 Adventure · 1290 Super Adv R/S/T · 1190 Adv/R · 1090 Adv/R</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-one-evo-carbono-ktm" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv one evo carbono ktm 390 adventure 250 adventure">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/Foto-2.jpeg" alt="LV One Evo Carbono · KTM" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">KTM</div>
+                <h3>LV One Evo Carbono</h3>
+                <div class="product-card-fitments"><div class="fitment-models">390 Adventure · 250 Adventure</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-one-evo-black-edition-acero-negro-ktm" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv one evo black edition acero negro ktm 390 adventure 250 adventure 790/890 adventure">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/LV-ONE-EVO-BLACK-EDITION.jpg" alt="LV One Evo Black Edition Acero Negro · KTM" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">KTM</div>
+                <h3>LV One Evo Black Edition Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">390 Adventure · 250 Adventure · 790/890 Adventure</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-12-r-black-edition-acero-negro-ktm" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv-12 r black edition acero negro ktm 1290 super adv r/s/t">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-6.jpg" alt="LV-12 R Black Edition Acero Negro · KTM" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">KTM</div>
+                <h3>LV-12 R Black Edition Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">1290 Super Adv R/S/T</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-x-evo-acero-inoxidable-ktm" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv-x evo acero inoxidable ktm 250 exc-f 350 exc-f 450 exc-f 500 exc-f">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-9.jpg" alt="LV-X Evo Acero Inoxidable · KTM" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">KTM</div>
+                <h3>LV-X Evo Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">250 EXC-F · 350 EXC-F · 450 EXC-F · 500 EXC-F</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=nero-acero-negro-ktm" class="product-card" data-brand="leovince" data-segment="moto" data-name="nero acero negro ktm 1290 super adv r/s/t 1190 adv/r 1090 adv/r">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/Nero-01-1.jpg" alt="Nero Acero Negro · KTM" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">KTM</div>
+                <h3>Nero Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">1290 Super Adv R/S/T · 1190 Adv/R · 1090 Adv/R</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=tubo-supresor-de-catalizador-ktm" class="product-card" data-brand="leovince" data-segment="moto" data-name="tubo supresor de catalizador ktm 790/890 adventure">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-3.jpg" alt="Tubo supresor de catalizador · KTM" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">KTM</div>
+                <h3>Tubo supresor de catalizador</h3>
+                <div class="product-card-fitments"><div class="fitment-models">790/890 Adventure</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=colector-acero-inoxidable-kawasaki" class="product-card" data-brand="leovince" data-segment="moto" data-name="colector acero inoxidable kawasaki z900">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-3.jpg" alt="Colector Acero Inoxidable · Kawasaki" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Kawasaki</div>
+                <h3>Colector Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Z900</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-corsa-acero-negro-kawasaki" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv corsa acero negro kawasaki z900 zx-10r zx-10rr">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel.jpg" alt="LV Corsa Acero Negro · Kawasaki" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Kawasaki</div>
+                <h3>LV Corsa Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Z900 · ZX-10R · ZX-10RR</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-one-evo-acero-inoxidable-kawasaki" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv one evo acero inoxidable kawasaki versys 300 z400/500 ninja 400/500">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/LV-One-Evo-Acero-02.jpg" alt="LV One Evo Acero Inoxidable · Kawasaki" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Kawasaki</div>
+                <h3>LV One Evo Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Versys 300 · Z400/500 · Ninja 400/500</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-one-evo-acero-negro-kawasaki" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv one evo acero negro kawasaki versys 300">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/Foto-9.jpeg" alt="LV One Evo Acero Negro · Kawasaki" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Kawasaki</div>
+                <h3>LV One Evo Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Versys 300</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-pro-acero-inoxidable-kawasaki" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv pro acero inoxidable kawasaki z900">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-11.jpg" alt="LV Pro Acero Inoxidable · Kawasaki" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Kawasaki</div>
+                <h3>LV Pro Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Z900</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-10-acero-inoxidable-kawasaki" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv-10 acero inoxidable kawasaki z400/500 ninja 400/500">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-7.jpg" alt="LV-10 Acero Inoxidable · Kawasaki" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Kawasaki</div>
+                <h3>LV-10 Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Z400/500 · Ninja 400/500</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-10-black-acero-negro-kawasaki" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv-10 black acero negro kawasaki z400/500 ninja 400/500 z900">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-6.jpg" alt="LV-10 Black Acero Negro · Kawasaki" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Kawasaki</div>
+                <h3>LV-10 Black Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Z400/500 · Ninja 400/500 · Z900</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-x-aluminio-kawasaki" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv-x aluminio kawasaki klr 650">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-8.jpg" alt="LV-X Aluminio · Kawasaki" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Kawasaki</div>
+                <h3>LV-X Aluminio</h3>
+                <div class="product-card-fitments"><div class="fitment-models">KLR 650</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-x-evo-acero-inoxidable-kawasaki" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv-x evo acero inoxidable kawasaki klr 650">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-9.jpg" alt="LV-X Evo Acero Inoxidable · Kawasaki" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Kawasaki</div>
+                <h3>LV-X Evo Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">KLR 650</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=proteccion-carbono-kawasaki" class="product-card" data-brand="leovince" data-segment="moto" data-name="protección carbono kawasaki z900">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/Foto-2.jpeg" alt="Protección carbono · Kawasaki" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Kawasaki</div>
+                <h3>Protección carbono</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Z900</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=sistema-completo-lv-one-evo-acero-inoxidable-kawasaki" class="product-card" data-brand="leovince" data-segment="moto" data-name="sistema completo - lv one evo acero inoxidable kawasaki z 650 ninja 650 versys 650">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/LV-ONE-EVO-NEW-END-CAP_STAFFA-2.jpg" alt="Sistema completo - LV One Evo Acero Inoxidable · Kawasaki" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Kawasaki</div>
+                <h3>Sistema completo - LV One Evo Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Z 650 · Ninja 650 · Versys 650</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-pro-acero-inoxidable-moto-morini" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv pro acero inoxidable moto morini x-cape 650">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-11.jpg" alt="LV Pro Acero Inoxidable · Moto Morini" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Moto Morini</div>
+                <h3>LV Pro Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">X-Cape 650</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=classic-racer-acero-inoxidable-royal-enfield" class="product-card" data-brand="leovince" data-segment="moto" data-name="classic racer acero inoxidable royal enfield continental gt 650 / interceptor 650">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-13.jpg" alt="Classic Racer Acero Inoxidable · Royal Enfield" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Royal Enfield</div>
+                <h3>Classic Racer Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Continental GT 650 / Interceptor 650</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=classic-racer-black-edition-acero-negro-royal-enfield" class="product-card" data-brand="leovince" data-segment="moto" data-name="classic racer black edition acero negro royal enfield meteor 350 / classic 350 continental gt 650 / interceptor 650">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-12.jpg" alt="Classic Racer Black Edition Acero Negro · Royal Enfield" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Royal Enfield</div>
+                <h3>Classic Racer Black Edition Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Meteor 350 / Classic 350 · Continental GT 650 / Interceptor 650</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=gp-one-acero-negro-royal-enfield" class="product-card" data-brand="leovince" data-segment="moto" data-name="gp one acero negro royal enfield hunter 350">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-1.jpg" alt="GP One Acero Negro · Royal Enfield" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Royal Enfield</div>
+                <h3>GP One Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Hunter 350</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-one-evo-acero-inoxidable-triumph" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv one evo acero inoxidable triumph tiger 1200">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/LV-One-Evo-Acero-02.jpg" alt="LV One Evo Acero Inoxidable · Triumph" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Triumph</div>
+                <h3>LV One Evo Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Tiger 1200</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-one-evo-black-edition-acero-negro-triumph" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv one evo black edition acero negro triumph tiger 900 gt rally pro">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/LV-ONE-EVO-BLACK-EDITION.jpg" alt="LV One Evo Black Edition Acero Negro · Triumph" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Triumph</div>
+                <h3>LV One Evo Black Edition Acero Negro</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Tiger 900 GT · Rally · Pro</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-10-db-killer-acero-inoxidable-varias" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv 10 db killer acero inoxidable varias escapes lv 10 de todos los modelos">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel.jpg" alt="LV 10 db killer Acero Inoxidable · Varias" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Varias</div>
+                <h3>LV 10 db killer Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">Escapes LV 10 de todos los modelos</div></div>
+            </div>
+        </a>
+
+        <a href="marcas/leovince/producto.html?id=lv-pro-acero-inoxidable-yamaha" class="product-card" data-brand="leovince" data-segment="moto" data-name="lv pro acero inoxidable yamaha mt-03 yzf-r3">
+            <div class="product-card-brand">LEO VINCE</div>
+            <div class="product-card-img"><img src="marcas/leovince/productos/1000-side-slip-on-stainless-steel-11.jpg" alt="LV Pro Acero Inoxidable · Yamaha" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Yamaha</div>
+                <h3>LV Pro Acero Inoxidable</h3>
+                <div class="product-card-fitments"><div class="fitment-models">MT-03 · YZF-R3</div></div>
+            </div>
+        </a>
+        <!-- ====== CST ====== -->
+        <a href="marcas/cst/producto.html?id=ambro" class="product-card" data-brand="cst" data-segment="moto" data-category="on-road">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/cm-a3.png" alt="CST Ambro" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Moto · On-Road</div>
+                <h3>Ambro</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=ambro-ii" class="product-card" data-brand="cst" data-segment="moto" data-category="on-road">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/cst-logo.png" alt="CST Ambro II" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Moto · On-Road</div>
+                <h3>Ambro II</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=c6017" class="product-card" data-brand="cst" data-segment="moto" data-category="on-road">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/C60172.png" alt="CST C6017" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Moto · On-Road</div>
+                <h3>C6017</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=cm-ad01" class="product-card" data-brand="cst" data-segment="moto" data-category="on-road">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/cm-ad01.png" alt="CST CM-AD01" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Moto · On-Road</div>
+                <h3>CM-AD01</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=cm509" class="product-card" data-brand="cst" data-segment="moto" data-category="on-road">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/cst-logo.png" alt="CST CM509" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Moto · On-Road</div>
+                <h3>CM509</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=migra" class="product-card" data-brand="cst" data-segment="moto" data-category="on-road">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/CM-S1-pair-936x1024-1.jpg" alt="CST Migra" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Moto · On-Road</div>
+                <h3>Migra</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=ride-scoop" class="product-card" data-brand="cst" data-segment="moto" data-category="on-road">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/cst-logo.png" alt="CST Ride Scoop" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Moto · On-Road</div>
+                <h3>Ride Scoop</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=scooter" class="product-card" data-brand="cst" data-segment="moto" data-category="on-road">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/cst-logo.png" alt="CST Scooter" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Moto · On-Road</div>
+                <h3>Scooter</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=bite-enduro-ii-soft" class="product-card" data-brand="cst" data-segment="moto" data-category="off-road">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Bite-Enduro-01-1920x1440-1.jpg" alt="CST Bite Enduro II (soft)" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Moto · Off-Road</div>
+                <h3>Bite Enduro II (soft)</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=bite-mx" class="product-card" data-brand="cst" data-segment="moto" data-category="off-road">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Bite-MX-1920x1440-1.jpg" alt="CST Bite MX" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Moto · Off-Road</div>
+                <h3>Bite MX</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=grand-prix" class="product-card" data-brand="cst" data-segment="moto" data-category="off-road">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/C7203-1920-x-1440.jpg" alt="CST Grand Prix" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Moto · Off-Road</div>
+                <h3>Grand Prix</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=junior" class="product-card" data-brand="cst" data-segment="moto" data-category="off-road">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/CM708-CM709-1920x1440-01.jpg" alt="CST Junior" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Moto · Off-Road</div>
+                <h3>Junior</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=legion-desert" class="product-card" data-brand="cst" data-segment="moto" data-category="off-road">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Legion-Desert-1920x1440-01.jpg" alt="CST Legion Desert" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Moto · Off-Road</div>
+                <h3>Legion Desert</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=legion-mx-vi" class="product-card" data-brand="cst" data-segment="moto" data-category="off-road">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/CM703-1920-x-1440.jpg" alt="CST Legion MX-VI" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Moto · Off-Road</div>
+                <h3>Legion MX-VI</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=semi-pala" class="product-card" data-brand="cst" data-segment="moto" data-category="off-road">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Semi-Pala-1920x1440-01.jpg" alt="CST Semi Pala" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Moto · Off-Road</div>
+                <h3>Semi Pala</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=surge-i" class="product-card" data-brand="cst" data-segment="moto" data-category="off-road">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/C7210-1920-x-1440.jpg" alt="CST Surge I" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Moto · Off-Road</div>
+                <h3>Surge I</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=abuzz" class="product-card" data-brand="cst" data-segment="atv" data-category="atv-utv-ssv">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Cubierta-6-1920x1440-1.jpeg" alt="CST Abuzz" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta ATV/UTV/SSV</div>
+                <h3>Abuzz</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=ancla" class="product-card" data-brand="cst" data-segment="atv" data-category="atv-utv-ssv">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Cubierta-8-1920x1440-1.jpeg" alt="CST Ancla" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta ATV/UTV/SSV</div>
+                <h3>Ancla</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=apache" class="product-card" data-brand="cst" data-segment="atv" data-category="atv-utv-ssv">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/APACHE_3_4_1296x-1254x1536-1.jpg" alt="CST Apache" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta ATV/UTV/SSV</div>
+                <h3>Apache</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=behemoth" class="product-card" data-brand="cst" data-segment="atv" data-category="atv-utv-ssv">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/behemoth-meli.jpg" alt="CST Behemoth" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta ATV/UTV/SSV</div>
+                <h3>Behemoth</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=dingo" class="product-card" data-brand="cst" data-segment="atv" data-category="atv-utv-ssv">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Cubierta-12-1920x1440-1.jpeg" alt="CST Dingo" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta ATV/UTV/SSV</div>
+                <h3>Dingo</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=pulse" class="product-card" data-brand="cst" data-segment="atv" data-category="atv-utv-ssv">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Cubierta-9-1920x1440-1.jpeg" alt="CST Pulse" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta ATV/UTV/SSV</div>
+                <h3>Pulse</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=pulse-mx" class="product-card" data-brand="cst" data-segment="atv" data-category="atv-utv-ssv">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Cubierta-9-1920x1440-1.jpeg" alt="CST Pulse MX" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta ATV/UTV/SSV</div>
+                <h3>Pulse MX</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=pulse-mxr" class="product-card" data-brand="cst" data-segment="atv" data-category="atv-utv-ssv">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Cubierta-9-1920x1440-1.jpeg" alt="CST Pulse MXR" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta ATV/UTV/SSV</div>
+                <h3>Pulse MXR</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=pulse-mxr-firm" class="product-card" data-brand="cst" data-segment="atv" data-category="atv-utv-ssv">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Cubierta-9-1920x1440-1.jpeg" alt="CST Pulse MXR (Firm)" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta ATV/UTV/SSV</div>
+                <h3>Pulse MXR (Firm)</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=pulse-mxr-soft" class="product-card" data-brand="cst" data-segment="atv" data-category="atv-utv-ssv">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Cubierta-9-1920x1440-1.jpeg" alt="CST Pulse MXR (Soft)" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta ATV/UTV/SSV</div>
+                <h3>Pulse MXR (Soft)</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=stag" class="product-card" data-brand="cst" data-segment="atv" data-category="atv-utv-ssv">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Cubierta-10-1920x1440-1.jpeg" alt="CST Stag" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta ATV/UTV/SSV</div>
+                <h3>Stag</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=b-trail" class="product-card" data-brand="cst" data-segment="bici" data-category="mtb">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/B-Trail-01-1.jpg" alt="CST B-Trail" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Bicicleta</div>
+                <h3>B-Trail</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=cito" class="product-card" data-brand="cst" data-segment="bici" data-category="mtb">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Cito-01.jpeg" alt="CST Cito" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Bicicleta</div>
+                <h3>Cito</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=conquistare" class="product-card" data-brand="cst" data-segment="bici" data-category="mtb">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Conquistare-01-1.jpeg" alt="CST Conquistare" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Bicicleta</div>
+                <h3>Conquistare</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=czar" class="product-card" data-brand="cst" data-segment="bici" data-category="mtb">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Czar-01.jpg" alt="CST Czar" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Bicicleta</div>
+                <h3>Czar</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=energia" class="product-card" data-brand="cst" data-segment="bici" data-category="mtb">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Energia-01.jpeg" alt="CST Energia" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Bicicleta</div>
+                <h3>Energia</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=jack-rabbit-ii" class="product-card" data-brand="cst" data-segment="bici" data-category="mtb">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Jack-Rabbit-II-01.jpeg" alt="CST Jack Rabbit II" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Bicicleta</div>
+                <h3>Jack Rabbit II</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=patrol" class="product-card" data-brand="cst" data-segment="bici" data-category="mtb">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/Patrol-01.jpeg" alt="CST Patrol" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cubierta Bicicleta</div>
+                <h3>Patrol</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=ci-02" class="product-card" data-brand="cst" data-segment="industrial" data-category="industrial">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/CI02-02.jpg" alt="CST CI 02" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Neumático Industrial</div>
+                <h3>CI 02</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=c-352" class="product-card" data-brand="cst" data-segment="industrial" data-category="industrial">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/C-352.jpg" alt="CST C 352" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Neumático Industrial</div>
+                <h3>C 352</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=c-8808" class="product-card" data-brand="cst" data-segment="industrial" data-category="industrial">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/C-8808.jpg" alt="CST C 8808" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Neumático Industrial</div>
+                <h3>C 8808</h3>
+            </div>
+        </a>
+
+        <a href="marcas/cst/producto.html?id=c-8909" class="product-card" data-brand="cst" data-segment="industrial" data-category="industrial">
+            <div class="product-card-brand">CST</div>
+            <div class="product-card-img"><img src="marcas/cst/productos/C-8909-1920x1440-01.jpg" alt="CST C 8909" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Neumático Industrial</div>
+                <h3>C 8909</h3>
+            </div>
+        </a>
+
+
+
+
+        <!-- ====== NILS ====== -->
+        <a href="marcas/nils/producto.html?id=race" class="product-card" data-brand="nils" data-segment="moto" data-category="aceite-4t">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/NILS-RACE-SAE-10W40-RACING-FULL-SYNTHETIC-ENGINE-OIL-2.png" alt="Race" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Aceite Motor 4T</div>
+                <h3>Race</h3>
+                <div class="product-card-variants"><span class="variant-tag">100% Sintético</span><span class="variant-tag">Competición</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=klassic-synt-pao" class="product-card" data-brand="nils" data-segment="moto" data-category="aceite-4t">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/NILS-KLASSIC-SYNT-SAE-20W50-FULL-SYNTHETIC-ENGINE-OIL-1.png" alt="Klassic Synt PAO" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Aceite Motor 4T</div>
+                <h3>Klassic Synt PAO</h3>
+                <div class="product-card-variants"><span class="variant-tag">100% Sintético</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=sport" class="product-card" data-brand="nils" data-segment="moto" data-category="aceite-4t">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/NILS-SPORT-SAE-15W50-FULL-SYNTHETIC-ENGINE-OIL.png" alt="Sport" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Aceite Motor 4T</div>
+                <h3>Sport</h3>
+                <div class="product-card-variants"><span class="variant-tag">100% Sintético</span><span class="variant-tag">Calle</span><span class="variant-tag">Ruta</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=off-road" class="product-card" data-brand="nils" data-segment="moto" data-category="aceite-4t">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/NILS-OFFROAD-SAE-10W40-4T-FULLSYNTHETIC-ENGINE-OIL-1.png" alt="Off Road" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Aceite Motor 4T</div>
+                <h3>Off Road</h3>
+                <div class="product-card-variants"><span class="variant-tag">100% Sintético</span><span class="variant-tag">Motocross</span><span class="variant-tag">Enduro</span><span class="variant-tag">Trail</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=ride" class="product-card" data-brand="nils" data-segment="moto" data-category="aceite-4t">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/NILS-RIDE-SAE-10W40-SYNTHETIC-ENGINE-OIL.png" alt="Ride" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Aceite Motor 4T</div>
+                <h3>Ride</h3>
+                <div class="product-card-variants"><span class="variant-tag">Semi-Sintético</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=duo-synt-r" class="product-card" data-brand="nils" data-segment="moto" data-category="aceite-2t">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/NILS-DUO_SYNT_R-FULL-SYNTHETIC-PAO-2STROKE-OIL.png" alt="Duo Synt R" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Aceite Motor 2T</div>
+                <h3>Duo Synt R</h3>
+                <div class="product-card-variants"><span class="variant-tag">100% Sintético</span><span class="variant-tag">Pre Mezcla</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=off-road" class="product-card" data-brand="nils" data-segment="moto" data-category="cadena">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/NILS-OFF-ROAD-CHAIN-SAND-SPRAY-grasso-V1.png" alt="Off Road Chain" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Lubricante Cadena</div>
+                <h3>Off Road</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=on-road" class="product-card" data-brand="nils" data-segment="moto" data-category="cadena">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/NILS-ON-ROAD-CHAIN-SPRAY-grasso-1.png" alt="On Road Chain" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Lubricante Cadena</div>
+                <h3>On Road</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=sand-track" class="product-card" data-brand="nils" data-segment="moto" data-category="cadena">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/NILS-OFF-ROAD-CHAIN-SAND-SPRAY-grasso-V2.png" alt="Chain Sand Track" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Lubricante Cadena</div>
+                <h3>Sand Track</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=cleaner" class="product-card" data-brand="nils" data-segment="moto" data-category="cadena">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/CHAIN-CLEANER.jpg" alt="Chain Cleaner" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Lubricante Cadena</div>
+                <h3>Cleaner</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=transmission" class="product-card" data-brand="nils" data-segment="moto" data-category="transmision">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/NILS-TRANSMISSION-HIGHPERFORMANCE-TRANSMISSION-OIL.png" alt="Transmission" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Aceite Transmisión</div>
+                <h3>Transmission</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=clutch" class="product-card" data-brand="nils" data-segment="moto" data-category="embrague">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/NILS-CLUTCH-HIGHPERFORMANCE-CLUTCH-AND-GEARBOX-OIL.png" alt="Clutch" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Aceite Embrague</div>
+                <h3>Clutch</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=clutch-trial" class="product-card" data-brand="nils" data-segment="moto" data-category="embrague">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/NILS-CLUTCH_TRIAL-CLUTCH-AND-GEARBOX-OIL-FOR-TRIAL.png" alt="Clutch Trial" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Aceite Embrague</div>
+                <h3>Clutch Trial</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=fork" class="product-card" data-brand="nils" data-segment="moto" data-category="amortiguador">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/NILS-FORK-SAE-15W-HIGH-PERFORMANCE-FORK-LUBRICANT.png" alt="Fork" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Suspensión</div>
+                <h3>Fork</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=shock-h" class="product-card" data-brand="nils" data-segment="moto" data-category="amortiguador">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/NILS-SHOCK_H-SAE-5W-HIGH-PERFORMANCE-SHOCK-LUBRICANT-1.png" alt="Shock H" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Suspensión</div>
+                <h3>Shock H</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=cleaner-spray" class="product-card" data-brand="nils" data-segment="moto" data-category="freno">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/Brake-cleaner.jpg" alt="Brake Cleaner Spray" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Frenos</div>
+                <h3>Cleaner Spray</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=polar-antifreeze" class="product-card" data-brand="nils" data-segment="moto" data-category="refrigerante">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/PLUS.jpg" alt="Polar Antifreeze" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Refrigerante</div>
+                <h3>Polar Antifreeze</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=polar-plus-oat-antifreeze" class="product-card" data-brand="nils" data-segment="moto" data-category="refrigerante">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/POLAR-PLUS-1.jpg" alt="Polar Plus OAT Antifreeze" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Refrigerante</div>
+                <h3>Polar Plus OAT Antifreeze</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=air-filter" class="product-card" data-brand="nils" data-segment="moto" data-category="filtro-aire">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/AIR-FILTER.jpg" alt="Air Filter" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Filtro de Aire</div>
+                <h3>Air Filter</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=air-filter-spray" class="product-card" data-brand="nils" data-segment="moto" data-category="filtro-aire">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/AIR-FILTER-SPRAY.jpg" alt="Air Filter Spray" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Filtro de Aire</div>
+                <h3>Air Filter Spray</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=performance-grease-blu" class="product-card" data-brand="nils" data-segment="moto" data-category="grasas">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/GRASA-PERFORMANCE.jpg" alt="Performance Grease Blu" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Grasa</div>
+                <h3>Performance Grease Blu</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=silicon-grease" class="product-card" data-brand="nils" data-segment="moto" data-category="grasas">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/GRASA-Silicon-Grease.jpg" alt="Silicon Grease" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Grasa</div>
+                <h3>Silicon Grease</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=no-grip-copper-paste" class="product-card" data-brand="nils" data-segment="moto" data-category="grasas">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/GRASA-NO-GRIP.jpg" alt="No Grip (copper paste)" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Grasa</div>
+                <h3>No Grip (copper paste)</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=brake-fluid-dot-4" class="product-card" data-brand="nils" data-segment="moto" data-category="freno">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/BRAKE-FLUID-DOT-4.png" alt="Nils Brake Fluid DOT 4 -1 Litro-" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Frenos</div>
+                <h3>DOT 4</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nils/producto.html?id=brake-fluid-dot-5-1" class="product-card" data-brand="nils" data-segment="moto" data-category="freno">
+            <div class="product-card-brand">NILS</div>
+            <div class="product-card-img"><img src="marcas/nils/productos/BRAKE-FLUID-DOT-5.1.png" alt="Nils Brake Fluid DOT 5.1 -1 Litro-" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Frenos</div>
+                <h3>DOT 5.1</h3>
+            </div>
+        </a>
+
+
+
+
+        <!-- ====== USWE ====== -->
+        <a href="marcas/uswe/producto.html?id=outlander-2" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/outlander-2-yellow-1.jpg" alt="USWE Outlander 2" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Hidratación</div>
+                <h3>Outlander 2</h3>
+                <div class="product-card-variants"><span class="variant-tag">1.5 L</span><span class="variant-tag">Carbon Black</span><span class="variant-tag">Crazy Yellow</span><span class="variant-tag">Factory Orange</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=outlander-moto-2" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE Outlander Moto 2" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Hidratación</div>
+                <h3>Outlander Moto 2</h3>
+                <div class="product-card-variants"><span class="variant-tag">1.5 L</span><span class="variant-tag">Crazy Yellow</span><span class="variant-tag">Sand</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=outlander-xc-2" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE Outlander XC 2" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Hidratación</div>
+                <h3>Outlander XC 2</h3>
+                <div class="product-card-variants"><span class="variant-tag">1.5 L</span><span class="variant-tag">Factory Orange</span><span class="variant-tag">Blue</span><span class="variant-tag">Black</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=outlander-3" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/outlander-3-negra-uswe.jpg" alt="USWE Outlander 3" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Hidratación</div>
+                <h3>Outlander 3</h3>
+                <div class="product-card-variants"><span class="variant-tag">1.5 L</span><span class="variant-tag">Carbon Black</span><span class="variant-tag">Crazy Yellow</span><span class="variant-tag">Factory Orange</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=outlander-4" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/Outlander-4L-1920x1440-Black-N1.jpeg" alt="USWE Outlander 4" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Hidratación</div>
+                <h3>Outlander 4</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span><span class="variant-tag">Crazy Yellow</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=outlander-moto-4" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE Outlander Moto 4" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Hidratación</div>
+                <h3>Outlander Moto 4</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span><span class="variant-tag">Black</span><span class="variant-tag">Sand</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=outlander-xc-4" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE Outlander XC 4" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Hidratación</div>
+                <h3>Outlander XC 4</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span><span class="variant-tag">Black</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=outlander-9" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/outlander-9.jpg" alt="USWE Outlander 9" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Hidratación</div>
+                <h3>Outlander 9</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span><span class="variant-tag">Carbon Black</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=outlander-moto-9" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE Outlander Moto 9" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Hidratación</div>
+                <h3>Outlander Moto 9</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span><span class="variant-tag">Black</span><span class="variant-tag">Sand</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=outlander-xc-10" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE Outlander XC 10" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Hidratación</div>
+                <h3>Outlander XC 10</h3>
+                <div class="product-card-variants"><span class="variant-tag">1.5 L</span><span class="variant-tag">Black</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=race-2-0" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila-race">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE Race 2.0" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Race</div>
+                <h3>Race 2.0</h3>
+                <div class="product-card-variants"><span class="variant-tag">2.0 L</span><span class="variant-tag">White</span><span class="variant-tag">Bronze</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=mtb-hydro-3" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila-mtb">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE MTB Hydro 3" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila MTB</div>
+                <h3>MTB Hydro 3</h3>
+                <div class="product-card-variants"><span class="variant-tag">1.5 L</span><span class="variant-tag">Bronze</span><span class="variant-tag">Black/Red</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=mtb-hydro-9" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila-mtb">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE MTB Hydro 9" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila MTB</div>
+                <h3>MTB Hydro 9</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span><span class="variant-tag">Black</span><span class="variant-tag">Bronze</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=mtb-hydro-12" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila-mtb">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE MTB Hydro 12" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila MTB</div>
+                <h3>MTB Hydro 12</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span><span class="variant-tag">Black</span><span class="variant-tag">Bronze</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=moto-hydro-3" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila-moto">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/moto-hydro-3-carbon.jpg" alt="USWE Moto Hydro 3" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Moto</div>
+                <h3>Moto Hydro 3</h3>
+                <div class="product-card-variants"><span class="variant-tag">2.0 L</span><span class="variant-tag">Carbon Black</span><span class="variant-tag">Factory Orange</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=moto-hydro-4" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila-moto">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE Moto Hydro 4" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Moto</div>
+                <h3>Moto Hydro 4</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span><span class="variant-tag">Factory Orange</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=moto-hydro-8" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila-moto">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/moto-hydro-8.jpg" alt="USWE Moto Hydro 8" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Moto</div>
+                <h3>Moto Hydro 8</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span><span class="variant-tag">Carbon Black</span><span class="variant-tag">Factory Orange</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=moto-hydro-12" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila-moto">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE Moto Hydro 12" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Moto</div>
+                <h3>Moto Hydro 12</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span><span class="variant-tag">Carbon Black</span><span class="variant-tag">Factory Orange</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=zulo" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila-race">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE Zulo" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Race</div>
+                <h3>Zulo</h3>
+                <div class="product-card-variants"><span class="variant-tag">1.0 L</span><span class="variant-tag">Crazy Yellow</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=pace-2-m" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila-running">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE Pace 2 - M" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Running</div>
+                <h3>Pace 2 - M</h3>
+                <div class="product-card-variants"><span class="variant-tag">2 x 0.5 L</span><span class="variant-tag">Cool White</span><span class="variant-tag">USWE Red Black</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=pace-2-l" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila-running">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE Pace 2 - L" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Running</div>
+                <h3>Pace 2 - L</h3>
+                <div class="product-card-variants"><span class="variant-tag">2 x 0.5 L</span><span class="variant-tag">Cool White</span><span class="variant-tag">USWE Red Black</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=pace-8-m" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila-running">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE Pace 8 - M" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Running</div>
+                <h3>Pace 8 - M</h3>
+                <div class="product-card-variants"><span class="variant-tag">2 x 0.5 L</span><span class="variant-tag">USWE Red Black</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=pace-8-l" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila-running">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE Pace 8 - L" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Running</div>
+                <h3>Pace 8 - L</h3>
+                <div class="product-card-variants"><span class="variant-tag">2 x 0.5 L</span><span class="variant-tag">USWE Red Black</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=core-16" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila-aventura">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/image-26.png" alt="USWE Core 16" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Aventura</div>
+                <h3>Core 16</h3>
+                <div class="product-card-variants"><span class="variant-tag">16 L</span><span class="variant-tag">Black</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=flow-16" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila-aventura">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE Flow 16" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Aventura</div>
+                <h3>Flow 16</h3>
+                <div class="product-card-variants"><span class="variant-tag">16 L</span><span class="variant-tag">Black / USWE Red</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=buddy-40" class="product-card" data-brand="uswe" data-segment="moto" data-category="mochila-aventura">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE Buddy 40" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mochila Aventura</div>
+                <h3>Buddy 40</h3>
+                <div class="product-card-variants"><span class="variant-tag">40 L</span><span class="variant-tag">Black / USWE Red</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=1-5-lts-elite-bladder" class="product-card" data-brand="uswe" data-segment="moto" data-category="vejiga">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE 1.5 lts Elite Bladder" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Vejiga Hidratación</div>
+                <h3>1.5 lts Elite Bladder</h3>
+                <div class="product-card-variants"><span class="variant-tag">1.5 L</span><span class="variant-tag">Clear</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=2-0-lts-elite-bladder" class="product-card" data-brand="uswe" data-segment="moto" data-category="vejiga">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE 2.0 lts Elite Bladder" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Vejiga Hidratación</div>
+                <h3>2.0 lts Elite Bladder</h3>
+                <div class="product-card-variants"><span class="variant-tag">2.0 L</span><span class="variant-tag">Clear</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/uswe/producto.html?id=3-0-lts-elite-bladder" class="product-card" data-brand="uswe" data-segment="moto" data-category="vejiga">
+            <div class="product-card-brand">USWE</div>
+            <div class="product-card-img"><img src="marcas/uswe/productos/uswe-logo.png" alt="USWE 3.0 lts Elite Bladder" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Vejiga Hidratación</div>
+                <h3>3.0 lts Elite Bladder</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.0 L</span><span class="variant-tag">Clear</span></div>
+            </div>
+        </a>
+
+
+
+
+        <!-- ====== GIANT LOOP ====== -->
+        <a href="marcas/giantloop/producto.html?id=coyote-saddlebag" class="product-card" data-brand="giantloop" data-segment="moto" data-category="alforja">
+            <div class="product-card-brand">GIANT LOOP</div>
+            <div class="product-card-img"><img src="marcas/giantloop/productos/coyotemain.webp" alt="Giant Loop Coyote Saddlebag" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Alforja</div>
+                <h3>Coyote Saddlebag</h3>
+                <div class="product-card-variants"><span class="variant-tag">39 L</span><span class="variant-tag">Black</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/giantloop/producto.html?id=great-basin-saddlebag" class="product-card" data-brand="giantloop" data-segment="moto" data-category="alforja">
+            <div class="product-card-brand">GIANT LOOP</div>
+            <div class="product-card-img"><img src="marcas/giantloop/productos/GBSB17-RT-B-Great-Basin-Saddlebag-Roll-Top-Black.webp" alt="Giant Loop Great Basin Saddlebag" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Alforja</div>
+                <h3>Great Basin Saddlebag</h3>
+                <div class="product-card-variants"><span class="variant-tag">68 L</span><span class="variant-tag">Black</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/giantloop/producto.html?id=round-the-world" class="product-card" data-brand="giantloop" data-segment="moto" data-category="alforja">
+            <div class="product-card-brand">GIANT LOOP</div>
+            <div class="product-card-img"><img src="marcas/giantloop/productos/Round-The-World.webp" alt="Giant Loop Round The World" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Alforja</div>
+                <h3>Round The World</h3>
+                <div class="product-card-variants"><span class="variant-tag">90 L</span><span class="variant-tag">Black</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/giantloop/producto.html?id=siskiyou-panniers" class="product-card" data-brand="giantloop" data-segment="moto" data-category="alforja">
+            <div class="product-card-brand">GIANT LOOP</div>
+            <div class="product-card-img"><img src="marcas/giantloop/productos/Siskiyou-Panniers-black-1-1.webp" alt="Giant Loop Siskiyou Panniers" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Alforja</div>
+                <h3>Siskiyou Panniers</h3>
+                <div class="product-card-variants"><span class="variant-tag">70 L</span><span class="variant-tag">Black</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/giantloop/producto.html?id=armadillo-bag-1-gal" class="product-card" data-brand="giantloop" data-segment="moto" data-category="bolso-estanco">
+            <div class="product-card-brand">GIANT LOOP</div>
+            <div class="product-card-img"><img src="marcas/giantloop/productos/Giant-Loop-Armadillo-Bag-5-Gallon.webp" alt="Giant Loop Armadillo Bag | 1 Gal" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Bolso Estanco</div>
+                <h3>Armadillo Bag</h3>
+                <div class="product-card-variants"><span class="variant-tag">3.8 L</span><span class="variant-tag">Grey</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/giantloop/producto.html?id=mojavi-saddlebag" class="product-card" data-brand="giantloop" data-segment="moto" data-category="alforja">
+            <div class="product-card-brand">GIANT LOOP</div>
+            <div class="product-card-img"><img src="marcas/giantloop/productos/Giant-Loop-Mojavi-saddlebag-motorcycle-luggage-redesigned-16.jpg" alt="Giant Loop MoJavi Saddlebag" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Alforja</div>
+                <h3>MoJavi Saddlebag</h3>
+                <div class="product-card-variants"><span class="variant-tag">12 L</span><span class="variant-tag">Black</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/giantloop/producto.html?id=mototrekk-panniers" class="product-card" data-brand="giantloop" data-segment="moto" data-category="alforja">
+            <div class="product-card-brand">GIANT LOOP</div>
+            <div class="product-card-img"><img src="marcas/giantloop/productos/Giant-Loop-Mototrekk-1-1.webp" alt="Giant Loop MotoTrekk Panniers" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Alforja</div>
+                <h3>MotoTrekk Panniers</h3>
+                <div class="product-card-variants"><span class="variant-tag">50 L</span><span class="variant-tag">Grey</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/giantloop/producto.html?id=revelstoke-dry-bag" class="product-card" data-brand="giantloop" data-segment="moto" data-category="bolso-estanco">
+            <div class="product-card-brand">GIANT LOOP</div>
+            <div class="product-card-img"><img src="marcas/giantloop/productos/revelstoke-closed-rear-3464508685-1.jpg" alt="Giant Loop Revelstoke Dry Bag" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Bolso Estanco</div>
+                <h3>Revelstoke Dry Bag</h3>
+                <div class="product-card-variants"><span class="variant-tag">16 L</span><span class="variant-tag">Grey</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/giantloop/producto.html?id=tillamook-dry-bag" class="product-card" data-brand="giantloop" data-segment="moto" data-category="bolso-estanco">
+            <div class="product-card-brand">GIANT LOOP</div>
+            <div class="product-card-img"><img src="marcas/giantloop/productos/71gKBCyJDGL._AC_UF350350_QL80_-1-300x273.jpg" alt="Giant Loop Tillamook Dry Bag" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Bolso Estanco</div>
+                <h3>Tillamook Dry Bag</h3>
+                <div class="product-card-variants"><span class="variant-tag">48 L</span><span class="variant-tag">Grey</span></div>
+            </div>
+        </a>
+
+        <a href="marcas/giantloop/producto.html?id=cactus-canteen-2-gal" class="product-card" data-brand="giantloop" data-segment="moto" data-category="tank-bag">
+            <div class="product-card-brand">GIANT LOOP</div>
+            <div class="product-card-img"><img src="marcas/giantloop/productos/Giant-Loop-Cactus-Canteen-3-Gallon-1.webp" alt="Giant Loop Cactus Canteen | 2 Gal" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Tank Bag</div>
+                <h3>Cactus Canteen</h3>
+                <div class="product-card-variants"><span class="variant-tag">7.6 L</span><span class="variant-tag">Grey</span></div>
+            </div>
+        </a>
+
+
+
+
+        <!-- ====== NITRO MOUSSE ====== -->
+        <a href="marcas/nitromousse/producto.html?id=nitrowedge" class="product-card" data-brand="nitromousse" data-segment="moto" data-name="nitrowedge mousse antipinchazos nitro mousse">
+            <div class="product-card-brand">NITRO MOUSSE</div>
+            <div class="product-card-img"><img src="marcas/nitromousse/productos/nitrowedge.png" alt="Nitrowedge" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mousse Antipinchazos</div>
+                <h3>Nitrowedge</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nitromousse/producto.html?id=nitromouse-platinum" class="product-card" data-brand="nitromousse" data-segment="moto" data-name="nitromouse platinum mousse antipinchazos nitro mousse">
+            <div class="product-card-brand">NITRO MOUSSE</div>
+            <div class="product-card-img"><img src="marcas/nitromousse/productos/nitromousse-platinum.jpg" alt="Nitromouse Platinum" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mousse Antipinchazos</div>
+                <h3>Nitromouse Platinum</h3>
+            </div>
+        </a>
+
+        <a href="marcas/nitromousse/producto.html?id=nitrolube" class="product-card" data-brand="nitromousse" data-segment="moto" data-name="nitrolube mousse antipinchazos nitro mousse">
+            <div class="product-card-brand">NITRO MOUSSE</div>
+            <div class="product-card-img"><img src="marcas/nitromousse/productos/NitroLube_Cooling_Gel-1024x768-1.jpg" alt="Nitrolube" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Mousse Antipinchazos</div>
+                <h3>Nitrolube</h3>
+            </div>
+        </a>
+
+        <!-- ====== LUCIOLI ====== -->
+        <a href="marcas/lucioli/producto.html?id=camaras-para-moto" class="product-card" data-brand="lucioli" data-segment="moto" data-name="cámaras para moto cámaras moto lucioli">
+            <div class="product-card-brand">LUCIOLI</div>
+            <div class="product-card-img"><img src="marcas/lucioli/productos/D_NQ_NP_608830-MLB46885170921_072021-W.jpg" alt="Lucioli – Cámaras para moto" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Cámaras Moto</div>
+                <h3>Cámaras para moto</h3>
+            </div>
+        </a>
+
+        <!-- ============================================
+             Pendiente: SHOT (próxima carga), WRP, SIDI
+             ============================================ -->
+
+        <div class="no-results" id="noResults">No hay productos que coincidan con la búsqueda.</div>
+    </div>
+
+    <!-- CTA DONDE COMPRAR -->
+    <section class="cta-bottom">
+        <div class="cta-bottom-box">
+            <div class="cta-bottom-text">
+                <h3>¿Querés comprar nuestros productos?</h3>
+                <p>Encontrá tu punto de venta más cercano.</p>
+            </div>
+            <a href="donde-comprar/moto.html" class="cta-bottom-btn">Dónde comprar &rarr;</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Segmentos</h4>
+                <ul>
+                    <li><a href="segmentos/moto.html">Moto</a></li>
+                    <li><a href="segmentos/atv.html">ATV / UTV / SSV</a></li>
+                    <li><a href="segmentos/bici.html">Bicicleta</a></li>
+                    <li><a href="segmentos/industrial.html">Industrial</a></li>
+                </ul>
+            </div>
+            <div class="footer-section footer-marcas">
+                <h4>Marcas</h4>
+                <ul>
+                    <li><a href="marcas/cst/cst.html">CST</a></li>
+                    <li><a href="marcas/leovince/leovince.html">Leo Vince</a></li>
+                    <li><a href="marcas/shot/shot.html">SHOT</a></li>
+                    <li><a href="marcas/uswe/uswe.html">USWE</a></li>
+                    <li><a href="marcas/giantloop/giantloop.html">Giant Loop</a></li>
+                    <li><a href="marcas/nils/nils.html">NILS</a></li>
+                    <li><a href="marcas/nitromousse/nitromousse.html">Nitro Mousse</a></li>
+                    <li><a href="marcas/lucioli/lucioli.html">Lucioli</a></li>
+                    <li><a href="marcas/wrp/wrp.html">WRP</a></li>
+                    <li><a href="marcas/sidi/sidi.html">SIDI</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="sobre-nosotros.html">Quiénes Somos</a></li>
+                    <li><a href="donde-comprar/moto.html">Dónde Comprar</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Redes</h4>
+                <ul>
+                    <li><a href="https://www.instagram.com/radsport_geist/" target="_blank">Instagram</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Radsport Geist. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // FILTROS
+        const state = { segment: 'todos', search: '' };
+
+        const grid = document.getElementById('productsGrid');
+        const cards = Array.from(grid.querySelectorAll('.product-card'));
+        const searchInput = document.getElementById('searchInput');
+        const productCount = document.getElementById('productCount');
+        const breadcrumbSegment = document.getElementById('breadcrumbSegment');
+        const noResults = document.getElementById('noResults');
+
+        function applyFilters() {
+            let visible = 0;
+            cards.forEach(card => {
+                const segments = (card.dataset.segment || '').split(/\s+/);
+                const name = (card.dataset.name || '').toLowerCase();
+
+                const matchSegment = state.segment === 'todos' || segments.includes(state.segment);
+                const matchSearch = !state.search || name.includes(state.search);
+
+                const show = matchSegment && matchSearch;
+                card.style.display = show ? '' : 'none';
+                if (show) visible++;
+            });
+
+            productCount.textContent = `${visible} producto${visible === 1 ? '' : 's'}`;
+
+            const segmentNames = {
+                todos: 'Todos los productos',
+                moto: 'Moto',
+                atv: 'ATV / UTV',
+                bici: 'Bicicleta',
+                industrial: 'Industrial'
+            };
+            breadcrumbSegment.textContent = segmentNames[state.segment] || 'Productos';
+
+            // Header identificador: oculto en "Todos", muestra el segmento en el resto
+            const headerHero = document.getElementById('headerHero');
+            const heroTitle = document.getElementById('heroTitle');
+            const heroTitles = {
+                moto: 'Línea <em>Moto</em>',
+                atv: '<em>ATV / UTV</em>',
+                bici: 'Línea <em>Bicicleta</em>',
+                industrial: 'Línea <em>Industrial</em>'
+            };
+            if (state.segment === 'todos' || !heroTitles[state.segment]) {
+                headerHero.style.display = 'none';
+            } else {
+                heroTitle.innerHTML = heroTitles[state.segment];
+                headerHero.style.display = '';
+            }
+
+            noResults.style.display = visible === 0 ? '' : 'none';
+            paginate();
+        }
+
+        // PAGINATION
+        const PAGE_SIZE = 16;
+        let currentPage = 1;
+
+        function paginate() {
+            // Cards que pasaron el filtro (segment + search): display !== 'none'
+            const visibleCards = cards.filter(c => c.style.display !== 'none');
+            const totalPages = Math.max(1, Math.ceil(visibleCards.length / PAGE_SIZE));
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+            visibleCards.forEach((c, i) => {
+                const page = Math.floor(i / PAGE_SIZE) + 1;
+                if (page !== currentPage) c.style.display = 'none';
+            });
+            renderPagination(totalPages);
+        }
+
+        function renderPagination(totalPages) {
+            let pag = document.getElementById('pagination');
+            if (!pag) {
+                pag = document.createElement('div');
+                pag.id = 'pagination';
+                pag.className = 'pagination';
+                grid.parentNode.insertBefore(pag, grid.nextSibling);
+            }
+            if (totalPages <= 1) { pag.innerHTML = ''; return; }
+            let html = `<button onclick="goToPage(${currentPage-1})" ${currentPage===1?'disabled':''}>&larr; Anterior</button>`;
+            for (let i = 1; i <= totalPages; i++) {
+                html += `<button class="${i===currentPage?'active':''}" onclick="goToPage(${i})">${i}</button>`;
+            }
+            html += `<button onclick="goToPage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}>Siguiente &rarr;</button>`;
+            html += `<span class="pagination-info">Página ${currentPage} de ${totalPages}</span>`;
+            pag.innerHTML = html;
+        }
+
+        window.goToPage = function(p) {
+            currentPage = p;
+            applyFilters();
+            window.scrollTo({ top: grid.offsetTop - 100, behavior: 'smooth' });
+        };
+
+        // Segment tabs
+        document.querySelectorAll('.segment-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.segment-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                state.segment = tab.dataset.segment;
+                currentPage = 1;
+                applyFilters();
+            });
+        });
+
+        // Search
+        searchInput.addEventListener('input', (e) => {
+            state.search = e.target.value.trim().toLowerCase();
+            currentPage = 1;
+            applyFilters();
+        });
+
+        // Init
+        applyFilters();
+    </script>
+
+    <!-- COLOR THUMB HOVER/CLICK: cambia imagen principal del card con preload.
+         Soporta cards de imagen única y cards duales (conjuntos). -->
+    <script>
+    (function() {
+        document.querySelectorAll('.product-card').forEach(card => {
+            const wrap = card.querySelector('.product-card-img');
+            if (!wrap) return;
+            const mainImgs = Array.from(wrap.querySelectorAll('img'));
+            if (mainImgs.length === 0) return;
+            const thumbsWrap = card.querySelector('.product-card-color-thumbs');
+            if (!thumbsWrap) return;
+
+            const isDual = wrap.classList.contains('product-card-img-dual') && mainImgs.length >= 2;
+            const mainJersey = mainImgs[0];
+            const mainPant   = isDual ? mainImgs[1] : null;
+
+            const defaultJersey = mainJersey.getAttribute('src');
+            const defaultAlt    = mainJersey.getAttribute('alt');
+            const defaultPant   = mainPant ? mainPant.getAttribute('src') : null;
+
+            const mainThumb = document.createElement('img');
+            mainThumb.src = defaultJersey;
+            mainThumb.alt = defaultAlt;
+            mainThumb.classList.add('thumb-active');
+            if (isDual) {
+                mainThumb.dataset.jersey = defaultJersey;
+                if (defaultPant) mainThumb.dataset.pant = defaultPant;
+            }
+            thumbsWrap.insertBefore(mainThumb, thumbsWrap.firstChild);
+
+            const thumbs = Array.from(thumbsWrap.querySelectorAll('img'));
+
+            const cache = new Set();
+            function preload(src) {
+                if (!src || cache.has(src)) return;
+                cache.add(src);
+                const tmp = new Image();
+                tmp.src = src;
+            }
+            preload(defaultJersey);
+            preload(defaultPant);
+            thumbs.forEach(t => {
+                preload(t.src);
+                if (t.dataset.jersey) preload(t.dataset.jersey);
+                if (t.dataset.pant) preload(t.dataset.pant);
+            });
+
+            let activeThumb = thumbs[0];
+
+            function endsWith(haystack, needle) {
+                return haystack === needle || haystack.endsWith(needle);
+            }
+            function swap(thumb) {
+                if (isDual) {
+                    const jerseySrc = thumb.dataset.jersey || thumb.src;
+                    const pantSrc   = thumb.dataset.pant;
+                    if (!endsWith(mainJersey.src, jerseySrc)) mainJersey.src = jerseySrc;
+                    if (mainPant && pantSrc && !endsWith(mainPant.src, pantSrc)) mainPant.src = pantSrc;
+                } else {
+                    if (!endsWith(mainJersey.src, thumb.src)) mainJersey.src = thumb.src;
+                }
+                if (thumb.alt) mainJersey.alt = thumb.alt;
+            }
+
+            function highlight(thumb) {
+                thumbs.forEach(x => x.classList.toggle('thumb-active', x === thumb));
+            }
+
+            thumbs.forEach(t => {
+                t.addEventListener('mouseenter', () => {
+                    highlight(t);
+                    swap(t);
+                });
+            });
+
+            thumbsWrap.addEventListener('mouseleave', () => {
+                highlight(activeThumb);
+                swap(activeThumb);
+            });
+
+            thumbs.forEach(t => {
+                t.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    activeThumb = t;
+                    highlight(t);
+                    swap(t);
+                });
+            });
+        });
+    })();
+    </script>
+
+    <a href="https://wa.me/5491135713234" class="whatsapp-float" target="_blank" rel="noopener" title="Contactar por WhatsApp" aria-label="WhatsApp"><svg viewBox="0 0 32 32" width="28" height="28" fill="#fff" aria-hidden="true"><path d="M16.04 3C9.4 3 4 8.4 4 15.04c0 2.12.55 4.19 1.6 6.02L4 29l8.13-1.55a12 12 0 0 0 3.9.65h.01C22.68 28.1 28.08 22.7 28.08 16.06 28.08 8.4 22.68 3 16.04 3zm0 21.9h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.75.72.72-3.66-.24-.38a9.86 9.86 0 0 1-1.51-5.25c0-5.46 4.45-9.9 9.92-9.9 2.65 0 5.14 1.03 7.01 2.9a9.82 9.82 0 0 1 2.9 7 9.9 9.9 0 0 1-9.9 9.84zm5.44-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg></a>
+</body>
+</html>

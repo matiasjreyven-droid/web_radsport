@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NILS Race · Aceite Motor 4T | Radsport Geist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --red: #D32F2F; --red-dark: #B71C1C; --gray: #333; --gray-light: #f5f5f5; --white: #fff;
+            --brand-accent: #E84133; --brand-subtle: #888;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; color: var(--gray); background: var(--white);
+            background-image: radial-gradient(circle, rgba(0,0,0,0.06) 1px, transparent 1px);
+            background-size: 22px 22px; }
+
+        /* NAV */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .logo-text { font-size: 1.3rem; letter-spacing: 0.15em; color: var(--gray); text-decoration: none; }
+        .logo-bold { font-weight: 900; } .logo-dot { color: var(--red); margin: 0 0.35em; } .logo-light { font-weight: 300; }
+        .nav-links { list-style: none; display: flex; gap: 2rem; }
+        .nav-links a { color: var(--gray); text-decoration: none; font-size: 0.75rem; font-weight: 300;
+            letter-spacing: 0.14em; text-transform: uppercase; }
+        .nav-links a:hover { color: var(--red); } .nav-links a.active { color: var(--red); font-weight: 600; }
+
+        /* BRAND STRIP (arriba del breadcrumb) */
+        .brand-strip {
+            background: #0a0a0a;
+            color: white;
+            padding: 0.9rem 3rem;
+            margin-top: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid var(--brand-accent);
+        }
+        .brand-strip-left {
+            display: flex; align-items: center; gap: 1.2rem;
+        }
+        .brand-strip img {
+            height: 38px;
+            filter: brightness(0) invert(1);
+        }
+        .brand-strip-tagline {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            border-left: 1px solid #444;
+            padding-left: 1.2rem;
+        }
+        .brand-strip-right {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.6;
+        }
+        .brand-strip-right strong { color: var(--brand-accent); opacity: 1; font-weight: 700; }
+        @media (max-width: 800px) {
+            .brand-strip { flex-direction: column; gap: 0.6rem; padding: 0.9rem 1.5rem; }
+            .brand-strip-tagline { border-left: none; padding-left: 0; }
+        }
+
+        /* PAGE */
+        .page-wrap { padding-top: 1.5rem; max-width: 1600px; margin: 0 auto; padding-left: 3rem; padding-right: 3rem; }
+        .breadcrumb { font-size: 0.75rem; color: var(--brand-subtle); margin-bottom: 1.5rem; padding: 1rem 0; }
+        .breadcrumb a { color: var(--brand-subtle); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--brand-accent); }
+        .breadcrumb span { margin: 0 0.4rem; }
+
+        /* PRODUCT HERO: thumbs(left) + main(center) + info(right) */
+        .product-hero {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 2.5rem;
+            background: white;
+            border-radius: 14px;
+            padding: 1.5rem 1.5rem 1.5rem 1.5rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+            min-height: 560px;
+            align-items: start;
+        }
+        /* GALLERY: thumbs columna izq + foto principal */
+        .product-gallery {
+            display: grid;
+            grid-template-columns: 90px 1fr;
+            gap: 0.9rem;
+            align-items: start;
+        }
+        .gallery-thumbs {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            max-height: 540px;
+            overflow-y: auto;
+        }
+        .gallery-thumb {
+            background: white;
+            border: 1px solid #e6e6e6;
+            border-radius: 6px;
+            width: 90px; height: 90px;
+            cursor: pointer;
+            overflow: hidden;
+            padding: 0.4rem;
+            transition: border-color 0.2s;
+            flex-shrink: 0;
+        }
+        .gallery-thumb img {
+            width: 100%; height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+        .gallery-thumb:hover { border-color: #ccc; }
+        .gallery-thumb.active { border-color: var(--brand-accent); border-width: 2px; padding: 0.3rem; }
+
+        .gallery-main {
+            background: white;
+            border: 1px solid #e6e6e6;
+            border-radius: 8px;
+            min-height: 540px;
+            overflow: hidden;
+            position: relative;
+            cursor: zoom-in;
+        }
+        .gallery-main img {
+            width: 100%;
+            height: 100%;
+            min-height: 540px;
+            object-fit: contain;
+            padding: 0.5rem;
+            transition: transform 0.25s ease;
+            transform-origin: center center;
+        }
+        .gallery-main:hover img {
+            transform: scale(2.2);
+            padding: 0;
+        }
+        .gallery-zoom-icon {
+            position: absolute;
+            top: 0.7rem; left: 0.7rem;
+            width: 26px; height: 26px;
+            display: flex; align-items: center; justify-content: center;
+            color: #999;
+            pointer-events: none;
+            z-index: 2;
+            transition: opacity 0.2s;
+        }
+        .gallery-main:hover .gallery-zoom-icon { opacity: 0; }
+
+        /* INFO SIDE (specs) */
+        .product-info-side {
+            padding: 0.5rem 0.5rem 0.5rem 0;
+            display: flex; flex-direction: column;
+        }
+        .product-kicker {
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px;
+            color: var(--brand-accent); font-weight: 700; margin-bottom: 1rem;
+        }
+        .product-title {
+            font-size: 2.4rem; font-weight: 900; color: var(--gray);
+            letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 0.8rem;
+        }
+        .product-tagline {
+            font-size: 1rem; color: var(--brand-subtle); line-height: 1.5; margin-bottom: 2rem;
+        }
+
+        /* CTA BUTTONS (debajo de specs) */
+        .product-cta-row {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1.5rem;
+        }
+        .cta-btn {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.95rem 1.4rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: 2px solid var(--brand-accent);
+        }
+        .cta-btn.primary {
+            background: var(--brand-accent);
+            color: white;
+        }
+        .cta-btn.primary:hover {
+            background: #c4291c;
+            border-color: #c4291c;
+            transform: translateY(-2px);
+        }
+        .cta-btn.secondary {
+            background: white;
+            color: var(--brand-accent);
+        }
+        .cta-btn.secondary:hover {
+            background: var(--brand-accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .cta-btn svg {
+            width: 16px; height: 16px;
+        }
+        @media (max-width: 600px) {
+            .product-cta-row { flex-direction: column; }
+        }
+
+        /* SPECS TABLE */
+        .specs-table {
+            border-top: 1px solid #eee;
+        }
+        .specs-row {
+            display: grid;
+            grid-template-columns: 170px 1fr;
+            align-items: center;
+            padding: 0.85rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .specs-key {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            font-size: 0.7rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            color: var(--brand-accent);
+        }
+        /* Icono custom (gota de aceite) en cada fila de specs */
+        .specs-key::before {
+            content: '';
+            display: inline-block;
+            width: 12px; height: 12px;
+            background-color: var(--brand-accent);
+            -webkit-mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2 C12 2 6 10 6 14 a6 6 0 0 0 12 0 C18 10 12 2 12 2 Z'/></svg>");
+            mask-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M12 2 C12 2 6 10 6 14 a6 6 0 0 0 12 0 C18 10 12 2 12 2 Z'/></svg>");
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
+        }
+        .specs-value {
+            font-size: 0.9rem; font-weight: 500; color: var(--gray);
+        }
+        /* Pills para valores con multiples variantes (viscosidad, etc.) */
+        .specs-pills {
+            display: flex; flex-wrap: wrap; gap: 0.4rem;
+        }
+        .specs-pill {
+            display: inline-block;
+            padding: 0.32rem 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            background: white;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--gray);
+            line-height: 1;
+            transition: all 0.15s;
+            cursor: default;
+        }
+        .specs-pill:hover {
+            border-color: var(--brand-accent);
+            color: var(--brand-accent);
+        }
+
+        /* DESCRIPTION abajo del hero, full-width */
+        .product-description-section {
+            background: white;
+            border-radius: 14px;
+            padding: 2rem 2.5rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+            margin-top: 1.5rem;
+        }
+        .description-header {
+            font-size: 0.85rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 2px;
+            color: var(--gray); margin-bottom: 1.2rem;
+            padding-bottom: 0.7rem; border-bottom: 2px solid var(--brand-accent);
+            display: inline-block;
+        }
+        .product-description-section p {
+            font-size: 0.95rem; line-height: 1.75;
+            color: #555; margin-bottom: 1rem;
+        }
+        .product-description-section p:last-child { margin-bottom: 0; }
+        .product-description-section em {
+            color: var(--brand-accent); font-style: normal; font-weight: 600;
+        }
+
+        /* OTROS PRODUCTOS / RELACIONADOS */
+        .related-section {
+            margin-top: 2.5rem;
+        }
+        .related-header {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.6rem;
+            border-bottom: 1px solid #eee;
+        }
+        .related-header span { color: var(--brand-accent); }
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+        .related-card {
+            background: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            overflow: hidden;
+            text-decoration: none;
+            color: var(--gray);
+            transition: transform 0.25s, box-shadow 0.25s;
+            display: flex; flex-direction: column;
+        }
+        .related-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.07);
+        }
+        .related-img {
+            height: 200px;
+            background: white;
+            display: flex; align-items: center; justify-content: center;
+            padding: 1.2rem;
+            overflow: hidden;
+        }
+        .related-img img {
+            max-width: 100%; max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s;
+        }
+        .related-card:hover .related-img img { transform: scale(1.06); }
+        .related-body {
+            padding: 0.9rem 1.1rem 1.1rem;
+            border-top: 1px solid #f1f1f1;
+        }
+        .related-cat {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--brand-subtle);
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        .related-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        /* FOOTER */
+        footer { background: #000; color: white; padding: 3rem 2rem 1.5rem; margin-top: 4rem; }
+        .footer-content { max-width: 1600px; margin: 0 auto; text-align: center;
+            font-size: 0.85rem; color: #888; }
+        .footer-content a { color: var(--red); text-decoration: none; }
+
+        @media (max-width: 1000px) {
+            .product-hero { grid-template-columns: 1fr; padding: 1.5rem; gap: 2rem; }
+            .product-title { font-size: 1.8rem; }
+            .specs-row { grid-template-columns: 130px 1fr; }
+            .related-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .product-gallery { grid-template-columns: 1fr; }
+            .gallery-thumbs { flex-direction: row; max-height: none; overflow-x: auto; overflow-y: hidden; }
+            .gallery-thumb { width: 70px; height: 70px; }
+            .gallery-main { min-height: 360px; }
+            .gallery-main img { min-height: 360px; }
+            .related-grid { grid-template-columns: 1fr 1fr; }
+        }
+    
+        /* VARIANTE D: tricolor en border-bottom del brand strip */
+        .brand-strip {
+            border-bottom: none !important;
+            position: relative;
+        }
+        .brand-strip::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0; bottom: -3px;
+            height: 3px;
+            background: linear-gradient(90deg,
+                #008C45 0%, #008C45 33.33%,
+                #F4F5F0 33.33%, #F4F5F0 66.66%,
+                #CD212A 66.66%, #CD212A 100%);
+        }
+    
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <a href="../../../index.html" class="logo-text">
+            <span class="logo-bold">RADSPORT</span><span class="logo-dot">&bull;</span><span class="logo-light">GEIST</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="../../../sobre-nosotros.html">Sobre Nosotros</a></li>
+            <li><a href="../../../index.html#brands">Marcas</a></li>
+            <li><a href="../../../index.html#worlds">Segmentos</a></li>
+            <li><a href="../../../productos.html" class="active">Productos</a></li>
+            <li><a href="../../../donde-comprar/moto.html">Dónde Comprar</a></li>
+        </ul>
+    </nav>
+
+    <!-- BRAND STRIP -->
+    <div class="brand-strip">
+        <div class="brand-strip-left">
+            <img src="../../../img/logos/nils.png" alt="NILS">
+            <span class="brand-strip-tagline">Italian High-Performance Lubricants</span>
+        </div>
+        <div class="brand-strip-right">Distribuidor oficial <strong>· Argentina</strong></div>
+    </div>
+
+    <div class="page-wrap">
+        <!-- BREADCRUMB -->
+        <div class="breadcrumb">
+            <a href="../../../index.html">Inicio</a> <span>&rsaquo;</span>
+            <a href="../../../productos.html">Productos</a> <span>&rsaquo;</span>
+            <a href="../productos.html">NILS</a> <span>&rsaquo;</span>
+            <span>Race 4T</span>
+        </div>
+
+        <!-- PRODUCT HERO -->
+        <div class="product-hero">
+            <!-- GALLERY: thumbs col izq + foto principal -->
+            <div class="product-gallery">
+                <div class="gallery-thumbs">
+                    <button class="gallery-thumb active" data-src="../productos/NILS-RACE-SAE-10W40-RACING-FULL-SYNTHETIC-ENGINE-OIL-2.png" type="button">
+                        <img src="../productos/NILS-RACE-SAE-10W40-RACING-FULL-SYNTHETIC-ENGINE-OIL-2.png" alt="NILS Race 4T">
+                    </button>
+                </div>
+                <div class="gallery-main" id="galleryMain">
+                    <svg class="gallery-zoom-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                    <img id="mainImg" src="../productos/NILS-RACE-SAE-10W40-RACING-FULL-SYNTHETIC-ENGINE-OIL-2.png" alt="NILS Race 4T">
+                </div>
+            </div>
+
+            <!-- INFO SIDE: specs -->
+            <div class="product-info-side">
+                <div class="product-kicker">Aceite Motor 4T &middot; 100% Sintético</div>
+                <h1 class="product-title">Race 4T</h1>
+                <p class="product-tagline">100% sintético PAO para competición. La elección de los equipos profesionales.</p>
+
+                <div class="specs-table">
+                    <div class="specs-row">
+                        <span class="specs-key">Formulación</span>
+                        <span class="specs-value">100% sintético (PAO)</span>
+                    </div>
+                    <div class="specs-row">
+                        <span class="specs-key">Ideal para</span>
+                        <span class="specs-value">Competición / uso extremo</span>
+                    </div>
+                    <div class="specs-row">
+                        <span class="specs-key">Categoría</span>
+                        <span class="specs-value">Road Race, Off Road, Trial</span>
+                    </div>
+                    <div class="specs-row">
+                        <span class="specs-key">Aplicación</span>
+                        <span class="specs-value">Motor 4 Tiempos</span>
+                    </div>
+                    <div class="specs-row">
+                        <span class="specs-key">Certificaciones</span>
+                        <span class="specs-value">API SP &middot; JASO MA2</span>
+                    </div>
+                    <div class="specs-row">
+                        <span class="specs-key">Viscosidad</span>
+                        <div class="specs-pills">
+                            <span class="specs-pill">5W/30</span>
+                            <span class="specs-pill">5W/40</span>
+                            <span class="specs-pill">10W/40</span>
+                            <span class="specs-pill">10W/50</span>
+                            <span class="specs-pill">10W/60</span>
+                            <span class="specs-pill">15W/50</span>
+                        </div>
+                    </div>
+                    <div class="specs-row">
+                        <span class="specs-key">Envase</span>
+                        <span class="specs-value">1 L</span>
+                    </div>
+                </div>
+
+                <!-- CTA BUTTONS -->
+                <div class="product-cta-row">
+                    <a href="../../../donde-comprar/moto.html?marca=nils" class="cta-btn primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                            <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                        Dónde Comprar
+                    </a>
+                    <a href="https://wa.me/XXXXXXXXXXX?text=Hola%2C%20quiero%20comercializar%20NILS" target="_blank" class="cta-btn secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <path d="M3 7l9 6 9-6"/>
+                            <rect x="3" y="5" width="18" height="14" rx="2"/>
+                        </svg>
+                        Soy Comercio
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- DESCRIPCION (full width abajo del hero) -->
+        <div class="product-description-section">
+            <div class="description-header">Descripción</div>
+            <p>Lubricante <em>100% sintético (PAO)</em> para motores de 4T de altísimas prestaciones. RACE, gracias a su particular formulación, asegura una perfecta lubricación en condiciones de uso extremas tanto en motores de competición como de serie, de cualquier cilindrada.</p>
+            <p>RACE evita depósitos carbonosos en anillos y pistones, permite una rápida disipación de la temperatura, garantizando así la máxima entrega de potencia del motor.</p>
+            <p>RACE es perfectamente compatible con los materiales que componen los discos de las transmisiones en baño de aceite y está especialmente diseñado para favorecer el perfecto funcionamiento del cambio electrónico.</p>
+        </div>
+
+        <!-- OTROS PRODUCTOS NILS -->
+        <div class="related-section">
+            <h2 class="related-header">Otros productos que <span>te pueden interesar</span></h2>
+            <div class="related-grid">
+                <a href="../productos.html" class="related-card">
+                    <div class="related-img"><img src="../productos/NILS-OFF-ROAD-CHAIN-SAND-SPRAY-grasso-V1.png" alt="NILS Off-Road Chain Spray"></div>
+                    <div class="related-body">
+                        <div class="related-cat">Spray Cadena</div>
+                        <div class="related-name">Off-Road Chain Spray</div>
+                    </div>
+                </a>
+                <a href="../productos.html" class="related-card">
+                    <div class="related-img"><img src="../productos/AIR-FILTER.jpg" alt="NILS Air Filter"></div>
+                    <div class="related-body">
+                        <div class="related-cat">Aceite Filtro</div>
+                        <div class="related-name">Air Filter Oil</div>
+                    </div>
+                </a>
+                <a href="../productos.html" class="related-card">
+                    <div class="related-img"><img src="../productos/NILS-FORK-SAE-15W-HIGH-PERFORMANCE-FORK-LUBRICANT.png" alt="NILS Fork"></div>
+                    <div class="related-body">
+                        <div class="related-cat">Aceite Suspensión</div>
+                        <div class="related-name">Fork SAE 15W</div>
+                    </div>
+                </a>
+                <a href="../productos.html" class="related-card">
+                    <div class="related-img"><img src="../productos/GRASA-Silicon-Grease.jpg" alt="NILS Silicon Grease"></div>
+                    <div class="related-body">
+                        <div class="related-cat">Grasa</div>
+                        <div class="related-name">Silicon Grease</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 Radsport Geist. Todos los derechos reservados. &middot; <a href="../../../index.html">Volver al inicio</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Thumbnail click -> cambia imagen principal
+        const mainImg = document.getElementById('mainImg');
+        const galleryMain = document.getElementById('galleryMain');
+        const thumbs = document.querySelectorAll('.gallery-thumb');
+        thumbs.forEach(thumb => {
+            thumb.addEventListener('click', () => {
+                const src = thumb.getAttribute('data-src');
+                if (src) {
+                    mainImg.src = src;
+                    thumbs.forEach(t => t.classList.remove('active'));
+                    thumb.classList.add('active');
+                }
+            });
+        });
+
+        // Zoom al hover: el origen del scale sigue al cursor
+        if (galleryMain) {
+            galleryMain.addEventListener('mousemove', (e) => {
+                const rect = galleryMain.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                mainImg.style.transformOrigin = x + '% ' + y + '%';
+            });
+            galleryMain.addEventListener('mouseleave', () => {
+                mainImg.style.transformOrigin = 'center center';
+            });
+        }
+    </script>
+
+</body>
+</html>

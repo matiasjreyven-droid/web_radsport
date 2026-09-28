@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dónde Comprar — Moto — Radsport Geist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        /* ============================================
+           ESTILOS BASE
+           ============================================ */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --red: #D32F2F;
+            --red-dark: #B71C1C;
+            --gray: #333333;
+            --gray-light: #f5f5f5;
+            --white: #ffffff;
+            --black: #000000;
+            --accent: #111111;
+            --accent-light: #f0f0f0;
+            --subtle: #888888;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--gray);
+            background: var(--white);
+            background-image: radial-gradient(circle, rgba(0,0,0,0.09) 1px, transparent 1px);
+            background-size: 22px 22px;
+            overflow-x: hidden;
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .logo-text {
+            display: flex; align-items: center; gap: 0;
+            font-size: 1.3rem; letter-spacing: 0.15em;
+            color: var(--gray); text-decoration: none;
+        }
+        .logo-bold { font-weight: 900; }
+        .logo-dot { color: var(--red); margin: 0 0.35em; }
+        .logo-light { font-weight: 300; }
+        .nav-links {
+            list-style: none; display: flex; gap: 2rem;
+        }
+        .nav-links a {
+            color: var(--gray); text-decoration: none;
+            font-size: 0.75rem; font-weight: 300;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--red); }
+        .nav-links a.active { color: var(--red); font-weight: 600; }
+
+        /* Dropdown Marcas */
+        .nav-links li { position: relative; }
+        .nav-dropdown {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            padding: 0.5rem;
+            display: grid; grid-template-columns: 1fr 1fr;
+            grid-auto-rows: 40px;
+            gap: 0.15rem;
+            min-width: 260px;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+            transform: translateX(-50%) translateY(8px);
+            z-index: 1001;
+            margin-top: 0.5rem;
+        }
+        .nav-links li:hover .nav-dropdown,
+        .nav-dropdown:hover {
+            opacity: 1; visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        .nav-dropdown a {
+            display: flex; align-items: center; justify-content: center;
+            padding: 0.3rem 0.6rem;
+            border-radius: 8px;
+            transition: opacity 0.15s;
+            opacity: 0.7;
+        }
+        .nav-dropdown a:hover {
+            opacity: 1;
+        }
+        .nav-dropdown a img {
+            max-height: 24px;
+            max-width: 60px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            mix-blend-mode: multiply;
+        }
+        .nav-dropdown a.brand-shot img {
+            max-height: 24px;
+            max-width: 100px;
+        }
+        .nav-dropdown-segments {
+            grid-template-columns: 1fr;
+            min-width: 180px;
+            gap: 0.1rem;
+        }
+        .nav-dropdown-segments a {
+            font-size: 0.82rem !important;
+            font-weight: 500 !important;
+            color: var(--gray) !important;
+            padding: 0.5rem 0.8rem;
+            border-radius: 8px;
+            transition: background 0.15s, color 0.15s;
+            opacity: 1;
+        }
+        .nav-dropdown-segments a:hover {
+            background: var(--gray-light);
+            color: var(--red) !important;
+        }
+
+        /* ============================================
+           HERO HEADER
+           ============================================ */
+        .page-hero {
+            background: var(--accent);
+            padding: 6.5rem 2rem 2rem;
+            text-align: center;
+        }
+        .page-hero h1 {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+        }
+        .page-hero p {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        /* ============================================
+           SEGMENT TABS
+           ============================================ */
+        .segment-tabs {
+            background: #1a1a1a;
+            display: flex; justify-content: center;
+            gap: 0;
+        }
+        .segment-tab {
+            padding: 0.8rem 2rem;
+            color: rgba(255,255,255,0.4);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+        .segment-tab:hover { color: rgba(255,255,255,0.7); }
+        .segment-tab.active {
+            color: white;
+            border-bottom-color: var(--red);
+        }
+
+        /* ============================================
+           BRAND BAR (filtros por marca)
+           ============================================ */
+        .brand-bar {
+            background: var(--white);
+            border-bottom: 1px solid #e5e5e5;
+            padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: center;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+        }
+        .brand-bar a {
+            display: flex; align-items: center;
+            opacity: 0.25;
+            transition: opacity 0.25s, transform 0.25s;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .brand-bar a:hover {
+            opacity: 0.6;
+            transform: scale(1.08);
+        }
+        .brand-bar a.active {
+            opacity: 1;
+        }
+        .brand-bar a img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        /* ============================================
+           BREADCRUMB + CONTEO
+           ============================================ */
+        .page-header {
+            padding: 1.5rem 3rem 0.5rem;
+            max-width: 1200px; margin: 0 auto;
+        }
+        .page-header-breadcrumb {
+            font-size: 0.72rem; color: var(--subtle);
+            margin-bottom: 0.5rem;
+        }
+        .page-header-breadcrumb a {
+            color: var(--subtle); text-decoration: none;
+            transition: color 0.2s;
+        }
+        .page-header-breadcrumb a:hover { color: var(--accent); }
+        .page-header-breadcrumb span { margin: 0 0.4rem; }
+        .page-header-count {
+            font-size: 0.8rem; color: var(--subtle); font-weight: 400;
+        }
+
+        /* ============================================
+           LAYOUT MAPA + LISTADO (side by side)
+           ============================================ */
+        .map-stores-layout {
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 35fr 65fr;
+            gap: 0;
+            align-items: stretch;
+            width: 100%;
+        }
+        .stores-panel {
+            display: flex; flex-direction: column;
+            gap: 0;
+            padding: 1rem 1.2rem;
+            border-right: 1px solid #e5e5e5;
+        }
+        .search-input {
+            width: 100%;
+            padding: 0.7rem 1.2rem 0.7rem 2.8rem;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--gray);
+            background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") 1rem center no-repeat;
+            outline: none;
+            transition: border-color 0.2s;
+            margin-bottom: 0.8rem;
+        }
+        .search-input:focus { border-color: var(--accent); }
+        .search-input::placeholder { color: var(--subtle); }
+        .stores-list {
+            display: flex; flex-direction: column; gap: 0.6rem;
+            max-height: 520px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+        .stores-list::-webkit-scrollbar { width: 4px; }
+        .stores-list::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        .stores-list::-webkit-scrollbar-track { background: transparent; }
+        #map {
+            height: 600px;
+            border-radius: 0;
+            border: none;
+            z-index: 1;
+        }
+        .store-card {
+            display: flex; align-items: center; justify-content: space-between;
+            background: white;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            transition: box-shadow 0.2s, transform 0.2s;
+            cursor: pointer;
+        }
+        .store-card:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            transform: translateY(-2px);
+        }
+        .store-info { flex: 1; }
+        .store-name {
+            font-size: 0.95rem; font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .store-address {
+            font-size: 0.78rem; color: var(--subtle);
+            margin-bottom: 0.4rem;
+        }
+        .store-brands {
+            display: flex; gap: 0.5rem; align-items: center;
+        }
+        .store-brand-logo {
+            max-height: 28px;
+            max-width: 58px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            opacity: 0.6;
+        }
+        .store-brand-logo.logo-shot {
+            max-height: 20px;
+            max-width: 58px;
+        }
+        .store-brand-logo.logo-nils {
+            max-height: 34px;
+        }
+        .store-brand-logo.logo-uswe {
+            max-height: 30px;
+        }
+        .store-brands-right {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+            align-items: center;
+            justify-items: center;
+            min-width: 340px;
+        }
+        .store-phone {
+            font-size: 0.78rem; color: var(--subtle);
+            text-decoration: none;
+            display: flex; align-items: center; gap: 0.3rem;
+            transition: color 0.2s;
+        }
+        .store-phone:hover { color: var(--accent); }
+        .store-actions {
+            display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem;
+        }
+        .store-map-btn {
+            font-size: 0.7rem; font-weight: 600;
+            color: var(--red);
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .store-map-btn:hover { opacity: 0.7; }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: var(--subtle);
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        /* ============================================
+           CTA WHATSAPP
+           ============================================ */
+        .cta-whatsapp {
+            max-width: 1200px; margin: 0 auto;
+            padding: 1rem 3rem 4rem;
+        }
+        .cta-whatsapp-box {
+            background: var(--accent);
+            border-radius: 16px;
+            padding: 2.5rem 3rem;
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 2rem;
+        }
+        .cta-whatsapp-text h3 {
+            color: white;
+            font-size: 1.1rem; font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+        .cta-whatsapp-text p {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.82rem;
+        }
+        .cta-whatsapp-btn {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.8rem 2rem;
+            background: #25D366;
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 0.85rem; font-weight: 600;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .cta-whatsapp-btn:hover { background: #1fba59; }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer {
+            background: var(--gray); color: white;
+            padding: 3rem 2rem 1rem;
+        }
+        .footer-content {
+            max-width: 1200px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-section h4 { font-size: 0.85rem; margin-bottom: 1rem; font-weight: 700; }
+        .footer-section ul { list-style: none; }
+        .footer-section li { margin-bottom: 0.5rem; }
+        .footer-section a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.8rem; transition: color 0.3s; }
+        .footer-section a:hover { color: white; }
+        .footer-bottom { text-align: center; padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.72rem; color: rgba(255,255,255,0.5);
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 768px) {
+            .page-hero h1 { font-size: 1.3rem; }
+            .segment-tabs { flex-wrap: wrap; }
+            .segment-tab { padding: 0.6rem 1.2rem; font-size: 0.7rem; }
+            .brand-bar { gap: 1.5rem; padding: 0.3rem 1rem; }
+            .brand-bar a img { height: 24px !important; }
+            .map-stores-layout { grid-template-columns: 1fr; padding: 0 1.5rem; }
+            #map { height: 280px; position: static; order: -1; }
+            .stores-list { max-height: none; }
+            .store-card { flex-direction: column; align-items: flex-start; gap: 0.8rem; }
+            .store-actions { flex-direction: row; align-items: center; }
+            .cta-whatsapp { padding: 1rem 1.5rem 3rem; }
+            .cta-whatsapp-box { flex-direction: column; text-align: center; padding: 2rem 1.5rem; }
+            .footer-content { grid-template-columns: repeat(2, 1fr); }
+        }
+            .footer-marcas ul { columns: 2; column-gap: 2rem; }
+            /* WHATSAPP FLOAT */
+        .whatsapp-float { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 55px; height: 55px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 4px 15px rgba(37,211,102,0.3); z-index: 999; transition: transform 0.2s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav>
+        <a href="../index.html" class="logo-text">
+            <span class="logo-bold">RADSPORT</span>
+            <span class="logo-dot">&bull;</span>
+            <span class="logo-light">GEIST</span>
+        </a>
+        <ul class="nav-links">
+            <li>
+                <a href="../index.html#worlds">Segmentos</a>
+            </li>
+            <li>
+                <a href="../index.html#brands">Marcas</a>
+            </li>
+            <li><a href="../productos.html">Productos</a></li>
+            <li><a href="moto.html" class="active">Dónde Comprar</a></li>
+            <li><a href="../sobre-nosotros.html">Sobre Nosotros</a></li>
+            <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <div class="page-hero">
+        <h1>Dónde Comprar</h1>
+        <p>Encontrá el punto de venta más cercano</p>
+    </div>
+
+    <!-- SEGMENT TABS -->
+    <div class="segment-tabs">
+        <a href="moto.html" class="segment-tab active">Moto</a>
+        <a href="atv.html" class="segment-tab">ATV / UTV / SSV</a>
+        <a href="bici.html" class="segment-tab">Bicicleta</a>
+        <a href="industrial.html" class="segment-tab">Industrial</a>
+    </div>
+
+    <!-- BRAND BAR — filtro por marca -->
+    <div class="brand-bar" id="brandBar">
+        <a href="#" data-brand="cst" title="CST Tires"><img src="../img/logos/cst.png" alt="CST" style="height: 34px;"></a>
+        <a href="#" data-brand="leovince" title="Leo Vince"><img src="../img/logos/leovince.png" alt="Leo Vince"></a>
+        <a href="#" data-brand="shot" title="SHOT Race Gear"><img src="../img/logos/shot.png" alt="SHOT" style="height: 40px;"></a>
+        <a href="#" data-brand="uswe" title="USWE"><img src="../img/logos/uswe.png" alt="USWE" style="height: 60px;"></a>
+        <a href="#" data-brand="giantloop" title="Giant Loop"><img src="../img/logos/giantloop.png" alt="Giant Loop"></a>
+        <a href="#" data-brand="nils" title="NILS"><img src="../img/logos/nils.png" alt="NILS" style="height: 84px;"></a>
+        <a href="#" data-brand="nitromousse" title="Nitro Mousse"><img src="../img/logos/nitromousse.png" alt="Nitro Mousse"></a>
+        <a href="#" data-brand="lucioli" title="Lucioli"><img src="../img/logos/lucioli.png" alt="Lucioli"></a>
+        <a href="#" data-brand="wrp" title="WRP"><img src="../img/logos/wrp.png" alt="WRP"></a>
+        <a href="#" data-brand="sidi" title="SIDI"><img src="../img/logos/sidi.png" alt="SIDI" style="height: 34px;"></a>
+    </div>
+
+    <!-- BREADCRUMB -->
+    <header class="page-header">
+        <div class="page-header-breadcrumb">
+            <a href="../index.html">Inicio</a>
+            <span>&rsaquo;</span>
+            Dónde Comprar
+            <span>&rsaquo;</span>
+            Moto
+        </div>
+    </header>
+
+    <!-- LAYOUT: Listado + Mapa side by side -->
+    <div class="map-stores-layout">
+        <div class="stores-panel">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem;">
+                <p class="page-header-count" id="storeCount" style="font-size: 0.78rem; color: var(--subtle);"></p>
+                <button id="resetFilter" style="display: none; background: var(--red); color: white; border: none; padding: 0.45rem 1.2rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; letter-spacing: 0.03em; transition: background 0.2s;" onmouseover="this.style.background='#B71C1C'" onmouseout="this.style.background='#D32F2F'">✕ Ver todas las marcas</button>
+            </div>
+            <input type="text" class="search-input" id="searchInput" placeholder="Buscar por nombre, ciudad o provincia...">
+            <div class="stores-list" id="storesList">
+                <!-- Generado por JS -->
+            </div>
+            <div class="no-results" id="noResults">No hay puntos de venta con ese filtro.</div>
+        </div>
+        <div id="map"></div>
+    </div>
+
+    <!-- CTA WHATSAPP -->
+    <section class="cta-whatsapp">
+        <div class="cta-whatsapp-box">
+            <div class="cta-whatsapp-text">
+                <h3>¿No encontrás un punto de venta cercano?</h3>
+                <p>Escribinos y te ayudamos a conseguir lo que necesitás.</p>
+            </div>
+            <a href="https://wa.me/5491146000000" target="_blank" class="cta-whatsapp-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Escribinos
+            </a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Segmentos</h4>
+                <ul>
+                    <li><a href="../segmentos/moto.html">Moto</a></li>
+                    <li><a href="../segmentos/atv.html">ATV / UTV / SSV</a></li>
+                    <li><a href="../segmentos/bici.html">Bicicleta</a></li>
+                    <li><a href="../segmentos/industrial.html">Industrial</a></li>
+                </ul>
+            </div>
+            <div class="footer-section footer-marcas">
+                <h4>Marcas</h4>
+                <ul>
+                    <li><a href="../marcas/cst/cst.html">CST</a></li>
+                    <li><a href="../marcas/leovince/leovince.html">Leo Vince</a></li>
+                    <li><a href="../marcas/shot/shot.html">SHOT</a></li>
+                    <li><a href="../marcas/uswe/uswe.html">USWE</a></li>
+                    <li><a href="../marcas/giantloop/giantloop.html">Giant Loop</a></li>
+                    <li><a href="../marcas/nils/nils.html">NILS</a></li>
+                    <li><a href="../marcas/nitromousse/nitromousse.html">Nitro Mousse</a></li>
+                    <li><a href="../marcas/lucioli/lucioli.html">Lucioli</a></li>
+                    <li><a href="../marcas/wrp/wrp.html">WRP</a></li>
+                    <li><a href="../marcas/sidi/sidi.html">SIDI</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="../sobre-nosotros.html">Quiénes Somos</a></li>
+                    <li><a href="../donde-comprar/moto.html">Dónde Comprar</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Redes</h4>
+                <ul>
+                    <li><a href="https://www.instagram.com/radsport_geist/" target="_blank">Instagram</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Radsport Geist. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- LEAFLET JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script>
+        // ============================================
+        // DATOS DE EJEMPLO — Puntos de venta Moto
+        // Reemplazar con datos reales
+        // ============================================
+        const stores = [
+            {
+                name: 'Accesorios Moto Tigre',
+                address: 'Av Cazon 910, Tigre',
+                province: 'Buenos Aires',
+                lat: -34.4283229, lng: -58.5736377,
+                phone: '+541138054767',
+                brands: ['cst', 'nils']
+            },
+            {
+                name: 'Cigi Motos',
+                address: 'Camino Centenario y 493 1827 L.9, Gonnet La Plata',
+                province: 'Buenos Aires',
+                lat: -34.929936, lng: -57.9404885,
+                phone: '+542212004112',
+                brands: ['cst', 'wrp']
+            },
+            {
+                name: 'Cingolani Motors',
+                address: 'Mendoza 803, 9 de julio',
+                province: 'Buenos Aires',
+                lat: -35.4458372, lng: -60.8870705,
+                phone: '+542317508943',
+                brands: ['cst']
+            },
+            {
+                name: 'El Umbral Neumáticos',
+                address: 'Av savio 1327, San nicolas de los arroyos',
+                province: 'Buenos Aires',
+                lat: -33.3572784, lng: -60.1922547,
+                phone: '+543364579851',
+                brands: ['cst']
+            },
+            {
+                name: 'Flying Motors',
+                address: 'AV. San Martin 1315, Tres arroyos',
+                province: 'Buenos Aires',
+                lat: -38.366825, lng: -60.2886558,
+                phone: '+542983410646',
+                brands: ['cst']
+            },
+            {
+                name: 'Lubrisar',
+                address: 'Elguea Roman 584, Chacabuco',
+                province: 'Buenos Aires',
+                lat: -34.6322854, lng: -60.4738885,
+                phone: '+542352467266',
+                brands: ['cst']
+            },
+            {
+                name: 'Ploton',
+                address: 'Av. Rivadavia 14894, Ramos Mejía (La Matanza)',
+                province: 'Buenos Aires',
+                lat: -34.6427801, lng: -58.577362,
+                phone: '+541132067118',
+                brands: ['cst']
+            },
+            {
+                name: 'Agrobikes',
+                address: 'Av. Francisco Beiró 2393, Buenos Aires',
+                province: 'CABA',
+                lat: -34.5913208, lng: -58.488533,
+                phone: '+541151763232',
+                brands: ['cst', 'leovince']
+            },
+            {
+                name: 'Luma Benelli Store Catamarca',
+                address: 'Intendente Alderete Salas 1100, San Fernando del Valle',
+                province: 'Catamarca',
+                lat: -28.4664476, lng: -65.7998766,
+                phone: '+543834250684',
+                brands: ['cst']
+            },
+            {
+                name: 'Motopower',
+                address: 'AV. Guemes Oeste 1250, San Francisco del Valle',
+                province: 'Catamarca',
+                lat: -28.4501813, lng: -65.7400798,
+                phone: '+543834888353',
+                brands: ['cst']
+            },
+            {
+                name: 'Agropecuaria San Salvador',
+                address: 'San Martin 147, Viamonte',
+                province: 'Córdoba',
+                lat: -33.7471944, lng: -63.0968644,
+                phone: '+543515331446',
+                brands: ['cst']
+            },
+            {
+                name: 'Craze Motos',
+                address: 'Av. Pte Peron 969, Villa Maria',
+                province: 'Córdoba',
+                lat: -32.4106245, lng: -63.2435809,
+                phone: '+543534206028',
+                brands: ['cst', 'shot']
+            },
+            {
+                name: 'DVM Motorepuestos',
+                address: 'Carranza 867, Viilla Nueva',
+                province: 'Córdoba',
+                lat: -32.4363746, lng: -63.2426267,
+                phone: '+543535086273',
+                brands: ['cst']
+            },
+            {
+                name: 'Druetta Neumaticos',
+                address: 'Echeverria 1137, San Francisco',
+                province: 'Córdoba',
+                lat: -31.4409467, lng: -62.0818744,
+                phone: '+543564611500',
+                brands: ['cst']
+            },
+            {
+                name: 'Moto ZK',
+                address: 'Colon 2945, Córdoba',
+                province: 'Córdoba',
+                lat: -31.4026579, lng: -64.2200151,
+                phone: '+543518083200',
+                brands: ['cst']
+            },
+            {
+                name: 'Nizzo Neumaticos',
+                address: 'Av. Sagrada Familia 21, Córdoba',
+                province: 'Córdoba',
+                lat: -31.3992434, lng: -64.2364926,
+                phone: '+543514845817',
+                brands: ['cst']
+            },
+            {
+                name: 'Promotoil',
+                address: 'Sarachaga 631, Cordoba',
+                province: 'Córdoba',
+                lat: -31.3916108, lng: -64.1830392,
+                phone: '+543516328550',
+                brands: ['nils']
+            },
+            {
+                name: 'Shop Race',
+                address: 'General Paz 1875, Rio Cuarto',
+                province: 'Córdoba',
+                lat: -33.1351, lng: -64.350813,
+                phone: '+543584289775',
+                brands: ['cst', 'uswe']
+            },
+            {
+                name: 'Trapote Racing',
+                address: 'Av. Recta Martinolli 5786, Córdoba',
+                province: 'Córdoba',
+                lat: -31.35256, lng: -64.2484001,
+                phone: '+543515395384',
+                brands: ['cst', 'shot', 'uswe']
+            },
+            {
+                name: 'Motornáutica',
+                address: 'AV. artigas 2155, Gualeguaychu',
+                province: 'Entre Ríos',
+                lat: -33.0220227, lng: -58.5354517,
+                phone: '+543444620071',
+                brands: ['cst', 'leovince']
+            },
+            {
+                name: 'Virtual Rider Neumáticos',
+                address: 'San Nicolas 714, Viale',
+                province: 'Entre Ríos',
+                lat: -31.8704281, lng: -60.0063585,
+                phone: '+543434692699',
+                brands: ['cst', 'sidi', 'uswe']
+            },
+            {
+                name: 'CST Chilecito',
+                address: 'Castro Barros 100, Chilecito',
+                province: 'La Rioja',
+                lat: -29.1655232, lng: -67.4961813,
+                phone: '+543825665562',
+                brands: ['cst', 'nils', 'nitromousse']
+            },
+            {
+                name: 'Dakar Motos',
+                address: 'Av. Sarmiento 690, San Rafael',
+                province: 'Mendoza',
+                lat: -34.6229922, lng: -68.3431148,
+                phone: '+542604393998',
+                brands: ['cst']
+            },
+            {
+                name: 'Mendoza Motos',
+                address: 'Colon 1087, Godoy Cruz',
+                province: 'Mendoza',
+                lat: -32.9369826, lng: -68.8487842,
+                phone: '+542616740009',
+                brands: ['cst', 'leovince', 'sidi']
+            },
+            {
+                name: 'Neo Store',
+                address: 'San Martín Sur 586, Godoy Cruz',
+                province: 'Mendoza',
+                lat: -32.9304331, lng: -68.8496947,
+                phone: '+542616681954',
+                brands: ['cst', 'shot']
+            },
+            {
+                name: 'Tres Motorsports',
+                address: 'San Rafael',
+                province: 'Mendoza',
+                lat: -34.6126025, lng: -68.330514,
+                phone: '+542604647339',
+                brands: ['nitromousse', 'shot', 'sidi']
+            },
+            {
+                name: 'Tunuyan Motos',
+                address: 'Moreno 299, Tunuyan',
+                province: 'Mendoza',
+                lat: -33.5796845, lng: -69.0199864,
+                phone: '+542622594541',
+                brands: ['uswe']
+            },
+            {
+                name: 'RPM Neuquén',
+                address: 'Corrientes 802, Neuquén',
+                province: 'Neuquén',
+                lat: -38.9637618, lng: -68.0576216,
+                phone: '+542995803869',
+                brands: ['cst', 'nils', 'shot', 'sidi', 'uswe']
+            },
+            {
+                name: 'KTM Salta',
+                address: 'Hipolito Yrigoyen 739, Salta',
+                province: 'Salta',
+                lat: -24.7997958, lng: -65.3975781,
+                phone: '+543874144770',
+                brands: ['nils']
+            },
+            {
+                name: 'V-One',
+                address: 'Alvardo 1350, Salta',
+                province: 'Salta',
+                lat: -24.7892946, lng: -65.4103194,
+                phone: '+543874430779',
+                brands: ['cst', 'leovince', 'nitromousse']
+            },
+            {
+                name: 'Puchi Ontiveros Motos',
+                address: 'Necochea 1465 Norte, Santa Lucía',
+                province: 'San Juan',
+                lat: -31.5379349, lng: -68.4620112,
+                phone: '+542644101666',
+                brands: ['cst']
+            },
+            {
+                name: 'CFMOTO San José',
+                address: 'Mitre 68, San Jose de la Esquina',
+                province: 'Santa Fe',
+                lat: -33.1077492, lng: -61.7048448,
+                phone: '+543467636070',
+                brands: ['cst', 'wrp']
+            },
+            {
+                name: 'NTC - Rider Shop',
+                address: 'Moreno 3500, Esperanza',
+                province: 'Santa Fe',
+                lat: -31.4366868, lng: -60.9284781,
+                phone: '+543498457524',
+                brands: ['shot', 'sidi', 'uswe']
+            },
+            {
+                name: 'Oeste Neumaticos Galvez',
+                address: 'Av. 25 de Mayo 1002, Galvez',
+                province: 'Santa Fe',
+                lat: -32.0271626, lng: -61.2169047,
+                phone: '+543404636366',
+                brands: ['cst']
+            },
+            {
+                name: 'Maxi Moto',
+                address: 'Av Belgrano 1154, Santiago Del Estero',
+                province: 'Santiago del Estero',
+                lat: -27.7961095, lng: -64.2555937,
+                phone: '+543855151347',
+                brands: ['cst']
+            },
+            {
+                name: 'Abregù Motomecánica',
+                address: 'Brasil 1347, Yerba Buena',
+                province: 'Tucumán',
+                lat: -26.8103165, lng: -65.2732145,
+                phone: '+543814784787',
+                brands: ['nils']
+            },
+            {
+                name: 'Barrera Motoshop',
+                address: 'Pedro de Villalba 398, Yerba Buena',
+                province: 'Tucumán',
+                lat: -26.8137414, lng: -65.267242,
+                phone: '+543815376736',
+                brands: ['leovince', 'lucioli', 'shot', 'sidi', 'uswe']
+            },
+            {
+                name: 'CFMoto Tucumán',
+                address: '',
+                province: 'Tucumán',
+                lat: -26.8303703, lng: -65.2038133,
+                phone: '+543812221618',
+                brands: ['cst', 'leovince', 'nils', 'shot', 'sidi', 'uswe']
+            },
+            {
+                name: 'Cowboy Motorparts',
+                address: 'Lídoro Quinteros 845, Juan Bautista Alberdi',
+                province: 'Tucumán',
+                lat: -27.5891085, lng: -65.6200435,
+                phone: '+543865549507',
+                brands: ['lucioli', 'nitromousse', 'shot', 'uswe']
+            },
+            {
+                name: 'Fantic Tucumán',
+                address: 'Guemes 164, Yerba Buena',
+                province: 'Tucumán',
+                lat: -26.8155263, lng: -65.2907129,
+                phone: '+543815949805',
+                brands: ['cst', 'nils', 'nitromousse', 'shot', 'uswe']
+            },
+            {
+                name: 'KTM Tucumán',
+                address: 'San Lorenzo 1312, San Miguel de Tucumán',
+                province: 'Tucumán',
+                lat: -26.8314234, lng: -65.2180332,
+                phone: '+543812340223',
+                brands: ['cst', 'leovince', 'nils', 'nitromousse', 'shot', 'sidi', 'uswe', 'wrp']
+            },
+            {
+                name: 'Solomoto Team',
+                address: 'Av. Siria 1350, San Miguel de Tucumán',
+                province: 'Tucumán',
+                lat: -26.8115253, lng: -65.2060383,
+                phone: '+543814305975',
+                brands: ['lucioli', 'nils', 'shot', 'uswe']
+            }
+        ];
+
+        // Orden oficial de marcas Radsport
+        const brandOrder = ['cst', 'leovince', 'shot', 'uswe', 'giantloop', 'nils', 'nitromousse', 'lucioli', 'wrp', 'sidi'];
+
+        const brandNames = {
+            shot: 'SHOT', cst: 'CST', sidi: 'SIDI',
+            nils: 'NILS', leovince: 'Leo Vince', uswe: 'USWE',
+            giantloop: 'Giant Loop', lucioli: 'Lucioli',
+            nitromousse: 'Nitro Mousse', wrp: 'WRP'
+        };
+
+        const brandLogos = {
+            shot: '../img/logos/shot.png',
+            cst: '../img/logos/cst.png',
+            sidi: '../img/logos/sidi.png',
+            nils: '../img/logos/nils.png',
+            leovince: '../img/logos/leovince.png',
+            uswe: '../img/logos/uswe.png',
+            giantloop: '../img/logos/giantloop.png',
+            lucioli: '../img/logos/lucioli.png',
+            nitromousse: '../img/logos/nitromousse.png',
+            wrp: '../img/logos/wrp.png'
+        };
+
+        // ============================================
+        // MAPA (Leaflet + OpenStreetMap)
+        // ============================================
+        const map = L.map('map').setView([-34.0, -64.0], 5);
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri',
+            maxZoom: 19
+        }).addTo(map);
+
+        stores.forEach((store, i) => {
+            store.marker = L.marker([store.lat, store.lng])
+                .addTo(map)
+                .bindPopup(`<strong>${store.name}</strong><br>${store.address}<br><small>${store.brands.map(b => brandNames[b]).join(' · ')}</small>`);
+        });
+
+        // Encuadrar el mapa a los locales (mejor que un zoom fijo) + recalcular tamaño (evita tiles grises)
+        function fitAll(){
+            if (stores.length) map.fitBounds(L.latLngBounds(stores.map(s => [s.lat, s.lng])), { padding: [50, 50], maxZoom: 12 });
+        }
+        fitAll();
+        window.addEventListener('load', function(){ map.invalidateSize(); fitAll(); });
+        setTimeout(function(){ map.invalidateSize(); fitAll(); }, 400);
+
+        // ============================================
+        // RENDER + FILTROS
+        // ============================================
+        const storesList = document.getElementById('storesList');
+        const countEl = document.getElementById('storeCount');
+        const noResults = document.getElementById('noResults');
+        const searchInput = document.getElementById('searchInput');
+        const brandBar = document.getElementById('brandBar');
+
+        const resetBtn = document.getElementById('resetFilter');
+        let activeBrand = 'todos';
+        let searchQuery = '';
+        let userLat = null, userLng = null;
+
+        // Normalizar texto: quitar acentos y pasar a minúsculas
+        function norm(str) {
+            return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        }
+
+        function renderStores() {
+            const query = norm(searchQuery);
+            let filtered = stores.filter(store => {
+                const brandMatch = activeBrand === 'todos' || store.brands.includes(activeBrand);
+                const brandText = store.brands.map(b => norm(brandNames[b])).join(' ');
+                const searchMatch = !query ||
+                    norm(store.name).includes(query) ||
+                    norm(store.address).includes(query) ||
+                    norm(store.province).includes(query) ||
+                    brandText.includes(query);
+                const distanceMatch = !userLat || store.distance == null || store.distance <= 50;
+                return brandMatch && searchMatch && distanceMatch;
+            });
+
+            // Mostrar aviso si hay locales fuera de rango
+            const totalMatch = stores.filter(s => {
+                const bm = activeBrand === 'todos' || s.brands.includes(activeBrand);
+                const bt = s.brands.map(b => norm(brandNames[b])).join(' ');
+                const sm = !query || norm(s.name).includes(query) || norm(s.address).includes(query) || norm(s.province).includes(query) || bt.includes(query);
+                return bm && sm;
+            }).length;
+            const hiddenCount = totalMatch - filtered.length;
+
+            storesList.innerHTML = filtered.map((store, i) => `
+                <div class="store-card" data-index="${i}" onclick="flyTo(${store.lat}, ${store.lng})">
+                    <div class="store-info">
+                        <div class="store-name">${store.name}</div>
+                        <div class="store-address">${store.address}${store.distance ? ` · <strong style="color: var(--red);">${Math.round(store.distance)} km</strong>` : ''}</div>
+                        <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.3rem;">
+                            <a href="tel:${store.phone}" class="store-phone" onclick="event.stopPropagation()">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                Llamar
+                            </a>
+                            <span style="color: var(--subtle); font-size: 0.75rem;">·</span>
+                            <span class="store-map-btn">Ver en mapa &rarr;</span>
+                        </div>
+                    </div>
+                    <div class="store-brands-right">
+                        ${store.brands.sort((a, b) => brandOrder.indexOf(a) - brandOrder.indexOf(b)).map(b => `<img class="store-brand-logo${b === 'shot' ? ' logo-shot' : b === 'nils' ? ' logo-nils' : b === 'uswe' ? ' logo-uswe' : ''}" src="${brandLogos[b]}" alt="${brandNames[b]}" title="${brandNames[b]}">`).join('')}
+                    </div>
+                </div>
+            `).join('');
+
+            const radiusLabel = userLat ? ' cerca tuyo' : '';
+            countEl.textContent = filtered.length + (filtered.length === 1 ? ' punto de venta' : ' puntos de venta') + radiusLabel;
+            noResults.style.display = filtered.length === 0 ? 'block' : 'none';
+
+            // Botón para ver todos si hay ocultos por distancia
+            const expandEl = document.getElementById('expandRadius');
+            if (expandEl) expandEl.remove();
+            if (hiddenCount > 0) {
+                const btn = document.createElement('button');
+                btn.id = 'expandRadius';
+                btn.textContent = `Ver ${hiddenCount} más en todo el país`;
+                btn.style.cssText = 'width:100%;padding:0.6rem;border:1px dashed #ccc;border-radius:10px;background:transparent;color:var(--subtle);font-size:0.78rem;font-weight:500;cursor:pointer;font-family:Inter,sans-serif;margin-top:0.4rem;transition:all 0.2s;';
+                btn.onmouseover = () => { btn.style.borderColor = '#999'; btn.style.color = '#333'; };
+                btn.onmouseout = () => { btn.style.borderColor = '#ccc'; btn.style.color = 'var(--subtle)'; };
+                btn.onclick = () => { userLat = null; userLng = null; stores.forEach(s => delete s.distance); renderStores(); fitAll(); };
+                storesList.after(btn);
+            }
+
+            // Actualizar markers en mapa
+            stores.forEach(store => {
+                const brandMatch = activeBrand === 'todos' || store.brands.includes(activeBrand);
+                const brandText = store.brands.map(b => norm(brandNames[b])).join(' ');
+                const searchMatch = !query ||
+                    norm(store.name).includes(query) ||
+                    norm(store.address).includes(query) ||
+                    norm(store.province).includes(query) ||
+                    brandText.includes(query);
+                const distMatch = !userLat || store.distance == null || store.distance <= 50;
+                if (brandMatch && searchMatch && distMatch) {
+                    store.marker.addTo(map);
+                } else {
+                    store.marker.remove();
+                }
+            });
+        }
+
+        function flyTo(lat, lng) {
+            map.flyTo([lat, lng], 13, { duration: 1 });
+        }
+
+        function updateResetBtn() {
+            resetBtn.style.display = activeBrand === 'todos' ? 'none' : 'inline-block';
+        }
+
+        function resetToAll() {
+            brandBar.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+            activeBrand = 'todos';
+            updateResetBtn();
+            renderStores();
+        }
+
+        // Filtro por marca (click togglea, click de nuevo deselecciona)
+        brandBar.addEventListener('click', (e) => {
+            const link = e.target.closest('a[data-brand]');
+            if (!link) return;
+            e.preventDefault();
+            if (link.classList.contains('active')) {
+                // Deseleccionar → volver a todos
+                resetToAll();
+                return;
+            }
+            brandBar.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+            link.classList.add('active');
+            activeBrand = link.dataset.brand;
+            updateResetBtn();
+            renderStores();
+        });
+
+        // Botón reset
+        resetBtn.addEventListener('click', resetToAll);
+
+        // Búsqueda
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value.trim();
+            renderStores();
+        });
+
+        // URL params (?marca=shot)
+        const params = new URLSearchParams(window.location.search);
+        const marcaParam = params.get('marca');
+        if (marcaParam) {
+            const link = brandBar.querySelector(`[data-brand="${marcaParam}"]`);
+            if (link) {
+                brandBar.querySelectorAll('a').forEach(a => a.classList.remove('active'));
+                link.classList.add('active');
+                activeBrand = marcaParam;
+            }
+        }
+
+        // Render inicial
+        renderStores();
+
+        // ============================================
+        // GEOLOCALIZACIÓN: ordenar por cercanía
+        // ============================================
+
+        function getDistance(lat1, lng1, lat2, lng2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLng = (lng2 - lng1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLng/2) * Math.sin(dLng/2);
+            return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        }
+
+        function sortByDistance() {
+            // Primero calcular distancias
+            stores.forEach(s => {
+                s.distance = Math.round(getDistance(userLat, userLng, s.lat, s.lng));
+            });
+            // Luego ordenar
+            stores.sort((a, b) => a.distance - b.distance);
+            // Re-renderizar
+            renderStores();
+        }
+
+        if ('geolocation' in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    userLat = pos.coords.latitude;
+                    userLng = pos.coords.longitude;
+
+                    // Agregar marker del usuario
+                    const userIcon = L.divIcon({
+                        html: '<div style="width:14px;height:14px;background:var(--red,#D32F2F);border:3px solid white;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.3);"></div>',
+                        iconSize: [14, 14],
+                        className: ''
+                    });
+                    L.marker([userLat, userLng], { icon: userIcon, zIndexOffset: 1000 })
+                        .addTo(map)
+                        .bindPopup('<strong>Tu ubicación</strong>');
+
+                    // Centrar mapa en el usuario
+                    map.setView([userLat, userLng], 8);
+
+                    // Ordenar locales por cercanía
+                    sortByDistance();
+                },
+                () => { /* Usuario rechazó, dejamos el orden por defecto */ }
+            );
+        }
+    </script>
+
+    <a href="https://wa.me/5491135713234" class="whatsapp-float" target="_blank" rel="noopener" title="Contactar por WhatsApp" aria-label="WhatsApp"><svg viewBox="0 0 32 32" width="28" height="28" fill="#fff" aria-hidden="true"><path d="M16.04 3C9.4 3 4 8.4 4 15.04c0 2.12.55 4.19 1.6 6.02L4 29l8.13-1.55a12 12 0 0 0 3.9.65h.01C22.68 28.1 28.08 22.7 28.08 16.06 28.08 8.4 22.68 3 16.04 3zm0 21.9h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.75.72.72-3.66-.24-.38a9.86 9.86 0 0 1-1.51-5.25c0-5.46 4.45-9.9 9.92-9.9 2.65 0 5.14 1.03 7.01 2.9a9.82 9.82 0 0 1 2.9 7 9.9 9.9 0 0 1-9.9 9.84zm5.44-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg></a>
+</body>
+</html>

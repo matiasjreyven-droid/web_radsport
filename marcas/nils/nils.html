@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NILS — Radsport Geist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --red: #D32F2F; --red-dark: #B71C1C; --red-light: #FFEBEE;
+            --gray: #333333; --gray-light: #f5f5f5; --white: #ffffff; --black: #000000;
+            /* Colores oficiales NILS (Marketing Guideline pag 3) */
+            --brand-accent: #E64335;       /* NILS Red · PANTONE 179 */
+            --brand-accent-hover: #c93829; /* shade mas oscuro */
+            --brand-navy: #334E6A;          /* NILS Navy · PANTONE 534 */
+            --brand-accent-light: #fff0ee; --brand-subtle: #888888;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; color: var(--gray); background: var(--white); background-image: radial-gradient(circle, rgba(0,0,0,0.09) 1px, transparent 1px); background-size: 22px 22px; overflow-x: hidden; }
+
+        /* NAV */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 100%); transition: all 0.3s ease; }
+        nav.scrolled { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        nav.scrolled .logo-text { color: var(--gray); }
+        nav.scrolled .logo-dot { color: var(--red); }
+        nav.scrolled .nav-links a { color: var(--gray); }
+        .logo-text { display: flex; align-items: center; gap: 0; font-size: 1.3rem; letter-spacing: 0.15em; color: white; text-decoration: none; }
+        .logo-bold { font-weight: 900; }
+        .logo-dot { color: var(--red); margin: 0 0.35em; }
+        .logo-light { font-weight: 300; }
+        .nav-links { list-style: none; display: flex; gap: 2rem; }
+        .nav-links a { color: white; text-decoration: none; font-size: 0.75rem; font-weight: 300; letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--red); }
+        .nav-links a.active { color: var(--red); font-weight: 700; }
+        .nav-links li { position: relative; }
+        .nav-dropdown { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: #ffffff; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); padding: 0.2rem 0.3rem; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 44px; gap: 0; min-width: 280px; opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s, transform 0.2s; transform: translateX(-50%) translateY(8px); z-index: 1001; margin-top: 0.5rem; }
+        .nav-links li:hover .nav-dropdown, .nav-dropdown:hover { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .nav-dropdown a { display: flex; align-items: center; justify-content: center; padding: 0.4rem 0.8rem; min-height: 44px; border-radius: 8px; transition: background 0.15s, transform 0.15s; opacity: 0.7; }
+        .nav-dropdown a:hover { opacity: 1; }
+        .nav-dropdown a img { max-height: 29px; max-width: 67px; width: auto; height: auto; object-fit: contain; mix-blend-mode: multiply; }
+        .nav-dropdown-segments { grid-template-columns: 1fr; min-width: 180px; gap: 0.1rem; }
+        .nav-dropdown-segments a { font-size: 0.82rem !important; font-weight: 500 !important; color: var(--gray) !important; padding: 0.5rem 0.8rem; border-radius: 8px; transition: background 0.15s, color 0.15s; opacity: 1; }
+        .nav-dropdown-segments a:hover { background: var(--gray-light); color: var(--red) !important; }
+
+        /* HERO con foto del Team Fantic MX (Bonacorsi MXGP) */
+        .brand-hero { height: 80vh; min-height: 540px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; position: relative; overflow: hidden; border-bottom: 5px solid var(--brand-accent); }
+        .brand-hero::before { content: ''; position: absolute; inset: 0; background: url('hero-fantic.jpg') center 30%/cover; }
+        .brand-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(15,28,45,0.78) 0%, rgba(15,28,45,0.45) 50%, rgba(15,28,45,0.78) 100%); }
+        .brand-hero-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 1.2rem; padding: 0 2rem; }
+        .brand-hero-logo { height: 100px; margin-bottom: 0.5rem; filter: drop-shadow(0 4px 20px rgba(0,0,0,0.5)); }
+        .brand-hero-tagline { font-size: 1.15rem; font-weight: 300; max-width: 560px; line-height: 1.7; opacity: 0.92; text-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+        .brand-hero-tagline em { color: var(--brand-accent); font-style: normal; font-weight: 600; }
+        .brand-hero-segments { display: flex; gap: 0.6rem; margin-top: 1.2rem; align-items: center; flex-wrap: wrap; justify-content: center; }
+        .brand-hero-segments span { background: rgba(255,255,255,0.08); padding: 0.5rem 1.5rem; border-radius: 50px; font-size: 0.65rem; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 500; border: 1px solid rgba(255,255,255,0.25); backdrop-filter: blur(8px); transition: all 0.3s ease; }
+        .brand-hero-segments span:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.5); }
+        .brand-hero-segments .seg-divider { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,0.5); border: none; padding: 0; backdrop-filter: none; }
+
+        /* ABOUT */
+        .brand-about { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 5rem; align-items: center; position: relative; }
+        .brand-about::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: linear-gradient(180deg, var(--brand-accent), transparent); }
+        .brand-about-subtitle { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; color: var(--brand-accent); font-weight: 500; margin-bottom: 1.5rem; }
+        .brand-about h2 { font-size: 2rem; font-weight: 900; margin-bottom: 1.5rem; }
+        .brand-about h2 span { color: var(--brand-accent); }
+        .brand-about p { font-size: 0.92rem; line-height: 1.85; color: #555; margin-bottom: 1rem; }
+        .brand-about p em { font-style: normal; color: var(--brand-accent); font-weight: 500; }
+        .brand-origin { display: flex; gap: 2.5rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e8e8e8; }
+        .brand-origin-item { font-size: 0.72rem; color: #999; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 500; }
+        .brand-origin-item strong { display: block; font-size: 1.05rem; color: var(--gray); text-transform: none; letter-spacing: 0; font-weight: 800; margin-top: 0.3rem; }
+        .brand-about-image { border-radius: 16px; overflow: hidden; height: 400px; position: relative; }
+        .brand-about-image img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* CATEGORIES */
+        .brand-categories { padding: 5rem 3rem; max-width: 1200px; margin: 0 auto; }
+        .brand-categories-subtitle { font-size: 0.8rem; color: var(--brand-accent); text-transform: uppercase; letter-spacing: 3px; font-weight: 500; margin-bottom: 0.5rem; }
+        .brand-categories h2 { font-size: 2rem; font-weight: 900; margin-bottom: 2.5rem; }
+        .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .cat-card-featured { grid-column: span 3; display: grid; grid-template-columns: 1fr 1fr; background: white; border-radius: 14px; overflow: hidden; border: 1px solid #e8e8e8; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; text-decoration: none; color: var(--gray); }
+        .cat-card-featured:hover { transform: translateY(-4px); box-shadow: 0 12px 35px rgba(0,0,0,0.1); border-color: var(--brand-accent); }
+        .cat-featured-img { height: 280px; background: url('catalogo-featured.jpg') center/cover; }
+        .cat-featured-body { display: flex; flex-direction: column; justify-content: center; padding: 2.5rem; }
+        .cat-featured-body .cat-featured-eyebrow { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2.5px; color: var(--brand-accent); font-weight: 700; margin-bottom: 0.8rem; }
+        .cat-featured-body h3 { font-size: 1.7rem; font-weight: 900; margin-bottom: 0.6rem; color: var(--gray); }
+        .cat-featured-body p { font-size: 0.92rem; color: #666; line-height: 1.7; margin-bottom: 1.4rem; }
+        .cat-featured-body .cat-cta { font-size: 0.78rem; font-weight: 700; color: var(--brand-accent); text-transform: uppercase; letter-spacing: 2px; display: inline-flex; align-items: center; gap: 0.5rem; }
+        .cat-featured-body .cat-cta::after { content: '\2192'; transition: transform 0.2s; }
+        .cat-card-featured:hover .cat-cta::after { transform: translateX(4px); }
+        .cat-card { background: white; border-radius: 14px; overflow: hidden; border: 1px solid #e8e8e8; transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; cursor: pointer; text-decoration: none; color: var(--gray); display: block; }
+        .cat-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.07); border-color: var(--brand-accent); }
+        .cat-card-img { height: 200px; background: #fafafa; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 1.2rem; }
+        .cat-card-img img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; transition: transform 0.4s; }
+        .cat-card:hover .cat-card-img img { transform: scale(1.07); }
+        .cat-card-body { padding: 1.1rem 1.3rem 1.3rem; border-top: 1px solid #f1f1f1; }
+        .cat-card-body h3 { font-size: 1.02rem; font-weight: 800; margin-bottom: 0.3rem; color: var(--gray); }
+        .cat-card-body p { font-size: 0.78rem; color: #888; margin-bottom: 0; line-height: 1.5; }
+
+        /* CTA */
+        .brand-cta { padding: 4rem 3rem 5rem; }
+        .brand-cta-box { max-width: 900px; margin: 0 auto; background: var(--gray); color: white; padding: 4rem 3.5rem; border-radius: 24px; text-align: center; position: relative; overflow: hidden; }
+        .cta-eyebrow { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; opacity: 0.4; font-weight: 400; margin-bottom: 1rem; position: relative; }
+        .brand-cta-box h2 { font-size: 1.5rem; font-weight: 300; margin-bottom: 2.5rem; letter-spacing: 0.3px; line-height: 1.6; position: relative; }
+        .brand-cta-box h2 em { font-style: normal; font-weight: 800; letter-spacing: 2px; }
+        .cta-buttons { display: flex; gap: 1rem; justify-content: center; position: relative; z-index: 1; }
+        .btn-whatsapp { display: inline-flex; align-items: center; gap: 0.5rem; background: #25D366; color: white; padding: 0.9rem 2.5rem; border-radius: 50px; font-weight: 600; font-size: 0.8rem; text-decoration: none; letter-spacing: 1.5px; text-transform: uppercase; transition: all 0.3s ease; }
+        .btn-whatsapp:hover { transform: translateY(-2px); filter: brightness(0.92); }
+
+        /* FOOTER */
+        footer { background: #1a1a1a; color: #888; padding: 3rem 2rem 1.5rem; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 2rem; }
+        .footer-section h4 { color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; letter-spacing: 0.5px; }
+        .footer-section ul { list-style: none; }
+        .footer-section li { margin-bottom: 0.5rem; }
+        .footer-section a { color: #888; text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+        .footer-section a:hover { color: var(--red); }
+        .footer-bottom { text-align: center; padding-top: 1.5rem; border-top: 1px solid #333; font-size: 0.72rem; color: #555; }
+
+        /* WHATSAPP FLOAT */
+        .whatsapp-float { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 55px; height: 55px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; text-decoration: none; box-shadow: 0 4px 15px rgba(37,211,102,0.3); z-index: 999; transition: transform 0.2s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeInUp 0.6s ease forwards; }
+
+        @media (max-width: 768px) {
+            .brand-about { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 2rem; }
+            .cat-grid { grid-template-columns: 1fr; }
+            .cat-card-featured { grid-column: span 1; grid-template-columns: 1fr; }
+            .brand-hero { height: 60vh; }
+            .footer-content { grid-template-columns: repeat(2, 1fr); }
+            .cta-buttons { flex-direction: column; align-items: center; }
+        }
+        /* CTA con branding de la marca (no gris generico + boton blanco) */
+        .brand-cta-box { background: var(--brand-accent) !important; }
+        .brand-cta-box .cta-eyebrow { opacity: 0.7 !important; }
+        .btn-whatsapp { background: #fff !important; color: var(--brand-accent) !important; }
+        .btn-whatsapp:hover { background: #fff !important; filter: brightness(0.92); transform: translateY(-2px); }
+            .footer-marcas ul { columns: 2; column-gap: 2rem; }
+            /* ===== CTA Distribuidores (global) ===== */
+        .brand-cta { padding: 4rem 2rem 5rem; }
+        .brand-cta-box { max-width: 1200px !important; margin: 0 auto; background: var(--brand-accent, #111) !important; color: #fff !important; padding: 2.8rem 3.5rem; border-radius: 24px; text-align: center; position: relative; overflow: hidden; }
+        .brand-cta-box .cta-eyebrow { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; opacity: 0.55 !important; color: #fff !important; font-weight: 400; margin-bottom: 1rem; }
+        .brand-cta-box h2 { color: #fff; }
+        .brand-cta-box h2 em { font-style: normal; }
+        .brand-cta-box .cta-buttons { display: flex; flex-direction: row; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 0; }
+        .brand-cta-box .btn-cta-donde, .brand-cta-box .btn-cta-comercio { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: .2rem; padding: 1.05rem 3rem; border-radius: 50px; text-decoration: none; transition: all 0.3s ease; border: 2px solid transparent; cursor: pointer; min-width: 250px; }
+        .brand-cta-box .cta-btn-title { font-weight: 700; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; }
+        .brand-cta-box .cta-btn-sub { font-size: 0.72rem; letter-spacing: 0.2px; opacity: 0.85; text-transform: none; font-weight: 400; }
+        .brand-cta-box .cta-note { margin: 1.4rem 0 0; color: rgba(255,255,255,0.9); font-size: 0.8rem; text-align: center; }
+        .brand-cta-box .btn-cta-donde { background: #fff; color: var(--brand-accent, #111); }
+        .brand-cta-box .btn-cta-donde:hover { transform: translateY(-2px); }
+        .brand-cta-box .btn-cta-comercio { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.9); }
+        .brand-cta-box .btn-cta-comercio:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
+        @media (max-width: 600px){ .brand-cta-box .cta-buttons { flex-direction: column; align-items: center; } .brand-cta-box { padding: 3rem 1.5rem !important; } }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar">
+        <a href="../../index.html" class="logo-text">
+            <span class="logo-bold">RADSPORT</span>
+            <span class="logo-dot">&bull;</span>
+            <span class="logo-light">GEIST</span>
+        </a>
+        <ul class="nav-links">
+            <li>
+                <a href="../../index.html#worlds">Segmentos</a>
+            </li>
+            <li>
+                <a href="../../index.html#brands" class="active">Marcas</a>
+            </li>
+            <li><a href="../../productos.html">Productos</a></li>
+            <li><a href="../../donde-comprar/moto.html">Dónde Comprar</a></li>
+            <li><a href="../../sobre-nosotros.html">Sobre Nosotros</a></li>
+            <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <section class="brand-hero">
+        <div class="brand-hero-content">
+            <img class="brand-hero-logo" src="../../img/logos/nils.png" alt="NILS">
+            <p class="brand-hero-tagline">Lubricantes <em>italianos</em> de alto rendimiento. Aceites para motor, suspensión, frenos y mucho más.</p>
+            <div class="brand-hero-segments">
+                <span>Italy</span>
+                <span class="seg-divider"></span>
+                <span>Desde 1971</span>
+                <span class="seg-divider"></span>
+                <span>Experts in Lubricants</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="brand-about">
+        <div>
+            <div class="brand-about-subtitle">Sobre NILS</div>
+            <p>NILS es un fabricante italiano de <em>lubricantes de alto rendimiento</em> con más de 50 años de trayectoria. Especializada en aceites para motor, transmisión, suspensión, frenado y refrigeración de motocicletas.</p>
+            <p>Su línea cubre <em>aceites 4T y 2T, lubricantes de cadena, líquidos de freno, refrigerantes, grasas, aceites para filtro de aire y horquillas</em>. Formulaciones 100% sintéticas (PAO) desarrolladas para las condiciones más exigentes.</p>
+            <p>NILS es <em>sponsor oficial del Fantic Factory Racing Team</em> en el campeonato mundial de motocross MXGP, donde sus lubricantes lubrican las motos más exigidas del calendario.</p>
+            <div class="brand-origin">
+                <div class="brand-origin-item">Origen<strong>Italia</strong></div>
+                <div class="brand-origin-item">Desde<strong>1971</strong></div>
+            </div>
+        </div>
+        <div class="brand-about-image">
+            <img src="about-fantic.jpg" alt="Sponsoreo NILS · Fantic Racing">
+        </div>
+    </section>
+
+
+    <section class="brand-categories">
+        <div class="brand-categories-subtitle">Productos</div>
+        <h2>Explorá el <span style="color: var(--brand-accent);">Catálogo NILS</span></h2>
+        <div class="cat-grid">
+            <a href="productos.html" class="cat-card-featured">
+                <div class="cat-featured-img"></div>
+                <div class="cat-featured-body">
+                    <div class="cat-featured-eyebrow">Catálogo completo</div>
+                    <h3>Ver todos los productos</h3>
+                    <p>Toda la línea NILS en un solo lugar: aceites de motor, suspensión, frenos, refrigerantes, cadena y grasas.</p>
+                    <div class="cat-cta">25 productos</div>
+                </div>
+            </a>
+
+            <a href="productos.html#aceite-4t" class="cat-card" data-cat="aceite-4t">
+                <div class="cat-card-img"><img src="productos/NILS-RACE-SAE-10W40-RACING-FULL-SYNTHETIC-ENGINE-OIL-2.png" alt="Aceite Motor 4T NILS"></div>
+                <div class="cat-card-body">
+                    <h3>Aceite Motor 4T</h3>
+                    <p>5 productos &middot; Race, Klassic Synt, Sport, Off Road, Ride</p>
+                </div>
+            </a>
+
+            <a href="productos.html#aceite-2t" class="cat-card" data-cat="aceite-2t">
+                <div class="cat-card-img"><img src="productos/NILS-DUO_SYNT_R-FULL-SYNTHETIC-PAO-2STROKE-OIL.png" alt="Aceite Motor 2T NILS"></div>
+                <div class="cat-card-body">
+                    <h3>Aceite Motor 2T</h3>
+                    <p>Duo Synt R &middot; 100% sintético PAO</p>
+                </div>
+            </a>
+
+            <a href="productos.html#cadena" class="cat-card" data-cat="cadena">
+                <div class="cat-card-img"><img src="productos/NILS-OFF-ROAD-CHAIN-SAND-SPRAY-grasso-V1.png" alt="Lubricante Cadena NILS"></div>
+                <div class="cat-card-body">
+                    <h3>Lubricante Cadena</h3>
+                    <p>4 productos &middot; Off Road, On Road, Sand Track, Cleaner</p>
+                </div>
+            </a>
+
+            <a href="producto-transmission.html" class="cat-card">
+                <div class="cat-card-img"><img src="productos/NILS-TRANSMISSION-HIGHPERFORMANCE-TRANSMISSION-OIL.png" alt="Aceite Transmisión NILS"></div>
+                <div class="cat-card-body">
+                    <h3>Transmisión</h3>
+                    <p>Transmission &middot; SAE 80W/90 &middot; API GL4/GL5</p>
+                </div>
+            </a>
+
+            <a href="productos.html#embrague" class="cat-card" data-cat="embrague">
+                <div class="cat-card-img"><img src="productos/NILS-CLUTCH-HIGHPERFORMANCE-CLUTCH-AND-GEARBOX-OIL.png" alt="Aceite Embrague NILS"></div>
+                <div class="cat-card-body">
+                    <h3>Embrague</h3>
+                    <p>2 productos &middot; Clutch HP, Clutch Trial</p>
+                </div>
+            </a>
+
+            <a href="productos.html#suspension" class="cat-card" data-cat="suspension">
+                <div class="cat-card-img"><img src="productos/NILS-FORK-SAE-15W-HIGH-PERFORMANCE-FORK-LUBRICANT.png" alt="Aceite Suspensión NILS"></div>
+                <div class="cat-card-body">
+                    <h3>Suspensión</h3>
+                    <p>2 productos &middot; Fork (5W/10W/15W), Shock H 5W</p>
+                </div>
+            </a>
+
+            <a href="productos.html#frenos" class="cat-card" data-cat="frenos">
+                <div class="cat-card-img"><img src="productos/BRAKE-FLUID-DOT-4.png" alt="Frenos NILS"></div>
+                <div class="cat-card-body">
+                    <h3>Frenos</h3>
+                    <p>3 productos &middot; DOT 4, DOT 5.1, Brake Cleaner</p>
+                </div>
+            </a>
+
+            <a href="productos.html#refrigerante" class="cat-card" data-cat="refrigerante">
+                <div class="cat-card-img"><img src="productos/POLAR-PLUS-1.jpg" alt="Refrigerante NILS"></div>
+                <div class="cat-card-body">
+                    <h3>Refrigerante</h3>
+                    <p>2 productos &middot; Polar, Polar Plus OAT</p>
+                </div>
+            </a>
+
+            <a href="productos.html#filtro-aire" class="cat-card" data-cat="filtro-aire">
+                <div class="cat-card-img"><img src="productos/AIR-FILTER.jpg" alt="Filtro Aire NILS"></div>
+                <div class="cat-card-body">
+                    <h3>Aceite Filtro Aire</h3>
+                    <p>2 productos &middot; Air Filter (1L), Air Filter Spray</p>
+                </div>
+            </a>
+
+            <a href="productos.html#grasas" class="cat-card" data-cat="grasas">
+                <div class="cat-card-img"><img src="productos/GRASA-PERFORMANCE.jpg" alt="Grasas NILS"></div>
+                <div class="cat-card-body">
+                    <h3>Grasas</h3>
+                    <p>3 productos &middot; Performance Blue, Silicon, No Grip</p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <section class="brand-cta">
+        <div class="brand-cta-box">
+            <div class="cta-buttons">
+                <a href="../../donde-comprar/moto.html" class="btn-cta-donde">
+                    <span class="cta-btn-title">Dónde comprar</span>
+                    <span class="cta-btn-sub">mapa de comercios</span>
+                </a>
+                <a href="https://wa.me/5491135713234?text=Hola%2C%20quiero%20vender%20NILS" class="btn-cta-comercio" target="_blank">
+                    <span class="cta-btn-title">Soy comercio</span>
+                    <span class="cta-btn-sub">quiero vender NILS</span>
+                </a>
+            </div>
+            <p class="cta-note">Contamos con una red exclusiva de comercios por zona. Si querés ser parte, escribinos.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Segmentos</h4>
+                <ul>
+                    <li><a href="../../segmentos/moto.html">Moto</a></li>
+                    <li><a href="../../segmentos/atv.html">ATV / UTV / SSV</a></li>
+                    <li><a href="../../segmentos/bici.html">Bicicleta</a></li>
+                    <li><a href="../../segmentos/industrial.html">Industrial</a></li>
+                </ul>
+            </div>
+            <div class="footer-section footer-marcas">
+                <h4>Marcas</h4>
+                <ul>
+                    <li><a href="../../marcas/cst/cst.html">CST</a></li>
+                    <li><a href="../../marcas/leovince/leovince.html">Leo Vince</a></li>
+                    <li><a href="../../marcas/shot/shot.html">SHOT</a></li>
+                    <li><a href="../../marcas/uswe/uswe.html">USWE</a></li>
+                    <li><a href="../../marcas/giantloop/giantloop.html">Giant Loop</a></li>
+                    <li><a href="../../marcas/nils/nils.html">NILS</a></li>
+                    <li><a href="../../marcas/nitromousse/nitromousse.html">Nitro Mousse</a></li>
+                    <li><a href="../../marcas/lucioli/lucioli.html">Lucioli</a></li>
+                    <li><a href="../../marcas/wrp/wrp.html">WRP</a></li>
+                    <li><a href="../../marcas/sidi/sidi.html">SIDI</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="../../sobre-nosotros.html">Quiénes Somos</a></li>
+                    <li><a href="../../donde-comprar/moto.html">Dónde Comprar</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Redes</h4>
+                <ul>
+                    <li><a href="https://www.instagram.com/radsport_geist/" target="_blank">Instagram</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Radsport Geist. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/5491135713234" class="whatsapp-float" target="_blank" rel="noopener" title="Contactar por WhatsApp" aria-label="WhatsApp"><svg viewBox="0 0 32 32" width="28" height="28" fill="#fff" aria-hidden="true"><path d="M16.04 3C9.4 3 4 8.4 4 15.04c0 2.12.55 4.19 1.6 6.02L4 29l8.13-1.55a12 12 0 0 0 3.9.65h.01C22.68 28.1 28.08 22.7 28.08 16.06 28.08 8.4 22.68 3 16.04 3zm0 21.9h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.75.72.72-3.66-.24-.38a9.86 9.86 0 0 1-1.51-5.25c0-5.46 4.45-9.9 9.92-9.9 2.65 0 5.14 1.03 7.01 2.9a9.82 9.82 0 0 1 2.9 7 9.9 9.9 0 0 1-9.9 9.84zm5.44-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg></a>
+
+    <script>
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.pageYOffset > 50);
+        });
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
+        document.querySelectorAll('.cat-card, .cat-card-featured, .brand-about, .brand-cta-box').forEach(el => {
+            el.style.opacity = '0';
+            observer.observe(el);
+        });
+    </script>
+<script>
+/* Conteo automatico de productos (lee el catalogo de la marca) */
+(function () {
+  fetch('productos.html').then(function (r) { return r.text(); }).then(function (html) {
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var cards = doc.querySelectorAll('.product-card');
+    var total = cards.length, byCat = {};
+    cards.forEach(function (c) {
+      var k = c.getAttribute('data-category') || '';
+      byCat[k] = (byCat[k] || 0) + 1;
+    });
+    function fmt(n) { return n + ' producto' + (n !== 1 ? 's' : ''); }
+    document.querySelectorAll('.cat-card-featured .cat-cta').forEach(function (el) {
+      var arrow = /\u2192|&rarr;|→/.test(el.innerHTML) ? ' →' : '';
+      el.textContent = fmt(total) + arrow;
+    });
+    document.querySelectorAll('.cat-card').forEach(function (card) {
+      var href = card.getAttribute('href') || '';
+      var m = href.match(/[?&]cat=([^&]+)/);
+      var el = card.querySelector('.count');
+      if (m && el) { el.textContent = fmt(byCat[m[1]] || 0); }
+    });
+  }).catch(function () {});
+})();
+</script>
+</body>
+</html>

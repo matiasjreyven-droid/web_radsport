@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kit Transmisión Racing | WRP · Radsport Geist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --red: #D32F2F; --red-dark: #B71C1C; --gray: #333; --gray-light: #f5f5f5; --white: #fff;
+            --brand-accent: #E83630; --brand-subtle: #888;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; color: var(--gray); background: var(--white);
+            background-image: radial-gradient(circle, rgba(0,0,0,0.06) 1px, transparent 1px);
+            background-size: 22px 22px; }
+
+        /* NAV */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .logo-text { font-size: 1.3rem; letter-spacing: 0.15em; color: var(--gray); text-decoration: none; }
+        .logo-bold { font-weight: 900; } .logo-dot { color: var(--red); margin: 0 0.35em; } .logo-light { font-weight: 300; }
+        .nav-links { list-style: none; display: flex; gap: 2rem; }
+        .nav-links a { color: var(--gray); text-decoration: none; font-size: 0.75rem; font-weight: 300;
+            letter-spacing: 0.14em; text-transform: uppercase; }
+        .nav-links a:hover { color: var(--red); } .nav-links a.active { color: var(--red); font-weight: 600; }
+
+        /* PAGE */
+        .page-wrap { padding-top: 5rem; max-width: 1400px; margin: 0 auto; padding-left: 2rem; padding-right: 2rem; }
+        .breadcrumb { font-size: 0.75rem; color: var(--brand-subtle); margin-bottom: 1.5rem; padding: 1rem 0; }
+        .breadcrumb a { color: var(--brand-subtle); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--brand-accent); }
+        .breadcrumb span { margin: 0 0.4rem; }
+
+        /* PRODUCT HERO */
+        .product-hero {
+            display: grid;
+            grid-template-columns: 1.35fr 1fr;
+            gap: 3rem;
+            background: white;
+            border-radius: 14px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+            min-height: 640px;
+            align-items: start;
+        }
+        /* GALLERY (foto principal + thumbs) */
+        .product-gallery {
+            display: grid;
+            grid-template-columns: 1fr 100px;
+            gap: 1rem;
+            align-items: start;
+        }
+        .product-gallery.single {
+            grid-template-columns: 1fr;
+        }
+        .gallery-main {
+            background: white;
+            border: 1px solid #e6e6e6;
+            border-radius: 8px;
+            aspect-ratio: 5/4;
+            overflow: hidden;
+            position: relative;
+            cursor: zoom-in;
+        }
+        .gallery-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 1rem;
+            transition: transform 0.25s ease;
+            transform-origin: center center;
+        }
+        .gallery-main:hover img {
+            transform: scale(2.2);
+            padding: 0;
+        }
+        .gallery-zoom-icon {
+            position: absolute;
+            top: 0.7rem; left: 0.7rem;
+            width: 26px; height: 26px;
+            display: flex; align-items: center; justify-content: center;
+            color: #999;
+            pointer-events: none;
+            z-index: 2;
+            transition: opacity 0.2s;
+        }
+        .gallery-main:hover .gallery-zoom-icon { opacity: 0; }
+        .gallery-thumbs {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            max-height: 460px;
+            overflow-y: auto;
+        }
+        .gallery-thumb {
+            background: white;
+            border: 1px solid #e6e6e6;
+            border-radius: 6px;
+            width: 100px; height: 100px;
+            cursor: pointer;
+            overflow: hidden;
+            padding: 0.4rem;
+            transition: border-color 0.2s;
+            flex-shrink: 0;
+        }
+        .gallery-thumb img {
+            width: 100%; height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+        .gallery-thumb:hover { border-color: #ccc; }
+        .gallery-thumb.active { border-color: var(--brand-accent); border-width: 2px; padding: 0.3rem; }
+
+        /* INFO SIDE */
+        .product-info-side {
+            padding: 0.5rem 0;
+            display: flex; flex-direction: column;
+        }
+        .product-kicker {
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px;
+            color: var(--brand-accent); font-weight: 700; margin-bottom: 1rem;
+        }
+        .product-title {
+            font-size: 2.4rem; font-weight: 900; color: var(--gray);
+            letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 0.8rem;
+        }
+        .product-tagline {
+            font-size: 1rem; color: var(--brand-subtle); line-height: 1.5; margin-bottom: 2rem;
+        }
+
+        /* SPECS TABLE */
+        .specs-table {
+            border-top: 1px solid #eee;
+            margin-bottom: 2rem;
+        }
+        .specs-row {
+            display: grid;
+            grid-template-columns: 170px 1fr;
+            align-items: center;
+            padding: 0.85rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .specs-key {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            font-size: 0.7rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            color: var(--brand-accent);
+        }
+        .specs-key::before { content: '◆'; font-size: 0.6rem; }
+        .specs-value {
+            font-size: 0.9rem; font-weight: 500; color: var(--gray);
+        }
+
+        /* DESCRIPTION (dentro de info side) */
+        .product-description {
+            margin-top: 0.5rem;
+        }
+        .description-header {
+            font-size: 0.75rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 2px;
+            color: var(--gray); margin-bottom: 1rem;
+            padding-bottom: 0.6rem; border-bottom: 2px solid var(--brand-accent);
+            display: inline-block;
+        }
+        .product-description p {
+            font-size: 0.9rem; line-height: 1.7;
+            color: #555; margin-bottom: 0.9rem;
+        }
+        .product-description p:last-child { margin-bottom: 0; }
+        .product-description em {
+            color: var(--brand-accent); font-style: normal; font-weight: 600;
+        }
+
+        /* FOOTER */
+        footer { background: #000; color: white; padding: 3rem 2rem 1.5rem; margin-top: 4rem; }
+        .footer-content { max-width: 1400px; margin: 0 auto; text-align: center;
+            font-size: 0.85rem; color: #888; }
+        .footer-content a { color: var(--red); text-decoration: none; }
+
+        @media (max-width: 1000px) {
+            .product-hero { grid-template-columns: 1fr; padding: 1.5rem; gap: 2rem; }
+            .product-title { font-size: 1.8rem; }
+            .specs-row { grid-template-columns: 130px 1fr; }
+        }
+        @media (max-width: 600px) {
+            .product-gallery { grid-template-columns: 1fr; }
+            .gallery-thumbs { flex-direction: row; max-height: none; overflow-x: auto; overflow-y: hidden; }
+            .gallery-thumb { width: 70px; height: 70px; }
+        }
+            /* Dropdowns nav (consistente con home) */
+        .nav-links li { position: relative; }
+        .nav-dropdown {
+            position: absolute; top: 100%; left: 50%;
+            background: #ffffff; border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            padding: 0.2rem 0.3rem;
+            display: grid; grid-template-columns: 1fr 1fr;
+            grid-auto-rows: 44px; gap: 0;
+            min-width: 280px;
+            opacity: 0; visibility: hidden;
+            transform: translateX(-50%) translateY(8px);
+            transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+            z-index: 1001; margin-top: 0.5rem;
+        }
+        .nav-links li:hover .nav-dropdown,
+        .nav-dropdown:hover {
+            opacity: 1; visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        .nav-dropdown a {
+            display: flex; align-items: center; justify-content: center;
+            padding: 0.4rem 0.8rem; min-height: 44px;
+            border-radius: 8px; opacity: 0.7;
+            transition: background 0.15s, transform 0.15s;
+        }
+        .nav-dropdown a:hover { opacity: 1; }
+        .nav-dropdown a img {
+            max-height: 29px; max-width: 67px;
+            width: auto; height: auto;
+            object-fit: contain; mix-blend-mode: multiply;
+        }
+        .nav-dropdown-segments {
+            grid-template-columns: 1fr;
+            min-width: 180px; gap: 0.1rem;
+        }
+        .nav-dropdown-segments a {
+            font-size: 0.82rem !important;
+            font-weight: 500 !important;
+            color: var(--gray) !important;
+            padding: 0.5rem 0.8rem;
+            opacity: 1 !important;
+        }
+        .nav-dropdown-segments a:hover {
+            background: var(--gray-light);
+            color: var(--red) !important;
+        }
+        .pad-badges { display:flex; gap:0.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+        .pad-badge { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:0.3rem 0.75rem; border-radius:50px; }
+        .pad-badge.stock { background:#e6f7ec; color:#1a8b48; }
+        .pad-badge.apedido { background:#fff3e0; color:#d17a00; }
+        .pad-badge.pos { background:#f0f0f0; color:#555; }
+        .fitment { margin-top:2.5rem; }
+        .fitment > h2 { font-size:1.2rem; font-weight:800; margin-bottom:1.4rem; color:var(--gray); }
+        .fitment > h2 span { color:var(--brand-accent); }
+        .fit-brand { margin-bottom:1.4rem; }
+        .fit-brand h3 { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--brand-accent); margin-bottom:0.7rem; border-bottom:1px solid #eee; padding-bottom:0.4rem; }
+        .fit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:0.5rem; }
+        .fit-item { background:white; border:1px solid #ececec; border-radius:8px; padding:0.55rem 0.9rem; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
+        .fit-item .fit-pos { color:var(--brand-subtle); font-size:0.72rem; white-space:nowrap; }
+        .pad-badges { display:flex; gap:0.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+        .pad-badge { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:0.3rem 0.75rem; border-radius:50px; }
+        .pad-badge.stock { background:#e6f7ec; color:#1a8b48; }
+        .pad-badge.apedido { background:#fff3e0; color:#d17a00; }
+        .pad-badge.pos { background:#f0f0f0; color:#555; }
+        .fitment { margin-top:2.5rem; }
+        .fitment > h2 { font-size:1.2rem; font-weight:800; margin-bottom:1.4rem; color:var(--gray); }
+        .fitment > h2 span { color:var(--brand-accent); }
+        .fit-brand { margin-bottom:1.4rem; }
+        .fit-brand h3 { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--brand-accent); margin-bottom:0.7rem; border-bottom:1px solid #eee; padding-bottom:0.4rem; }
+        .fit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:0.5rem; }
+        .fit-item { background:white; border:1px solid #ececec; border-radius:8px; padding:0.55rem 0.9rem; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
+        .fit-item .fit-pos { color:var(--brand-subtle); font-size:0.72rem; white-space:nowrap; }
+        .pad-badges { display:flex; gap:0.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+        .pad-badge { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:0.3rem 0.75rem; border-radius:50px; }
+        .pad-badge.stock { background:#e6f7ec; color:#1a8b48; }
+        .pad-badge.apedido { background:#fff3e0; color:#d17a00; }
+        .pad-badge.pos { background:#f0f0f0; color:#555; }
+        .fitment { margin-top:2.5rem; }
+        .fitment > h2 { font-size:1.2rem; font-weight:800; margin-bottom:1.4rem; color:var(--gray); }
+        .fitment > h2 span { color:var(--brand-accent); }
+        .fit-brand { margin-bottom:1.4rem; }
+        .fit-brand h3 { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--brand-accent); margin-bottom:0.7rem; border-bottom:1px solid #eee; padding-bottom:0.4rem; }
+        .fit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:0.5rem; }
+        .fit-item { background:white; border:1px solid #ececec; border-radius:8px; padding:0.55rem 0.9rem; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
+        .fit-item .fit-pos { color:var(--brand-subtle); font-size:0.72rem; white-space:nowrap; }
+        .comp-media { display:flex; gap:1rem; margin-top:1.3rem; flex-wrap:wrap; align-items:flex-start; }
+        .comp-media figure { flex:1 1 130px; max-width:200px; }
+        .comp-media img { width:100%; border:1px solid #eee; border-radius:8px; background:#fff; display:block; }
+        .comp-media figcaption { font-size:0.64rem; color:var(--brand-subtle); text-transform:uppercase; letter-spacing:0.8px; margin-top:0.45rem; text-align:center; line-height:1.3; }
+        .pad-badges { display:flex; gap:0.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+        .pad-badge { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:0.3rem 0.75rem; border-radius:50px; }
+        .pad-badge.stock { background:#e6f7ec; color:#1a8b48; }
+        .pad-badge.apedido { background:#fff3e0; color:#d17a00; }
+        .pad-badge.pos { background:#f0f0f0; color:#555; }
+        .fitment { margin-top:2.5rem; }
+        .fitment > h2 { font-size:1.2rem; font-weight:800; margin-bottom:1.4rem; color:var(--gray); }
+        .fitment > h2 span { color:var(--brand-accent); }
+        .fit-brand { margin-bottom:1.4rem; }
+        .fit-brand h3 { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--brand-accent); margin-bottom:0.7rem; border-bottom:1px solid #eee; padding-bottom:0.4rem; }
+        .fit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:0.5rem; }
+        .fit-item { background:white; border:1px solid #ececec; border-radius:8px; padding:0.55rem 0.9rem; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
+        .fit-item .fit-pos { color:var(--brand-subtle); font-size:0.72rem; white-space:nowrap; }
+        .comp-media { display:flex; gap:1rem; margin-top:1.3rem; flex-wrap:wrap; align-items:flex-start; }
+        .comp-media figure { flex:1 1 130px; max-width:200px; }
+        .comp-media img { width:100%; border:1px solid #eee; border-radius:8px; background:#fff; display:block; }
+        .comp-media figcaption { font-size:0.64rem; color:var(--brand-subtle); text-transform:uppercase; letter-spacing:0.8px; margin-top:0.45rem; text-align:center; line-height:1.3; }
+        .pad-badges { display:flex; gap:0.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+        .pad-badge { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:0.3rem 0.75rem; border-radius:50px; }
+        .pad-badge.stock { background:#e6f7ec; color:#1a8b48; }
+        .pad-badge.apedido { background:#fff3e0; color:#d17a00; }
+        .pad-badge.pos { background:#f0f0f0; color:#555; }
+        .fitment { margin-top:2.5rem; }
+        .fitment > h2 { font-size:1.2rem; font-weight:800; margin-bottom:1.4rem; color:var(--gray); }
+        .fitment > h2 span { color:var(--brand-accent); }
+        .fit-brand { margin-bottom:1.4rem; }
+        .fit-brand h3 { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--brand-accent); margin-bottom:0.7rem; border-bottom:1px solid #eee; padding-bottom:0.4rem; }
+        .fit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:0.5rem; }
+        .fit-item { background:white; border:1px solid #ececec; border-radius:8px; padding:0.55rem 0.9rem; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
+        .fit-item .fit-pos { color:var(--brand-subtle); font-size:0.72rem; white-space:nowrap; }
+        .comp-media { display:flex; gap:1rem; margin-top:1.3rem; flex-wrap:wrap; align-items:flex-start; }
+        .comp-media figure { flex:1 1 130px; max-width:200px; }
+        .comp-media img { width:100%; border:1px solid #eee; border-radius:8px; background:#fff; display:block; }
+        .comp-media figcaption { font-size:0.64rem; color:var(--brand-subtle); text-transform:uppercase; letter-spacing:0.8px; margin-top:0.45rem; text-align:center; line-height:1.3; }
+        .pad-badges { display:flex; gap:0.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+        .pad-badge { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:0.3rem 0.75rem; border-radius:50px; }
+        .pad-badge.stock { background:#e6f7ec; color:#1a8b48; }
+        .pad-badge.apedido { background:#fff3e0; color:#d17a00; }
+        .pad-badge.pos { background:#f0f0f0; color:#555; }
+        .fitment { margin-top:2.5rem; }
+        .fitment > h2 { font-size:1.2rem; font-weight:800; margin-bottom:1.4rem; color:var(--gray); }
+        .fitment > h2 span { color:var(--brand-accent); }
+        .fit-brand { margin-bottom:1.4rem; }
+        .fit-brand h3 { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--brand-accent); margin-bottom:0.7rem; border-bottom:1px solid #eee; padding-bottom:0.4rem; }
+        .fit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:0.5rem; }
+        .fit-item { background:white; border:1px solid #ececec; border-radius:8px; padding:0.55rem 0.9rem; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
+        .fit-item .fit-pos { color:var(--brand-subtle); font-size:0.72rem; white-space:nowrap; }
+        .comp-media { display:flex; gap:1rem; margin-top:1.3rem; flex-wrap:wrap; align-items:flex-start; }
+        .comp-media figure { flex:1 1 130px; max-width:200px; }
+        .comp-media img { width:100%; border:1px solid #eee; border-radius:8px; background:#fff; display:block; }
+        .comp-media figcaption { font-size:0.64rem; color:var(--brand-subtle); text-transform:uppercase; letter-spacing:0.8px; margin-top:0.45rem; text-align:center; line-height:1.3; }
+        .equiv-note { font-size:0.8rem; color:var(--brand-subtle); margin:0.8rem 0 0.2rem; }
+        .equiv-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(115px,1fr)); gap:0.6rem; margin-top:0.9rem; }
+        .equiv-item { border:1px solid #ececec; border-radius:9px; padding:0.6rem 0.75rem; background:#fafafa; }
+        .equiv-brand { display:block; font-size:0.6rem; text-transform:uppercase; letter-spacing:1px; color:var(--brand-accent); font-weight:700; }
+        .equiv-code { display:block; font-size:0.92rem; font-weight:800; color:var(--gray); margin-top:0.2rem; letter-spacing:-0.01em; }
+        .pad-badges { display:flex; gap:0.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+        .pad-badge { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:0.3rem 0.75rem; border-radius:50px; }
+        .pad-badge.stock { background:#e6f7ec; color:#1a8b48; }
+        .pad-badge.apedido { background:#fff3e0; color:#d17a00; }
+        .pad-badge.pos { background:#f0f0f0; color:#555; }
+        .fitment { margin-top:2.5rem; }
+        .fitment > h2 { font-size:1.2rem; font-weight:800; margin-bottom:1.4rem; color:var(--gray); }
+        .fitment > h2 span { color:var(--brand-accent); }
+        .fit-brand { margin-bottom:1.4rem; }
+        .fit-brand h3 { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--brand-accent); margin-bottom:0.7rem; border-bottom:1px solid #eee; padding-bottom:0.4rem; }
+        .fit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:0.5rem; }
+        .fit-item { background:white; border:1px solid #ececec; border-radius:8px; padding:0.55rem 0.9rem; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
+        .fit-item .fit-pos { color:var(--brand-subtle); font-size:0.72rem; white-space:nowrap; }
+        .comp-media { display:flex; gap:1rem; margin-top:1.3rem; flex-wrap:wrap; align-items:flex-start; }
+        .comp-media figure { flex:1 1 130px; max-width:200px; }
+        .comp-media img { width:100%; border:1px solid #eee; border-radius:8px; background:#fff; display:block; }
+        .comp-media figcaption { font-size:0.64rem; color:var(--brand-subtle); text-transform:uppercase; letter-spacing:0.8px; margin-top:0.45rem; text-align:center; line-height:1.3; }
+        .equiv-note { font-size:0.8rem; color:var(--brand-subtle); margin:0.8rem 0 0.2rem; }
+        .equiv-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(115px,1fr)); gap:0.6rem; margin-top:0.9rem; }
+        .equiv-item { border:1px solid #ececec; border-radius:9px; padding:0.6rem 0.75rem; background:#fafafa; }
+        .equiv-brand { display:block; font-size:0.6rem; text-transform:uppercase; letter-spacing:1px; color:var(--brand-accent); font-weight:700; }
+        .equiv-code { display:block; font-size:0.92rem; font-weight:800; color:var(--gray); margin-top:0.2rem; letter-spacing:-0.01em; }
+        .pad-badges { display:flex; gap:0.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+        .pad-badge { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:0.3rem 0.75rem; border-radius:50px; }
+        .pad-badge.stock { background:#e6f7ec; color:#1a8b48; }
+        .pad-badge.apedido { background:#fff3e0; color:#d17a00; }
+        .pad-badge.pos { background:#f0f0f0; color:#555; }
+        .fitment { margin-top:2.5rem; }
+        .fitment > h2 { font-size:1.2rem; font-weight:800; margin-bottom:1.4rem; color:var(--gray); }
+        .fitment > h2 span { color:var(--brand-accent); }
+        .fit-brand { margin-bottom:1.4rem; }
+        .fit-brand h3 { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--brand-accent); margin-bottom:0.7rem; border-bottom:1px solid #eee; padding-bottom:0.4rem; }
+        .fit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:0.5rem; }
+        .fit-item { background:white; border:1px solid #ececec; border-radius:8px; padding:0.55rem 0.9rem; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
+        .fit-item .fit-pos { color:var(--brand-subtle); font-size:0.72rem; white-space:nowrap; }
+        .comp-media { display:flex; gap:1rem; margin-top:1.3rem; flex-wrap:wrap; align-items:flex-start; }
+        .comp-media figure { flex:1 1 130px; max-width:200px; }
+        .comp-media img { width:100%; border:1px solid #eee; border-radius:8px; background:#fff; display:block; }
+        .comp-media figcaption { font-size:0.64rem; color:var(--brand-subtle); text-transform:uppercase; letter-spacing:0.8px; margin-top:0.45rem; text-align:center; line-height:1.3; }
+        .hero-left { display:flex; flex-direction:column; }
+        .equiv-block { margin-top:1.6rem; }
+        .equiv-note { font-size:0.8rem; color:var(--brand-subtle); margin:0.8rem 0 0.2rem; }
+        .equiv-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(115px,1fr)); gap:0.6rem; margin-top:0.9rem; }
+        .equiv-item { border:1px solid #ececec; border-radius:9px; padding:0.6rem 0.75rem; background:#fafafa; }
+        .equiv-brand { display:block; font-size:0.6rem; text-transform:uppercase; letter-spacing:1px; color:var(--brand-accent); font-weight:700; }
+        .equiv-code { display:block; font-size:0.92rem; font-weight:800; color:var(--gray); margin-top:0.2rem; letter-spacing:-0.01em; }
+        .pad-badges { display:flex; gap:0.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+        .pad-badge { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:0.3rem 0.75rem; border-radius:50px; }
+        .pad-badge.stock { background:#e6f7ec; color:#1a8b48; }
+        .pad-badge.apedido { background:#fff3e0; color:#d17a00; }
+        .pad-badge.pos { background:#f0f0f0; color:#555; }
+        .fitment { margin-top:2.5rem; }
+        .fitment > h2 { font-size:1.2rem; font-weight:800; margin-bottom:1.4rem; color:var(--gray); }
+        .fitment > h2 span { color:var(--brand-accent); }
+        .fit-brand { margin-bottom:1.4rem; }
+        .fit-brand h3 { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--brand-accent); margin-bottom:0.7rem; border-bottom:1px solid #eee; padding-bottom:0.4rem; }
+        .fit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:0.5rem; }
+        .fit-item { background:white; border:1px solid #ececec; border-radius:8px; padding:0.55rem 0.9rem; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
+        .fit-item .fit-pos { color:var(--brand-subtle); font-size:0.72rem; white-space:nowrap; }
+        .comp-media { display:flex; gap:1rem; margin-top:1.3rem; flex-wrap:wrap; align-items:flex-start; }
+        .comp-media figure { flex:1 1 130px; max-width:200px; }
+        .comp-media img { width:100%; border:1px solid #eee; border-radius:8px; background:#fff; display:block; }
+        .comp-media figcaption { font-size:0.64rem; color:var(--brand-subtle); text-transform:uppercase; letter-spacing:0.8px; margin-top:0.45rem; text-align:center; line-height:1.3; }
+        .hero-left { display:flex; flex-direction:column; }
+        .equiv-block { margin-top:1.6rem; }
+        .equiv-note { font-size:0.8rem; color:var(--brand-subtle); margin:0.8rem 0 0.2rem; }
+        .equiv-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(115px,1fr)); gap:0.6rem; margin-top:0.9rem; }
+        .equiv-item { border:1px solid #ececec; border-radius:9px; padding:0.6rem 0.75rem; background:#fafafa; }
+        .equiv-brand { display:block; font-size:0.6rem; text-transform:uppercase; letter-spacing:1px; color:var(--brand-accent); font-weight:700; }
+        .equiv-code { display:block; font-size:0.92rem; font-weight:800; color:var(--gray); margin-top:0.2rem; letter-spacing:-0.01em; }
+        .pad-badges { display:flex; gap:0.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+        .pad-badge { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:0.3rem 0.75rem; border-radius:50px; }
+        .pad-badge.stock { background:#e6f7ec; color:#1a8b48; }
+        .pad-badge.apedido { background:#fff3e0; color:#d17a00; }
+        .pad-badge.pos { background:#f0f0f0; color:#555; }
+        .fitment { margin-top:2.5rem; }
+        .fitment > h2 { font-size:1.2rem; font-weight:800; margin-bottom:1.4rem; color:var(--gray); }
+        .fitment > h2 span { color:var(--brand-accent); }
+        .fit-brand { margin-bottom:1.4rem; }
+        .fit-brand h3 { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--brand-accent); margin-bottom:0.7rem; border-bottom:1px solid #eee; padding-bottom:0.4rem; }
+        .fit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:0.5rem; }
+        .fit-item { background:white; border:1px solid #ececec; border-radius:8px; padding:0.55rem 0.9rem; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
+        .fit-item .fit-pos { color:var(--brand-subtle); font-size:0.72rem; white-space:nowrap; }
+        .comp-media { display:flex; gap:1rem; margin-top:1.3rem; flex-wrap:wrap; align-items:flex-start; }
+        .comp-media figure { flex:1 1 130px; max-width:200px; }
+        .comp-media img { width:100%; border:1px solid #eee; border-radius:8px; background:#fff; display:block; }
+        .comp-media figcaption { font-size:0.64rem; color:var(--brand-subtle); text-transform:uppercase; letter-spacing:0.8px; margin-top:0.45rem; text-align:center; line-height:1.3; }
+        .hero-left { display:flex; flex-direction:column; }
+        .equiv-block { margin-top:1.6rem; }
+        .equiv-note { font-size:0.8rem; color:var(--brand-subtle); margin:0.8rem 0 0.2rem; }
+        .equiv-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(115px,1fr)); gap:0.6rem; margin-top:0.9rem; }
+        .equiv-item { border:1px solid #ececec; border-radius:9px; padding:0.6rem 0.75rem; background:#fafafa; }
+        .equiv-brand { display:block; font-size:0.6rem; text-transform:uppercase; letter-spacing:1px; color:var(--brand-accent); font-weight:700; }
+        .equiv-code { display:block; font-size:0.92rem; font-weight:800; color:var(--gray); margin-top:0.2rem; letter-spacing:-0.01em; }
+        .pad-badges { display:flex; gap:0.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+        .pad-badge { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:0.3rem 0.75rem; border-radius:50px; }
+        .pad-badge.stock { background:#e6f7ec; color:#1a8b48; }
+        .pad-badge.apedido { background:#fff3e0; color:#d17a00; }
+        .pad-badge.pos { background:#f0f0f0; color:#555; }
+        .fitment { margin-top:2.5rem; }
+        .fitment > h2 { font-size:1.2rem; font-weight:800; margin-bottom:1.4rem; color:var(--gray); }
+        .fitment > h2 span { color:var(--brand-accent); }
+        .fit-brand { margin-bottom:1.4rem; }
+        .fit-brand h3 { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--brand-accent); margin-bottom:0.7rem; border-bottom:1px solid #eee; padding-bottom:0.4rem; }
+        .fit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:0.5rem; }
+        .fit-item { background:white; border:1px solid #ececec; border-radius:8px; padding:0.55rem 0.9rem; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
+        .fit-item .fit-pos { color:var(--brand-subtle); font-size:0.72rem; white-space:nowrap; }
+        .comp-media { display:flex; gap:1rem; margin-top:1.3rem; flex-wrap:wrap; align-items:flex-start; }
+        .comp-media figure { flex:1 1 130px; max-width:200px; }
+        .comp-media img { width:100%; border:1px solid #eee; border-radius:8px; background:#fff; display:block; }
+        .comp-media figcaption { font-size:0.64rem; color:var(--brand-subtle); text-transform:uppercase; letter-spacing:0.8px; margin-top:0.45rem; text-align:center; line-height:1.3; }
+        .hero-left { display:flex; flex-direction:column; }
+        .equiv-block { margin-top:1.6rem; }
+        .equiv-note { font-size:0.8rem; color:var(--brand-subtle); margin:0.8rem 0 0.2rem; }
+        .equiv-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(115px,1fr)); gap:0.6rem; margin-top:0.9rem; }
+        .equiv-item { border:1px solid #ececec; border-radius:9px; padding:0.6rem 0.75rem; background:#fafafa; }
+        .equiv-brand { display:block; font-size:0.6rem; text-transform:uppercase; letter-spacing:1px; color:var(--brand-accent); font-weight:700; }
+        .equiv-code { display:block; font-size:0.92rem; font-weight:800; color:var(--gray); margin-top:0.2rem; letter-spacing:-0.01em; }
+        .pad-badges { display:flex; gap:0.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+        .pad-badge { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:0.3rem 0.75rem; border-radius:50px; }
+        .pad-badge.stock { background:#e6f7ec; color:#1a8b48; }
+        .pad-badge.apedido { background:#fff3e0; color:#d17a00; }
+        .pad-badge.pos { background:#f0f0f0; color:#555; }
+        .fitment { margin-top:2.5rem; }
+        .fitment > h2 { font-size:1.2rem; font-weight:800; margin-bottom:1.4rem; color:var(--gray); }
+        .fitment > h2 span { color:var(--brand-accent); }
+        .fit-brand { margin-bottom:1.4rem; }
+        .fit-brand h3 { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--brand-accent); margin-bottom:0.7rem; border-bottom:1px solid #eee; padding-bottom:0.4rem; }
+        .fit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:0.5rem; }
+        .fit-item { background:white; border:1px solid #ececec; border-radius:8px; padding:0.55rem 0.9rem; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
+        .fit-item .fit-pos { color:var(--brand-subtle); font-size:0.72rem; white-space:nowrap; }
+        .comp-media { display:flex; gap:1rem; margin-top:1.3rem; flex-wrap:wrap; align-items:flex-start; }
+        .comp-media figure { flex:1 1 130px; max-width:200px; }
+        .comp-media img { width:100%; border:1px solid #eee; border-radius:8px; background:#fff; display:block; }
+        .comp-media figcaption { font-size:0.64rem; color:var(--brand-subtle); text-transform:uppercase; letter-spacing:0.8px; margin-top:0.45rem; text-align:center; line-height:1.3; }
+        .hero-left { display:flex; flex-direction:column; }
+        .equiv-block { margin-top:1.6rem; }
+        .equiv-note { font-size:0.8rem; color:var(--brand-subtle); margin:0.8rem 0 0.2rem; }
+        .equiv-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(115px,1fr)); gap:0.6rem; margin-top:0.9rem; }
+        .equiv-item { border:1px solid #ececec; border-radius:9px; padding:0.6rem 0.75rem; background:#fafafa; }
+        .equiv-brand { display:block; font-size:0.6rem; text-transform:uppercase; letter-spacing:1px; color:var(--brand-accent); font-weight:700; }
+        .equiv-code { display:block; font-size:0.92rem; font-weight:800; color:var(--gray); margin-top:0.2rem; letter-spacing:-0.01em; }
+        .pad-badges { display:flex; gap:0.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+        .pad-badge { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:0.3rem 0.75rem; border-radius:50px; }
+        .pad-badge.stock { background:#e6f7ec; color:#1a8b48; }
+        .pad-badge.apedido { background:#fff3e0; color:#d17a00; }
+        .pad-badge.pos { background:#f0f0f0; color:#555; }
+        .fitment { margin-top:2.5rem; }
+        .fitment > h2 { font-size:1.2rem; font-weight:800; margin-bottom:1.4rem; color:var(--gray); }
+        .fitment > h2 span { color:var(--brand-accent); }
+        .fit-brand { margin-bottom:1.4rem; }
+        .fit-brand h3 { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--brand-accent); margin-bottom:0.7rem; border-bottom:1px solid #eee; padding-bottom:0.4rem; }
+        .fit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:0.5rem; }
+        .fit-item { background:white; border:1px solid #ececec; border-radius:8px; padding:0.55rem 0.9rem; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
+        .fit-item .fit-pos { color:var(--brand-subtle); font-size:0.72rem; white-space:nowrap; }
+        .comp-media { display:flex; gap:1rem; margin-top:1.3rem; flex-wrap:wrap; align-items:flex-start; }
+        .comp-media figure { flex:1 1 130px; max-width:200px; }
+        .comp-media img { width:100%; border:1px solid #eee; border-radius:8px; background:#fff; display:block; }
+        .comp-media figcaption { font-size:0.64rem; color:var(--brand-subtle); text-transform:uppercase; letter-spacing:0.8px; margin-top:0.45rem; text-align:center; line-height:1.3; }
+        .hero-left { display:flex; flex-direction:column; }
+        .equiv-block { margin-top:1.6rem; }
+        .equiv-note { font-size:0.8rem; color:var(--brand-subtle); margin:0.8rem 0 0.2rem; }
+        .equiv-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(115px,1fr)); gap:0.6rem; margin-top:0.9rem; }
+        .equiv-item { border:1px solid #ececec; border-radius:9px; padding:0.6rem 0.75rem; background:#fafafa; }
+        .equiv-brand { display:block; font-size:0.6rem; text-transform:uppercase; letter-spacing:1px; color:var(--brand-accent); font-weight:700; }
+        .equiv-code { display:block; font-size:0.92rem; font-weight:800; color:var(--gray); margin-top:0.2rem; letter-spacing:-0.01em; }
+        .pad-badges { display:flex; gap:0.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+        .pad-badge { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:0.3rem 0.75rem; border-radius:50px; }
+        .pad-badge.stock { background:#e6f7ec; color:#1a8b48; }
+        .pad-badge.apedido { background:#fff3e0; color:#d17a00; }
+        .pad-badge.pos { background:#f0f0f0; color:#555; }
+        .fitment { margin-top:2.5rem; }
+        .fitment > h2 { font-size:1.2rem; font-weight:800; margin-bottom:1.4rem; color:var(--gray); }
+        .fitment > h2 span { color:var(--brand-accent); }
+        .fit-brand { margin-bottom:1.4rem; }
+        .fit-brand h3 { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--brand-accent); margin-bottom:0.7rem; border-bottom:1px solid #eee; padding-bottom:0.4rem; }
+        .fit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:0.5rem; }
+        .fit-item { background:white; border:1px solid #ececec; border-radius:8px; padding:0.55rem 0.9rem; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
+        .fit-item .fit-pos { color:var(--brand-subtle); font-size:0.72rem; white-space:nowrap; }
+        .comp-media { display:flex; gap:1rem; margin-top:1.3rem; flex-wrap:wrap; align-items:flex-start; }
+        .comp-media figure { flex:1 1 130px; max-width:200px; }
+        .comp-media img { width:100%; border:1px solid #eee; border-radius:8px; background:#fff; display:block; }
+        .comp-media figcaption { font-size:0.64rem; color:var(--brand-subtle); text-transform:uppercase; letter-spacing:0.8px; margin-top:0.45rem; text-align:center; line-height:1.3; }
+        .hero-left { display:flex; flex-direction:column; }
+        .equiv-block { margin-top:1.6rem; }
+        .equiv-note { font-size:0.8rem; color:var(--brand-subtle); margin:0.8rem 0 0.2rem; }
+        .equiv-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(115px,1fr)); gap:0.6rem; margin-top:0.9rem; }
+        .equiv-item { border:1px solid #ececec; border-radius:9px; padding:0.6rem 0.75rem; background:#fafafa; }
+        .equiv-brand { display:block; font-size:0.6rem; text-transform:uppercase; letter-spacing:1px; color:var(--brand-accent); font-weight:700; }
+        .equiv-code { display:block; font-size:0.92rem; font-weight:800; color:var(--gray); margin-top:0.2rem; letter-spacing:-0.01em; }
+        .pad-badges { display:flex; gap:0.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+        .pad-badge { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:0.3rem 0.75rem; border-radius:50px; }
+        .pad-badge.stock { background:#e6f7ec; color:#1a8b48; }
+        .pad-badge.apedido { background:#fff3e0; color:#d17a00; }
+        .pad-badge.pos { background:#f0f0f0; color:#555; }
+        .fitment { margin-top:2.5rem; }
+        .fitment > h2 { font-size:1.2rem; font-weight:800; margin-bottom:1.4rem; color:var(--gray); }
+        .fitment > h2 span { color:var(--brand-accent); }
+        .fit-brand { margin-bottom:1.4rem; }
+        .fit-brand h3 { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--brand-accent); margin-bottom:0.7rem; border-bottom:1px solid #eee; padding-bottom:0.4rem; }
+        .fit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:0.5rem; }
+        .fit-item { background:white; border:1px solid #ececec; border-radius:8px; padding:0.55rem 0.9rem; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
+        .fit-item .fit-pos { color:var(--brand-subtle); font-size:0.72rem; white-space:nowrap; }
+        .comp-media { display:flex; gap:1rem; margin-top:1.3rem; flex-wrap:wrap; align-items:flex-start; }
+        .comp-media figure { flex:1 1 130px; max-width:200px; }
+        .comp-media img { width:100%; border:1px solid #eee; border-radius:8px; background:#fff; display:block; }
+        .comp-media figcaption { font-size:0.64rem; color:var(--brand-subtle); text-transform:uppercase; letter-spacing:0.8px; margin-top:0.45rem; text-align:center; line-height:1.3; }
+        .hero-left { display:flex; flex-direction:column; }
+        .equiv-block { margin-top:1.6rem; }
+        .equiv-note { font-size:0.8rem; color:var(--brand-subtle); margin:0.8rem 0 0.2rem; }
+        .equiv-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(115px,1fr)); gap:0.6rem; margin-top:0.9rem; }
+        .equiv-item { border:1px solid #ececec; border-radius:9px; padding:0.6rem 0.75rem; background:#fafafa; }
+        .equiv-brand { display:block; font-size:0.6rem; text-transform:uppercase; letter-spacing:1px; color:var(--brand-accent); font-weight:700; }
+        .equiv-code { display:block; font-size:0.92rem; font-weight:800; color:var(--gray); margin-top:0.2rem; letter-spacing:-0.01em; }
+        .pad-badges { display:flex; gap:0.5rem; margin-bottom:1.2rem; flex-wrap:wrap; }
+        .pad-badge { font-size:0.66rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:0.3rem 0.75rem; border-radius:50px; }
+        .pad-badge.stock { background:#e6f7ec; color:#1a8b48; }
+        .pad-badge.apedido { background:#fff3e0; color:#d17a00; }
+        .pad-badge.pos { background:#f0f0f0; color:#555; }
+        .fitment { margin-top:2.5rem; }
+        .fitment > h2 { font-size:1.2rem; font-weight:800; margin-bottom:1.4rem; color:var(--gray); }
+        .fitment > h2 span { color:var(--brand-accent); }
+        .fit-brand { margin-bottom:1.4rem; }
+        .fit-brand h3 { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--brand-accent); margin-bottom:0.7rem; border-bottom:1px solid #eee; padding-bottom:0.4rem; }
+        .fit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:0.5rem; }
+        .fit-item { background:white; border:1px solid #ececec; border-radius:8px; padding:0.55rem 0.9rem; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; gap:0.5rem; }
+        .fit-item .fit-pos { color:var(--brand-subtle); font-size:0.72rem; white-space:nowrap; }
+        .comp-media { display:flex; gap:1rem; margin-top:1.3rem; flex-wrap:wrap; align-items:flex-start; }
+        .comp-media figure { flex:1 1 130px; max-width:200px; }
+        .comp-media img { width:100%; border:1px solid #eee; border-radius:8px; background:#fff; display:block; }
+        .comp-media figcaption { font-size:0.64rem; color:var(--brand-subtle); text-transform:uppercase; letter-spacing:0.8px; margin-top:0.45rem; text-align:center; line-height:1.3; }
+        .hero-left { display:flex; flex-direction:column; }
+        .equiv-block { margin-top:1.6rem; }
+        .equiv-note { font-size:0.8rem; color:var(--brand-subtle); margin:0.8rem 0 0.2rem; }
+        .equiv-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(115px,1fr)); gap:0.6rem; margin-top:0.9rem; }
+        .equiv-item { border:1px solid #ececec; border-radius:9px; padding:0.6rem 0.75rem; background:#fafafa; }
+        .equiv-brand { display:block; font-size:0.6rem; text-transform:uppercase; letter-spacing:1px; color:var(--brand-accent); font-weight:700; }
+        .equiv-code { display:block; font-size:0.92rem; font-weight:800; color:var(--gray); margin-top:0.2rem; letter-spacing:-0.01em; }
+            .footer-marcas ul { columns: 2; column-gap: 2rem; }
+            /* WHATSAPP FLOAT */
+        .whatsapp-float { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 55px; height: 55px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 4px 15px rgba(37,211,102,0.3); z-index: 999; transition: transform 0.2s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+            /* footer-fix estandar */
+        footer { background: #1a1a1a !important; color: #888; padding: 3rem 2rem 1.5rem !important; }
+        .footer-content { max-width: 1200px !important; margin: 0 auto !important; display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 2rem; margin-bottom: 2rem; text-align: left !important; }
+        .footer-section h4 { color: #fff; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; letter-spacing: 0.5px; text-transform: none; }
+        .footer-section ul { list-style: none; margin: 0; padding: 0; }
+        .footer-section li { margin-bottom: 0.5rem; }
+        .footer-section a { color: #888 !important; text-decoration: none; font-size: 0.8rem !important; font-weight: 400 !important; letter-spacing: normal !important; text-transform: none !important; opacity: 1 !important; display: inline !important; transition: color 0.2s; }
+        .footer-section a:hover { color: var(--red, #D32F2F) !important; }
+        .footer-bottom { text-align: center; padding-top: 1.5rem; border-top: 1px solid #333; font-size: 0.72rem; color: #555; }
+        .footer-marcas ul { columns: 2; column-gap: 2rem; }
+    </style>
+</head>
+<body>
+
+        <!-- NAV (consistente con el home) -->
+    <nav>
+        <a href="../../index.html" class="logo-text">
+            <span class="logo-bold">RADSPORT</span><span class="logo-dot">&bull;</span><span class="logo-light">GEIST</span>
+        </a>
+        <ul class="nav-links">
+            <li>
+                <a href="../../index.html#worlds">Segmentos</a>
+            </li>
+            <li>
+                <a href="../../index.html#brands">Marcas</a>
+            </li>
+            <li><a href="../../productos.html" class="active">Productos</a></li>
+            <li><a href="../../donde-comprar/moto.html">Dónde Comprar</a></li>
+            <li><a href="../../sobre-nosotros.html">Sobre Nosotros</a></li>
+            <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-wrap">
+        <div class="breadcrumb">
+            <a href="../../index.html">Inicio</a> <span>&rsaquo;</span>
+            <a href="../../productos.html">Productos</a> <span>&rsaquo;</span>
+            <a href="productos.html">WRP</a> <span>&rsaquo;</span>
+            <span id="bcName">Pastilla</span>
+        </div>
+        <div class="product-hero">
+            <div class="hero-left">
+                <div class="product-gallery" id="gallery">
+                    <div class="gallery-main" id="galleryMain">
+                        <svg class="gallery-zoom-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                        </svg>
+                        <img id="mainImg" src="" alt="">
+                    </div>
+                    <div class="gallery-thumbs" id="galleryThumbs"></div>
+                </div>
+                <div class="equiv-block" id="equivBlock"></div>
+            </div>
+            <div class="product-info-side">
+                <div class="product-kicker" id="pKicker"></div>
+                <h1 class="product-title" id="pTitle"></h1>
+                <div class="pad-badges" id="pBadges"></div>
+                <p class="product-tagline" id="pTag"></p>
+                <div class="specs-table" id="specsTable"></div>
+                <div class="product-description">
+                    <div class="description-header">El compuesto</div>
+                    <div id="pDesc"></div>
+                </div>
+            </div>
+        </div>
+        <section class="fitment">
+            <h2>Motos compatibles</h2>
+            <div id="fitList"></div>
+        </section>
+    </div>
+<footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Segmentos</h4>
+                <ul>
+                    <li><a href="../../segmentos/moto.html">Moto</a></li>
+                    <li><a href="../../segmentos/atv.html">ATV / UTV / SSV</a></li>
+                    <li><a href="../../segmentos/bici.html">Bicicleta</a></li>
+                    <li><a href="../../segmentos/industrial.html">Industrial</a></li>
+                </ul>
+            </div>
+            <div class="footer-section footer-marcas">
+                <h4>Marcas</h4>
+                <ul>
+                    <li><a href="../../marcas/cst/cst.html">CST</a></li>
+                    <li><a href="../../marcas/leovince/leovince.html">Leo Vince</a></li>
+                    <li><a href="../../marcas/shot/shot.html">SHOT</a></li>
+                    <li><a href="../../marcas/uswe/uswe.html">USWE</a></li>
+                    <li><a href="../../marcas/giantloop/giantloop.html">Giant Loop</a></li>
+                    <li><a href="../../marcas/nils/nils.html">NILS</a></li>
+                    <li><a href="../../marcas/nitromousse/nitromousse.html">Nitro Mousse</a></li>
+                    <li><a href="../../marcas/lucioli/lucioli.html">Lucioli</a></li>
+                    <li><a href="../../marcas/wrp/wrp.html">WRP</a></li>
+                    <li><a href="../../marcas/sidi/sidi.html">SIDI</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="../../sobre-nosotros.html">Quiénes Somos</a></li>
+                    <li><a href="../../donde-comprar/moto.html">Dónde Comprar</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Redes</h4>
+                <ul>
+                    <li><a href="https://www.instagram.com/radsport_geist/" target="_blank">Instagram</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Radsport Geist. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        const PADS = {"WG-7204-F6": {"b": "WG-7204", "c": "Estándar", "mat": "Orgánica", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Buen rendimiento y manejo fácil en todos los niveles de temperatura. Apta para discos de fundición y acero inoxidable.", "suf": "F6", "media": true, "eq": {"SBS": "604", "Brembo": "07HO26", "EBC": "FA131", "Ferodo": "FDB539", "AP Racing": "204"}, "fits": [["Kawasaki", "KLX 300", "Trasera"]]}, "WG-7211-F2": {"b": "WG-7211", "c": "Supersport", "mat": "Sinterizada", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Pastilla delantera desarrollada para uso callejero de alto rendimiento. Apta para discos OE de fundición y acero inoxidable.", "suf": "F2", "media": true, "eq": {"SBS": "611", "Brembo": "07SU12", "EBC": "FA135/FA214", "Ferodo": "FDB497", "AP Racing": "211"}, "fits": [["Kawasaki", "KLR 650", "Delantera"]]}, "WG-7211-F6": {"b": "WG-7211", "c": "Estándar", "mat": "Orgánica", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Buen rendimiento y manejo fácil en todos los niveles de temperatura. Apta para discos de fundición y acero inoxidable.", "suf": "F6", "media": true, "eq": {"SBS": "611", "Brembo": "07SU12", "EBC": "FA135/FA214", "Ferodo": "FDB497", "AP Racing": "211"}, "fits": [["Kawasaki", "KLX 300", "Delantera"]]}, "WG-7227-F2": {"b": "WG-7227", "c": "Supersport", "mat": "Sinterizada", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Pastilla delantera desarrollada para uso callejero de alto rendimiento. Apta para discos OE de fundición y acero inoxidable.", "suf": "F2", "media": true, "eq": {"SBS": "627", "Brembo": "07HO30", "EBC": "FA142/FA226", "Ferodo": "FDB2187", "AP Racing": "227"}, "fits": [["Kawasaki", "Versys X 300 ABS", "Delantera"], ["Kawasaki", "Versys 650 ABS", "Delantera ×2"], ["Kawasaki", "Z650 ABS", "Delantera ×2"]]}, "WG-7238-F3": {"b": "WG-7238", "c": "Supersport", "mat": "Sinterizada", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Pastilla trasera con coeficiente de fricción levemente reducido para un frenado controlado y máximo. Apta para discos OE de fundición y acero inoxidable.", "suf": "F3", "media": true, "eq": {"SBS": "638", "Brembo": "07YA22", "EBC": "FA165/FA215", "Ferodo": "FDB2087", "AP Racing": "238"}, "fits": [["Kawasaki", "Versys X 300 ABS", "Trasera"], ["Kawasaki", "Z 400 ABS", "Trasera"], ["Kawasaki", "Ninja 400 ABS", "Trasera"], ["Kawasaki", "Ninja 500 SE", "Trasera"], ["Kawasaki", "KLR 650", "Trasera"]]}, "WG-7238-F6": {"b": "WG-7238", "c": "Estándar", "mat": "Orgánica", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Buen rendimiento y manejo fácil en todos los niveles de temperatura. Apta para discos de fundición y acero inoxidable.", "suf": "F6", "media": true, "eq": {"SBS": "638", "Brembo": "07YA22", "EBC": "FA165/FA215", "Ferodo": "FDB2087", "AP Racing": "238"}, "fits": [["Kawasaki", "Z 500", "Trasera"]]}, "WG-7257-F3": {"b": "WG-7257", "c": "Supersport", "mat": "Sinterizada", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Pastilla trasera con coeficiente de fricción levemente reducido para un frenado controlado y máximo. Apta para discos OE de fundición y acero inoxidable.", "suf": "F3", "media": true, "eq": {"SBS": "657", "Brembo": "07HO36", "EBC": "FA174", "Ferodo": "FDB754", "AP Racing": "257"}, "fits": [["Kawasaki", "Versys 650 ABS", "Trasera"], ["Kawasaki", "Z650 ABS", "Trasera"]]}, "WG-7271-F3": {"b": "WG-7271", "c": "Supersport", "mat": "Sinterizada", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Pastilla trasera con coeficiente de fricción levemente reducido para un frenado controlado y máximo. Apta para discos OE de fundición y acero inoxidable.", "suf": "F3", "media": true, "eq": {"SBS": "671", "Brembo": "07BB04", "EBC": "FA181", "Ferodo": "FDB2018", "AP Racing": "271"}, "fits": [["CFMoto", "700CLX Adventure", "Trasera"], ["CFMoto", "700CLX Heritage", "Trasera"], ["CFMoto", "800 MT", "Trasera"], ["CFMoto", "800 NK", "Trasera"], ["KTM", "790 Adventure", "Trasera"], ["KTM", "890 Adventure R", "Trasera"], ["KTM", "990 Adventure", "Trasera"], ["KTM", "1090 Adventure", "Trasera"], ["KTM", "1290 Super Adventure", "Trasera"], ["Husqvarna", "Norden 901", "Trasera"]]}, "WG-7271-F4": {"b": "WG-7271", "c": "Estándar Off-Road", "mat": "Sinterizada", "p": "Front", "u": "Off-Road", "s": true, "a": false, "d": "Formulación para condiciones abrasivas sin perder rendimiento. Principalmente para discos OE de acero inoxidable.", "suf": "F4", "media": true, "eq": {"SBS": "671", "Brembo": "07BB04", "EBC": "FA181", "Ferodo": "FDB2018", "AP Racing": "271"}, "fits": [["KTM", "300 Champion", "Delantera"], ["KTM", "SX", "Delantera"], ["KTM", "EXC", "Delantera"], ["Husqvarna", "TC XXX", "Delantera"], ["Husqvarna", "TE XXX", "Delantera"], ["Husqvarna", "FC XXX", "Delantera"], ["Husqvarna", "FE XXX", "Delantera"], ["Gas Gas", "MC 125", "Delantera"], ["Gas Gas", "MC 150", "Delantera"], ["Gas Gas", "EC 250 (21>23)", "Delantera"], ["Gas Gas", "MC 250", "Delantera"], ["Gas Gas", "EC 300 (19>23)", "Delantera"], ["Gas Gas", "MC 300", "Delantera"], ["Gas Gas", "EC F 350", "Delantera"], ["Gas Gas", "MC F 350", "Delantera"], ["Gas Gas", "MC F 450", "Delantera"], ["Sherco", "SE-XXX", "Delantera"], ["Sherco", "SEF-XXX", "Delantera"]]}, "WG-7271-F4R": {"b": "WG-7271", "c": "Racing Off-Road", "mat": "Sinterizada", "p": "Front", "u": "Off-Road", "s": true, "a": false, "d": "Compuesto que brinda gran tacto y máxima performance en condiciones de carrera. Apta para discos OE de fundición y acero inoxidable.", "suf": "F4R", "media": true, "eq": {"SBS": "671", "Brembo": "07BB04", "EBC": "FA181", "Ferodo": "FDB2018", "AP Racing": "271"}, "fits": [["KTM", "SX", "Delantera"], ["KTM", "EXC", "Delantera"], ["Kawasaki", "KX450 (2024-2026)", "Delantera"], ["Husqvarna", "TC XXX", "Delantera"], ["Husqvarna", "TE XXX", "Delantera"], ["Husqvarna", "FC XXX", "Delantera"], ["Husqvarna", "FE XXX", "Delantera"], ["Gas Gas", "MC 125", "Delantera"], ["Gas Gas", "MC 150", "Delantera"], ["Gas Gas", "EC 250 (21>23)", "Delantera"], ["Gas Gas", "MC 250", "Delantera"], ["Gas Gas", "EC 300 (19>23)", "Delantera"], ["Gas Gas", "MC 300", "Delantera"], ["Gas Gas", "EC F 350", "Delantera"], ["Gas Gas", "MC F 350", "Delantera"], ["Gas Gas", "MC F 450", "Delantera"], ["Sherco", "SE-XXX", "Delantera"], ["Sherco", "SEF-XXX", "Delantera"]]}, "WG-7274-F2": {"b": "WG-7274", "c": "Supersport", "mat": "Sinterizada", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Pastilla delantera desarrollada para uso callejero de alto rendimiento. Apta para discos OE de fundición y acero inoxidable.", "suf": "F2", "media": true, "eq": {"SBS": "674", "Brembo": "07BB03", "EBC": "FA209/FA209/2", "Ferodo": "FDB2006", "AP Racing": "274"}, "fits": [["CFMoto", "650 GT", "Delantera ×2"], ["CFMoto", "650 MT", "Delantera ×2"], ["CFMoto", "650 NK", "Delantera ×2"], ["CFMoto", "700 MT", "Delantera ×2"], ["KTM", "690 Enduro R", "Delantera"], ["KTM", "990 Adventure", "Delantera"], ["Moto Morini", "Xcape 650", "Delantera ×2"], ["Moto Morini", "Xcape 700", "Delantera ×2"], ["Moto Morini", "Bagger 700", "Delantera"]]}, "WG-7275-F3": {"b": "WG-7275", "c": "Supersport", "mat": "Sinterizada", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Pastilla trasera con coeficiente de fricción levemente reducido para un frenado controlado y máximo. Apta para discos OE de fundición y acero inoxidable.", "suf": "F3", "media": true, "eq": {"SBS": "675", "Brembo": "07BB02", "EBC": "FA208", "Ferodo": "FDB2005", "AP Racing": "275"}, "fits": [["CFMoto", "450 MT", "Trasera"], ["CFMoto", "650 GT", "Trasera"], ["CFMoto", "650 MT", "Trasera"], ["CFMoto", "650 NK", "Trasera"], ["CFMoto", "700 MT", "Trasera"], ["KTM", "200 Duke", "Trasera"], ["KTM", "250 Duke", "Trasera"], ["KTM", "RC 390", "Trasera"], ["KTM", "390 Adventure", "Trasera"], ["KTM", "390 Duke", "Trasera"], ["KTM", "690 Duke", "Trasera"], ["KTM", "690 Enduro R", "Trasera"], ["KTM", "790 Duke", "Trasera"], ["KTM", "990 Duke", "Trasera"], ["Moto Morini", "450", "Trasera"], ["Moto Morini", "Bagger 700", "Trasera"], ["Husqvarna", "Svartpilen 250", "Trasera"], ["Husqvarna", "Vitpilen 401", "Trasera"]]}, "WG-7294-F4R": {"b": "WG-7294", "c": "Racing Off-Road", "mat": "Sinterizada", "p": "Front", "u": "Off-Road", "s": true, "a": false, "d": "Compuesto que brinda gran tacto y máxima performance en condiciones de carrera. Apta para discos OE de fundición y acero inoxidable.", "suf": "F4R", "media": true, "eq": {"SBS": "694", "Brembo": "07KA17", "EBC": "FA185/FA389", "Ferodo": "FDB892", "AP Racing": "294"}, "fits": [["Kawasaki", "KX250", "Delantera"], ["Kawasaki", "KX450 (<2023)", "Delantera"], ["Beta", "Crosstrainer 300", "Delantera"], ["Beta", "RR XXX", "Delantera"], ["Gas Gas", "EC 250 (12>20)", "Delantera"], ["Gas Gas", "XC 250", "Delantera"], ["Gas Gas", "EC 300 (12>20)", "Delantera"], ["Gas Gas", "XC 300", "Delantera"], ["Suzuki", "RM-Z 250", "Delantera"], ["Suzuki", "RM-Z 450", "Delantera"], ["Yamaha", "WR F 250 (15>17)", "Delantera"], ["Yamaha", "WR F 450 (03>15)", "Delantera"], ["Kove", "MX 250", "Delantera"], ["Kove", "MX 450", "Delantera"], ["Kove", "Rally 450", "Delantera"], ["Honda", "CRF", "Delantera"]]}, "WG-7306-F2": {"b": "WG-7306", "c": "Supersport", "mat": "Sinterizada", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Pastilla delantera desarrollada para uso callejero de alto rendimiento. Apta para discos OE de fundición y acero inoxidable.", "suf": "F2", "media": true, "eq": {"SBS": "706", "Brembo": "07BB19", "EBC": "FA244", "Ferodo": "FDB2042", "AP Racing": "306"}, "fits": [["CFMoto", "450 CLC", "Delantera"], ["CFMoto", "450 NK", "Delantera"], ["CFMoto", "450 MT", "Delantera"], ["CFMoto", "675 SR-R", "Delantera"], ["CFMoto", "700CLX Adventure", "Delantera"], ["CFMoto", "700CLX Heritage", "Delantera ×2"], ["CFMoto", "800 MT", "Delantera ×2"], ["CFMoto", "800 NK", "Delantera ×2"], ["KTM", "690 Duke", "Delantera"], ["KTM", "790 Duke", "Delantera ×2"], ["KTM", "790 Adventure", "Delantera ×2"], ["KTM", "890 Adventure R", "Delantera ×2"], ["KTM", "990 Duke", "Delantera ×2"], ["KTM", "1090 Adventure", "Delantera ×2"], ["KTM", "1290 Super Adventure", "Delantera ×2"], ["Moto Morini", "450", "Delantera"], ["Husqvarna", "Norden 901", "Delantera ×2"]]}, "WG-7330-F3": {"b": "WG-7330", "c": "Supersport", "mat": "Sinterizada", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Pastilla trasera con coeficiente de fricción levemente reducido para un frenado controlado y máximo. Apta para discos OE de fundición y acero inoxidable.", "suf": "F3", "media": true, "eq": {"SBS": "730", "Brembo": "07BB20", "EBC": "FA266", "Ferodo": "FDB2074", "AP Racing": "330"}, "fits": [["CFMoto", "700CL-X Sport", "Trasera"], ["KTM", "1290 Super Duke GT", "Trasera"], ["KTM", "1290 Super Duke R", "Trasera"], ["Moto Morini", "Xcape 650", "Trasera"], ["Moto Morini", "Xcape 700", "Trasera"]]}, "WG-7382-F2": {"b": "WG-7382", "c": "Supersport", "mat": "Sinterizada", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Pastilla delantera desarrollada para uso callejero de alto rendimiento. Apta para discos OE de fundición y acero inoxidable.", "suf": "F2", "media": true, "eq": {"SBS": "782", "Brembo": "07KA23", "EBC": "FA347", "Ferodo": "FDB2158", "AP Racing": "382"}, "fits": [["Kawasaki", "Z900 ABS", "Delantera ×2"]]}, "WG-7390-F4R": {"b": "WG-7390", "c": "Racing Off-Road", "mat": "Sinterizada", "p": "Rear", "u": "Off-Road", "s": true, "a": false, "d": "Compuesto que brinda gran tacto y máxima performance en condiciones de carrera. Apta para discos OE de fundición y acero inoxidable.", "suf": "F4R", "media": true, "eq": {"SBS": "790", "Brembo": "07YA41", "EBC": "FA367", "Ferodo": "FDB2162", "AP Racing": "390"}, "fits": [["Kawasaki", "KX250", "Trasera"], ["Kawasaki", "KX450 (<2023)", "Trasera"], ["Kawasaki", "KX450 (2024-2026)", "Trasera"], ["Beta", "Crosstrainer 300", "Trasera"], ["Beta", "RR XXX", "Trasera"], ["Gas Gas", "EC 250 (12>20)", "Trasera"], ["Gas Gas", "XC 250", "Trasera"], ["Gas Gas", "EC 300 (12>20)", "Trasera"], ["Gas Gas", "XC 300", "Trasera"], ["Suzuki", "RM-Z 250", "Trasera"], ["Suzuki", "RM-Z 450", "Trasera"], ["Yamaha", "YZ 125", "Trasera"], ["Yamaha", "WR F 250 (15>17)", "Trasera"], ["Yamaha", "WR F 250 (18>24)", "Trasera"], ["Yamaha", "YZ 250", "Trasera"], ["Yamaha", "WR F 450 (03>15)", "Trasera"], ["Yamaha", "WR F 450 (16>24)", "Trasera"], ["Yamaha", "YZ F 450", "Trasera"], ["Yamaha", "YZ FX 450", "Trasera"]]}, "WG-7391-F4": {"b": "WG-7391", "c": "Estándar Off-Road", "mat": "Sinterizada", "p": "Rear", "u": "Off-Road", "s": true, "a": false, "d": "Formulación para condiciones abrasivas sin perder rendimiento. Principalmente para discos OE de acero inoxidable.", "suf": "F4", "media": true, "eq": {"SBS": "791", "Brembo": "07BB27", "EBC": "FA368", "Ferodo": "FDB2165", "AP Racing": "391"}, "fits": [["KTM", "300 Champion", "Trasera"], ["KTM", "65 SX", "Delantera"], ["KTM", "65 SX", "Trasera"], ["KTM", "SX", "Trasera"], ["KTM", "SX", "Trasera"], ["KTM", "EXC", "Trasera"], ["KTM", "EXC", "Trasera"], ["Husqvarna", "TC 65", "Delantera"], ["Husqvarna", "TC 65", "Trasera"], ["Husqvarna", "TC XXX", "Trasera"], ["Husqvarna", "TC XXX", "Trasera"], ["Husqvarna", "TE XXX", "Trasera"], ["Husqvarna", "TE XXX", "Trasera"], ["Husqvarna", "FC XXX", "Trasera"], ["Husqvarna", "FC XXX", "Trasera"], ["Husqvarna", "FE XXX", "Trasera"], ["Husqvarna", "FE XXX", "Trasera"], ["Gas Gas", "MC 125", "Trasera"], ["Gas Gas", "MC 125", "Trasera"], ["Gas Gas", "MC 150", "Trasera"], ["Gas Gas", "MC 150", "Trasera"], ["Gas Gas", "EC 250 (21>23)", "Trasera"], ["Gas Gas", "EC 250 (21>23)", "Trasera"], ["Gas Gas", "MC 250", "Trasera"], ["Gas Gas", "MC 250", "Trasera"], ["Gas Gas", "EC 300 (19>23)", "Trasera"], ["Gas Gas", "EC 300 (19>23)", "Trasera"], ["Gas Gas", "MC 300", "Trasera"], ["Gas Gas", "MC 300", "Trasera"], ["Gas Gas", "EC F 350", "Trasera"], ["Gas Gas", "EC F 350", "Trasera"], ["Gas Gas", "MC F 350", "Trasera"], ["Gas Gas", "MC F 350", "Trasera"], ["Gas Gas", "MC F 450", "Trasera"], ["Gas Gas", "MC F 450", "Trasera"], ["Sherco", "SE-XXX", "Trasera"], ["Sherco", "SE-XXX", "Trasera"], ["Sherco", "SEF-XXX", "Trasera"], ["Sherco", "SEF-XXX", "Trasera"]]}, "WG-7434-F3": {"b": "WG-7434", "c": "Supersport", "mat": "Sinterizada", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Pastilla trasera con coeficiente de fricción levemente reducido para un frenado controlado y máximo. Apta para discos OE de fundición y acero inoxidable.", "suf": "F3", "media": true, "eq": {"SBS": "834", "Brembo": "07HO59", "EBC": "FA436", "Ferodo": "FDB2221", "AP Racing": "434"}, "fits": [["Kawasaki", "Ninja ZX-10R", "Trasera"]]}, "WG-7441-F2": {"b": "WG-7441", "c": "Supersport", "mat": "Sinterizada", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Pastilla delantera desarrollada para uso callejero de alto rendimiento. Apta para discos OE de fundición y acero inoxidable.", "suf": "F2", "media": true, "eq": {"SBS": "841", "Brembo": "07BB37", "EBC": "FA447", "Ferodo": "FDB2218", "AP Racing": "441"}, "fits": [["CFMoto", "700CL-X Sport", "Delantera ×2"], ["KTM", "1290 Super Duke R", "Delantera ×2"], ["Kawasaki", "Ninja ZX-10R", "Delantera ×2"]]}, "WG-7477-F2": {"b": "WG-7477", "c": "Supersport", "mat": "Sinterizada", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Pastilla delantera desarrollada para uso callejero de alto rendimiento. Apta para discos OE de fundición y acero inoxidable.", "suf": "F2", "media": true, "eq": {"SBS": "877", "Brembo": "07GR18", "EBC": "FA606", "AP Racing": "477"}, "fits": [["KTM", "200 Duke", "Delantera"], ["KTM", "250 Duke", "Delantera"], ["KTM", "RC 390", "Delantera"], ["KTM", "390 Adventure", "Delantera"], ["KTM", "390 Duke", "Delantera"], ["Husqvarna", "Svartpilen 250", "Delantera"], ["Husqvarna", "Vitpilen 401", "Delantera ×2"]]}, "WG-7481-F3": {"b": "WG-7481", "c": "Supersport", "mat": "Sinterizada", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Pastilla trasera con coeficiente de fricción levemente reducido para un frenado controlado y máximo. Apta para discos OE de fundición y acero inoxidable.", "suf": "F3", "media": true, "eq": {"SBS": "881", "Brembo": "07HO53", "EBC": "FA496", "Ferodo": "FDB2258", "AP Racing": "481"}, "fits": [["Kawasaki", "Z900 ABS", "Trasera"]]}, "WG-7500-F2": {"b": "WG-7500", "c": "Supersport", "mat": "Sinterizada", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Pastilla delantera desarrollada para uso callejero de alto rendimiento. Apta para discos OE de fundición y acero inoxidable.", "suf": "F2", "media": true, "eq": {"SBS": "900", "Brembo": "07BB38", "EBC": "FA630", "AP Racing": "500"}, "fits": [["CFMoto", "450 SR", "Delantera"]]}, "WG-7515-F6": {"b": "WG-7515", "c": "Estándar", "mat": "Orgánica", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Buen rendimiento y manejo fácil en todos los niveles de temperatura. Apta para discos de fundición y acero inoxidable.", "suf": "F6", "media": true, "eq": {"SBS": "915", "Brembo": "07HO61", "EBC": "FA629", "AP Racing": "515"}, "fits": [["CFMoto", "450 CLC", "Trasera"], ["CFMoto", "450 NK", "Trasera"], ["CFMoto", "450 SR", "Trasera"], ["CFMoto", "675 SR-R", "Trasera"]]}, "WG-7555-F2": {"b": "WG-7555", "c": "Supersport", "mat": "Sinterizada", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Pastilla delantera desarrollada para uso callejero de alto rendimiento. Apta para discos OE de fundición y acero inoxidable.", "suf": "F2", "media": true, "eq": {"SBS": "955", "AP Racing": "555"}, "fits": [["Kawasaki", "Z 400 ABS", "Delantera ×2"], ["Kawasaki", "Ninja 400 ABS", "Delantera ×2"], ["Kawasaki", "Z 500", "Delantera"], ["Kawasaki", "Ninja 500 SE", "Delantera"]]}};
+        function posEs(p){ return /^front/i.test(p) ? 'Delantera' : 'Trasera'; }
+        const code = new URLSearchParams(location.search).get('code');
+        const p = PADS[code] || PADS[Object.keys(PADS)[0]];
+        const realCode = PADS[code] ? code : Object.keys(PADS)[0];
+        if (p) {
+            document.title = realCode + ' | WRP · Radsport Geist';
+            document.getElementById('bcName').textContent = realCode;
+            document.getElementById('pKicker').textContent = 'Pastilla de freno · ' + posEs(p.p);
+            document.getElementById('pTitle').textContent = realCode;
+            // Galeria: 1) foto producto  2) dimensiones  3) curva de friccion
+            const media = [];
+            if (p.media) media.push(['productos/comp/'+p.suf+'-foto.png','Producto']);
+            media.push(['productos/dib/'+p.b+'.png','Dimensiones']);
+            if (p.media) media.push(['productos/comp/'+p.suf+'-curva.png','Curva de fricción']);
+            const img = document.getElementById('mainImg');
+            img.src = media[0][0]; img.alt = 'WRP ' + realCode + ' — ' + media[0][1];
+            const thumbsWrap = document.getElementById('galleryThumbs');
+            thumbsWrap.innerHTML = media.map(function(m,i){
+                return '<div class="gallery-thumb'+(i===0?' active':'')+'" data-src="'+m[0]+'" title="'+m[1]+'"><img src="'+m[0]+'" alt="'+m[1]+'"></div>'; }).join('');
+            const gthumbs = thumbsWrap.querySelectorAll('.gallery-thumb');
+            gthumbs.forEach(function(t){ t.addEventListener('click', function(){
+                img.src = t.dataset.src;
+                gthumbs.forEach(function(x){ x.classList.remove('active'); }); t.classList.add('active'); }); });
+            let badges = '<span class="pad-badge pos">' + posEs(p.p) + '</span>';
+            badges += p.a ? '<span class="pad-badge apedido">A pedido</span>' : '';
+            document.getElementById('pBadges').innerHTML = badges;
+            document.getElementById('pTag').textContent = p.c + ' · ' + p.mat + ' — ' + p.u;
+            const specs = [['Código', realCode], ['Compuesto', p.c], ['Material', p.mat],
+                           ['Posición', posEs(p.p)], ['Uso', p.u]];
+            document.getElementById('specsTable').innerHTML = specs.map(function(s){
+                return '<div class="specs-row"><span class="specs-key">'+s[0]+'</span><span class="specs-value">'+s[1]+'</span></div>'; }).join('');
+            document.getElementById('pDesc').innerHTML = '<p><em>'+p.c+' ('+p.mat+')</em>. '+p.d+'</p>';
+            // Equivalencias con otras marcas
+            var eqKeys = Object.keys(p.eq || {});
+            if (eqKeys.length) {
+                document.getElementById('equivBlock').innerHTML =
+                    '<div class="description-header">Equivalencias</div>' +
+                    '<p class="equiv-note">Códigos equivalentes en otras marcas:</p>' +
+                    '<div class="equiv-grid">' + eqKeys.map(function(k){
+                        return '<div class="equiv-item"><span class="equiv-brand">'+k+'</span><span class="equiv-code">'+p.eq[k]+'</span></div>'; }).join('') +
+                    '</div>';
+            }
+            // Motos compatibles agrupadas por marca
+            const byBrand = {};
+            p.fits.forEach(function(f){ (byBrand[f[0]] = byBrand[f[0]] || []).push(f); });
+            let html = '';
+            Object.keys(byBrand).forEach(function(br){
+                html += '<div class="fit-brand"><h3>'+br+'</h3><div class="fit-grid">';
+                byBrand[br].forEach(function(f){
+                    html += '<div class="fit-item"><span>'+f[1]+'</span><span class="fit-pos">'+f[2]+'</span></div>';
+                });
+                html += '</div></div>';
+            });
+            document.getElementById('fitList').innerHTML = html || '<p style="color:#888">Sin aplicaciones cargadas.</p>';
+        }
+        const galleryMain = document.getElementById('galleryMain');
+        const mImg = document.getElementById('mainImg');
+        if (galleryMain) {
+            galleryMain.addEventListener('mousemove', function(e){
+                const r = galleryMain.getBoundingClientRect();
+                mImg.style.transformOrigin = ((e.clientX-r.left)/r.width*100)+'% '+((e.clientY-r.top)/r.height*100)+'%';
+            });
+            galleryMain.addEventListener('mouseleave', function(){ mImg.style.transformOrigin='center center'; });
+        }
+    </script>
+
+    <a href="https://wa.me/5491135713234" class="whatsapp-float" target="_blank" rel="noopener" title="Contactar por WhatsApp" aria-label="WhatsApp"><svg viewBox="0 0 32 32" width="28" height="28" fill="#fff" aria-hidden="true"><path d="M16.04 3C9.4 3 4 8.4 4 15.04c0 2.12.55 4.19 1.6 6.02L4 29l8.13-1.55a12 12 0 0 0 3.9.65h.01C22.68 28.1 28.08 22.7 28.08 16.06 28.08 8.4 22.68 3 16.04 3zm0 21.9h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.75.72.72-3.66-.24-.38a9.86 9.86 0 0 1-1.51-5.25c0-5.46 4.45-9.9 9.92-9.9 2.65 0 5.14 1.03 7.01 2.9a9.82 9.82 0 0 1 2.9 7 9.9 9.9 0 0 1-9.9 9.84zm5.44-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg></a>
+</body>
+</html>

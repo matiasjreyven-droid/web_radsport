@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LV-10 Acero Inoxidable | Leo Vince · Radsport Geist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --red: #D32F2F; --red-dark: #B71C1C; --gray: #333; --gray-light: #f5f5f5; --white: #fff;
+            --brand-accent: #141414; --brand-subtle: #888;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; color: var(--gray); background: var(--white);
+            background-image: radial-gradient(circle, rgba(0,0,0,0.06) 1px, transparent 1px);
+            background-size: 22px 22px; }
+
+        /* NAV */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .logo-text { font-size: 1.3rem; letter-spacing: 0.15em; color: var(--gray); text-decoration: none; }
+        .logo-bold { font-weight: 900; } .logo-dot { color: var(--red); margin: 0 0.35em; } .logo-light { font-weight: 300; }
+        .nav-links { list-style: none; display: flex; gap: 2rem; }
+        .nav-links a { color: var(--gray); text-decoration: none; font-size: 0.75rem; font-weight: 300;
+            letter-spacing: 0.14em; text-transform: uppercase; }
+        .nav-links a:hover { color: var(--red); } .nav-links a.active { color: var(--red); font-weight: 600; }
+
+        /* PAGE */
+        .page-wrap { padding-top: 5rem; max-width: 1400px; margin: 0 auto; padding-left: 2rem; padding-right: 2rem; }
+        .breadcrumb { font-size: 0.75rem; color: var(--brand-subtle); margin-bottom: 1.5rem; padding: 1rem 0; }
+        .breadcrumb a { color: var(--brand-subtle); text-decoration: none; }
+        .breadcrumb a:hover { color: var(--brand-accent); }
+        .breadcrumb span { margin: 0 0.4rem; }
+
+        /* PRODUCT HERO */
+        .product-hero {
+            display: grid;
+            grid-template-columns: 1.35fr 1fr;
+            gap: 3rem;
+            background: white;
+            border-radius: 14px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+            min-height: 640px;
+            align-items: start;
+        }
+        /* GALLERY (foto principal + thumbs) */
+        .product-gallery {
+            display: grid;
+            grid-template-columns: 1fr 100px;
+            gap: 1rem;
+            align-items: start;
+        }
+        .product-gallery.single {
+            grid-template-columns: 1fr;
+        }
+        .gallery-main {
+            background: white;
+            border: 1px solid #e6e6e6;
+            border-radius: 8px;
+            aspect-ratio: 5/4;
+            overflow: hidden;
+            position: relative;
+            cursor: zoom-in;
+        }
+        .gallery-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 1rem;
+            transition: transform 0.25s ease;
+            transform-origin: center center;
+        }
+        .gallery-main:hover img {
+            transform: scale(2.2);
+            padding: 0;
+        }
+        .gallery-zoom-icon {
+            position: absolute;
+            top: 0.7rem; left: 0.7rem;
+            width: 26px; height: 26px;
+            display: flex; align-items: center; justify-content: center;
+            color: #999;
+            pointer-events: none;
+            z-index: 2;
+            transition: opacity 0.2s;
+        }
+        .gallery-main:hover .gallery-zoom-icon { opacity: 0; }
+        .gallery-thumbs {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            max-height: 460px;
+            overflow-y: auto;
+        }
+        .gallery-thumb {
+            background: white;
+            border: 1px solid #e6e6e6;
+            border-radius: 6px;
+            width: 100px; height: 100px;
+            cursor: pointer;
+            overflow: hidden;
+            padding: 0.4rem;
+            transition: border-color 0.2s;
+            flex-shrink: 0;
+        }
+        .gallery-thumb img {
+            width: 100%; height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+        .gallery-thumb:hover { border-color: #ccc; }
+        .gallery-thumb.active { border-color: var(--brand-accent); border-width: 2px; padding: 0.3rem; }
+
+        /* INFO SIDE */
+        .product-info-side {
+            padding: 0.5rem 0;
+            display: flex; flex-direction: column;
+        }
+        .product-kicker {
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px;
+            color: var(--brand-accent); font-weight: 700; margin-bottom: 1rem;
+        }
+        .product-title {
+            font-size: 2.4rem; font-weight: 900; color: var(--gray);
+            letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 0.8rem;
+        }
+        .product-tagline {
+            font-size: 1rem; color: var(--brand-subtle); line-height: 1.5; margin-bottom: 2rem;
+        }
+
+        /* SPECS TABLE */
+        .specs-table {
+            border-top: 1px solid #eee;
+            margin-bottom: 2rem;
+        }
+        .specs-row {
+            display: grid;
+            grid-template-columns: 170px 1fr;
+            align-items: center;
+            padding: 0.85rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .specs-key {
+            display: inline-flex; align-items: center; gap: 0.6rem;
+            font-size: 0.7rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1.5px;
+            color: var(--brand-accent);
+        }
+        .specs-key::before { content: '◆'; font-size: 0.6rem; }
+        .specs-value {
+            font-size: 0.9rem; font-weight: 500; color: var(--gray);
+        }
+
+        /* DESCRIPTION (dentro de info side) */
+        .product-description {
+            margin-top: 0.5rem;
+        }
+        .description-header {
+            font-size: 0.75rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 2px;
+            color: var(--gray); margin-bottom: 1rem;
+            padding-bottom: 0.6rem; border-bottom: 2px solid var(--brand-accent);
+            display: inline-block;
+        }
+        .product-description p {
+            font-size: 0.9rem; line-height: 1.7;
+            color: #555; margin-bottom: 0.9rem;
+        }
+        .product-description p:last-child { margin-bottom: 0; }
+        .product-description em {
+            color: var(--brand-accent); font-style: normal; font-weight: 600;
+        }
+
+        /* FOOTER */
+        footer { background: #000; color: white; padding: 3rem 2rem 1.5rem; margin-top: 4rem; }
+        .footer-content { max-width: 1400px; margin: 0 auto; text-align: center;
+            font-size: 0.85rem; color: #888; }
+        .footer-content a { color: var(--red); text-decoration: none; }
+
+        @media (max-width: 1000px) {
+            .product-hero { grid-template-columns: 1fr; padding: 1.5rem; gap: 2rem; }
+            .product-title { font-size: 1.8rem; }
+            .specs-row { grid-template-columns: 130px 1fr; }
+        }
+        @media (max-width: 600px) {
+            .product-gallery { grid-template-columns: 1fr; }
+            .gallery-thumbs { flex-direction: row; max-height: none; overflow-x: auto; overflow-y: hidden; }
+            .gallery-thumb { width: 70px; height: 70px; }
+        }
+            /* Dropdowns nav (consistente con home) */
+        .nav-links li { position: relative; }
+        .nav-dropdown {
+            position: absolute; top: 100%; left: 50%;
+            background: #ffffff; border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            padding: 0.2rem 0.3rem;
+            display: grid; grid-template-columns: 1fr 1fr;
+            grid-auto-rows: 44px; gap: 0;
+            min-width: 280px;
+            opacity: 0; visibility: hidden;
+            transform: translateX(-50%) translateY(8px);
+            transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+            z-index: 1001; margin-top: 0.5rem;
+        }
+        .nav-links li:hover .nav-dropdown,
+        .nav-dropdown:hover {
+            opacity: 1; visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        .nav-dropdown a {
+            display: flex; align-items: center; justify-content: center;
+            padding: 0.4rem 0.8rem; min-height: 44px;
+            border-radius: 8px; opacity: 0.7;
+            transition: background 0.15s, transform 0.15s;
+        }
+        .nav-dropdown a:hover { opacity: 1; }
+        .nav-dropdown a img {
+            max-height: 29px; max-width: 67px;
+            width: auto; height: auto;
+            object-fit: contain; mix-blend-mode: multiply;
+        }
+        .nav-dropdown-segments {
+            grid-template-columns: 1fr;
+            min-width: 180px; gap: 0.1rem;
+        }
+        .nav-dropdown-segments a {
+            font-size: 0.82rem !important;
+            font-weight: 500 !important;
+            color: var(--gray) !important;
+            padding: 0.5rem 0.8rem;
+            opacity: 1 !important;
+        }
+        .nav-dropdown-segments a:hover {
+            background: var(--gray-light);
+            color: var(--red) !important;
+        }
+
+
+
+
+
+
+
+
+
+
+
+        .hero-left { display:flex; flex-direction:column; }
+        .gallery-main img { padding:0.35rem; }
+        .gallery-main:hover img { padding:0; }
+        .fitment { margin-top:2.5rem; }
+        .fitment > h2 { font-size:1.2rem; font-weight:800; margin-bottom:1.4rem; color:var(--gray); }
+        .fitment-note { font-size:0.8rem; font-weight:500; color:var(--brand-subtle); letter-spacing:0; text-transform:none; }
+        .fit-brand { margin-bottom:1.4rem; }
+        .fit-brand h3 { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--brand-accent); margin-bottom:0.7rem; border-bottom:1px solid #eee; padding-bottom:0.4rem; }
+        .fit-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:0.5rem; }
+        .fit-item { background:white; border:1px solid #ececec; border-radius:8px; padding:0.55rem 0.9rem; font-size:0.85rem; display:flex; justify-content:space-between; align-items:center; gap:0.6rem; }
+        .fit-item.active { border-color:var(--brand-accent); box-shadow:0 0 0 1px var(--brand-accent); }
+        a.fit-item { text-decoration:none; color:inherit; }
+        .fit-clickable { cursor:pointer; transition:border-color 0.15s, box-shadow 0.15s; }
+        .fit-clickable:hover { border-color:var(--brand-accent); box-shadow:0 2px 10px rgba(0,0,0,0.06); }
+        .fit-meta { color:var(--brand-subtle); font-size:0.72rem; white-space:nowrap; display:flex; gap:0.5rem; align-items:center; }
+        .fit-code { color:var(--brand-accent); text-decoration:none; font-weight:800; font-size:0.78rem; }
+        .fit-code:hover { text-decoration:underline; }
+        .footer-marcas ul { columns: 2; column-gap: 2rem; }
+            /* WHATSAPP FLOAT */
+        .whatsapp-float { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 55px; height: 55px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 4px 15px rgba(37,211,102,0.3); z-index: 999; transition: transform 0.2s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+            /* footer-fix estandar */
+        footer { background: #1a1a1a !important; color: #888; padding: 3rem 2rem 1.5rem !important; }
+        .footer-content { max-width: 1200px !important; margin: 0 auto !important; display: grid !important; grid-template-columns: repeat(4, 1fr) !important; gap: 2rem; margin-bottom: 2rem; text-align: left !important; }
+        .footer-section h4 { color: #fff; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; letter-spacing: 0.5px; text-transform: none; }
+        .footer-section ul { list-style: none; margin: 0; padding: 0; }
+        .footer-section li { margin-bottom: 0.5rem; }
+        .footer-section a { color: #888 !important; text-decoration: none; font-size: 0.8rem !important; font-weight: 400 !important; letter-spacing: normal !important; text-transform: none !important; opacity: 1 !important; display: inline !important; transition: color 0.2s; }
+        .footer-section a:hover { color: var(--red, #D32F2F) !important; }
+        .footer-bottom { text-align: center; padding-top: 1.5rem; border-top: 1px solid #333; font-size: 0.72rem; color: #555; }
+        .footer-marcas ul { columns: 2; column-gap: 2rem; }
+            /* CTA producto (Donde comprar / Soy comercio) */
+        .product-cta-row { display: flex; gap: 0.7rem; margin-top: 1.5rem; }
+        .cta-btn { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.95rem 1.4rem; border-radius: 6px; font-weight: 700; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; text-decoration: none; transition: all 0.2s; cursor: pointer; border: 2px solid var(--brand-accent, #111); }
+        .cta-btn.primary { background: var(--brand-accent, #111); color: white; }
+        .cta-btn.primary:hover { background: white; color: var(--brand-accent, #111); transform: translateY(-2px); }
+        .cta-btn.secondary { background: white; color: var(--brand-accent, #111); }
+        .cta-btn.secondary:hover { background: var(--brand-accent, #111); color: white; transform: translateY(-2px); }
+        .cta-btn svg { width: 16px; height: 16px; }
+        @media (max-width: 600px) { .product-cta-row { flex-direction: column; } }
+    </style>
+</head>
+<body>
+
+        <!-- NAV (consistente con el home) -->
+    <nav>
+        <a href="../../index.html" class="logo-text">
+            <span class="logo-bold">RADSPORT</span><span class="logo-dot">&bull;</span><span class="logo-light">GEIST</span>
+        </a>
+        <ul class="nav-links">
+            <li>
+                <a href="../../index.html#worlds">Segmentos</a>
+            </li>
+            <li>
+                <a href="../../index.html#brands">Marcas</a>
+            </li>
+            <li><a href="../../productos.html" class="active">Productos</a></li>
+            <li><a href="../../donde-comprar/moto.html">Dónde Comprar</a></li>
+            <li><a href="../../sobre-nosotros.html">Sobre Nosotros</a></li>
+            <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-wrap">
+        <div class="breadcrumb">
+            <a href="../../index.html">Inicio</a> <span>&rsaquo;</span>
+            <a href="../../productos.html">Productos</a> <span>&rsaquo;</span>
+            <a href="productos.html">Leo Vince</a> <span>&rsaquo;</span>
+            <span id="bcName">Escape</span>
+        </div>
+        <div class="product-hero">
+            <div class="hero-left">
+                <div class="product-gallery" id="gallery">
+                    <div class="gallery-main" id="galleryMain">
+                        <svg class="gallery-zoom-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <img id="mainImg" src="" alt="">
+                    </div>
+                    <div class="gallery-thumbs" id="galleryThumbs"></div>
+                </div>
+            </div>
+            <div class="product-info-side">
+                <div class="product-kicker" id="pKicker"></div>
+                <h1 class="product-title" id="pTitle"></h1>
+                <p class="product-tagline" id="pTag"></p>
+                <div class="specs-table" id="specsTable"></div>
+                <div class="product-description">
+                    <div class="description-header">El escape</div>
+                    <div id="pDesc"></div>
+                </div>
+                <div class="product-cta-row">
+                    <a href="../../donde-comprar/moto.html?marca=leovince" class="cta-btn primary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        Dónde Comprar
+                    </a>
+                    <a href="https://wa.me/5491135713234?text=Hola%2C%20quiero%20comercializar%20Leo%20Vince" target="_blank" class="cta-btn secondary">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 7l9 6 9-6"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+                        Soy Comercio
+                    </a>
+                </div>
+            </div>
+        </div>
+        <section class="fitment">
+            <h2 id="fitTitle">Motos compatibles</h2>
+            <div id="fitList"></div>
+        </section>
+    </div>
+<footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Segmentos</h4>
+                <ul>
+                    <li><a href="../../segmentos/moto.html">Moto</a></li>
+                    <li><a href="../../segmentos/atv.html">ATV / UTV / SSV</a></li>
+                    <li><a href="../../segmentos/bici.html">Bicicleta</a></li>
+                    <li><a href="../../segmentos/industrial.html">Industrial</a></li>
+                </ul>
+            </div>
+            <div class="footer-section footer-marcas">
+                <h4>Marcas</h4>
+                <ul>
+                    <li><a href="../../marcas/cst/cst.html">CST</a></li>
+                    <li><a href="../../marcas/leovince/leovince.html">Leo Vince</a></li>
+                    <li><a href="../../marcas/shot/shot.html">SHOT</a></li>
+                    <li><a href="../../marcas/uswe/uswe.html">USWE</a></li>
+                    <li><a href="../../marcas/giantloop/giantloop.html">Giant Loop</a></li>
+                    <li><a href="../../marcas/nils/nils.html">NILS</a></li>
+                    <li><a href="../../marcas/nitromousse/nitromousse.html">Nitro Mousse</a></li>
+                    <li><a href="../../marcas/lucioli/lucioli.html">Lucioli</a></li>
+                    <li><a href="../../marcas/wrp/wrp.html">WRP</a></li>
+                    <li><a href="../../marcas/sidi/sidi.html">SIDI</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="../../sobre-nosotros.html">Quiénes Somos</a></li>
+                    <li><a href="../../donde-comprar/moto.html">Dónde Comprar</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Redes</h4>
+                <ul>
+                    <li><a href="https://www.instagram.com/radsport_geist/" target="_blank">Instagram</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Radsport Geist. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        const PRODUCTS = {"14402EBU": {"g": "lv-one-evo-acero-negro", "hp": true, "ph": ["productos/c/14402ebu-studio.jpg"], "mt": ["productos/c/14402ebu-1.jpg", "productos/c/14402ebu-2.jpg", "productos/c/14402ebu-3.jpg"], "url": "https://www.leovince.com/es-ar/product/14402ebu-lv-one-evo-black-edition-aprilia-tuareg-660-2022-2024?_gl=1*1hixatk*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDI4Mi4wLjAuMTM0MTc5MzM1Mg.."}, "14423EU": {"g": "lv-one-evo-acero-inoxidable", "hp": true, "ph": ["productos/c/14423eu-studio.jpg"], "mt": ["productos/c/14423eu-1.jpg", "productos/c/14423eu-2.jpg", "productos/c/14423eu-3.jpg"], "url": "https://www.leovince.com/es-ar/product/14423eu-lv-one-evo-benelli-bn-302-s-2019-2020-2?_gl=1*qn0pmh*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM0OTMwMS4wLjAuMTM0MTc5MzM1Mg.."}, "14230E": {"g": "lv-one-evo-acero-inoxidable", "hp": true, "ph": ["productos/c/14230e-studio.jpg"], "mt": ["productos/c/14230e-1.jpg", "productos/c/14230e-2.jpg", "productos/c/14230e-3.jpg"], "url": "https://www.leovince.com/es-ar/product/14230e-lv-one-evo-benelli-trk-502-2017-2020"}, "14281EU": {"g": "lv-one-evo-acero-inoxidable", "hp": false, "ph": [], "mt": [], "url": "https://www.leovince.com/es-ar/product/14281eu-lv-one-evo-benelli-trk-502-x-2018-2024"}, "15226": {"g": "lv-10-acero-inoxidable", "hp": true, "ph": ["productos/c/152260-studio.jpg"], "mt": ["productos/c/152260-1.jpg", "productos/c/152260-2.jpg", "productos/c/152260-3.jpg"], "url": "https://www.leovince.com/es-ar/product/15226-lv-10-benelli-leoncino-trail-500-2017-2024"}, "14446EU": {"g": "lv-one-evo-acero-inoxidable", "hp": true, "ph": ["productos/c/14446eu-studio.jpg"], "mt": ["productos/c/14446eu-1.jpg", "productos/c/14446eu-2.jpg", "productos/c/14446eu-3.jpg", "productos/c/14446eu-bike-1.jpg"], "url": "https://www.leovince.com/es-ar/product/14446eu-lv-one-evo-benelli-trk-702-702x-2023-2024-2"}, "15259": {"g": "lv-10-acero-inoxidable", "hp": true, "ph": ["productos/c/152590-studio.jpg"], "mt": ["productos/c/152590-1.jpg", "productos/c/152590-2.jpg", "productos/c/152590-3.jpg"], "url": "https://www.leovince.com/es-ar/product/15259-lv-10-benelli-752-s-2019-2024?_gl=1*yxctqq*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDgzMC4wLjAuMTM0MTc5MzM1Mg.."}, "14263EU": {"g": "lv-one-evo-acero-inoxidable", "hp": true, "ph": ["productos/c/14263eu-studio.jpg"], "mt": ["productos/c/14263eu-1.jpg", "productos/c/14263eu-2.jpg", "productos/c/14263eu-3.jpg"], "url": "https://www.leovince.com/es-ar/product/14263eu-lv-one-evo-bmw-f-850-gs-adventure-2018-2024"}, "14055U": {"g": "lv-one-evo-black-edition-acero-negro", "hp": true, "ph": ["productos/c/14055u-studio.jpg"], "mt": ["productos/c/14055u-1.jpg", "productos/c/14055u-2.jpg", "productos/c/14055u-3.jpg"], "url": "https://www.leovince.com/es-ar/product/14055u-nero-bmw-f-850-gs-adventure-2018-2024"}, "15604B": {"g": "lv-14-acero-negro", "hp": true, "ph": ["productos/c/15604b-studio.jpg"], "mt": [], "url": "https://www.leovince.com/es-ar/product/15604b-lv-14-black-edition-bmw-r-1300-gs-adventure-2024-2025-2"}, "15265BU": {"g": "lv-10-black-acero-negro", "hp": true, "ph": ["productos/c/15265bu-studio.jpg"], "mt": ["productos/c/15265bu-1.jpg", "productos/c/15265bu-2.jpg", "productos/c/15265bu-3.jpg"], "url": "https://www.leovince.com/es-ar/product/15265bu-lv-10-black-edition-cf-moto-450-ss-450-sr-2023-2024?_gl=1*3nfen3*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDg3MS4wLjAuMTM0MTc5MzM1Mg.."}, "15612U": {"g": "lv-14-acero-inoxidable", "hp": true, "ph": ["productos/c/15612u-studio.jpg"], "mt": ["productos/c/15612u-1.jpg", "productos/c/15612u-2.jpg", "productos/c/15612u-3.jpg"], "url": "https://www.leovince.com/es-ar/product/15612u-lv-14-cf-moto-450-mt-2024-2025"}, "15612BU": {"g": "lv-14-black-edition-acero-negro", "hp": true, "ph": ["productos/c/15612bu-studio.jpg"], "mt": ["productos/c/15612bu-1.jpg", "productos/c/15612bu-2.jpg", "productos/c/15612bu-3.jpg"], "url": "https://www.leovince.com/es-ar/product/15612bu-lv-14-black-edition-cf-moto-450-mt-2024-2025"}, "15256B": {"g": "lv-10-black-acero-negro", "hp": true, "ph": ["productos/c/15256b-studio.jpg"], "mt": ["productos/c/15256b-1.jpg", "productos/c/15256b-2.jpg", "productos/c/15256b-3.jpg"], "url": "https://www.leovince.com/es-ar/product/15256b-lv-10-black-edition-cf-moto-700-cl-x-heritage-sport-2021-2023?_gl=1*crqvsj*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDkwOS4wLjAuMTM0MTc5MzM1Mg.."}, "14444EU": {"g": "lv-one-evo-acero-inoxidable", "hp": true, "ph": ["productos/c/14444eu-studio.jpg"], "mt": ["productos/c/14444eu-1.jpg", "productos/c/14444eu-2.jpg", "productos/c/14444eu-3.jpg"], "url": "https://www.leovince.com/es-ar/product/14444eu-lv-one-evo-cf-moto-800nk-advanced-sport-2023-2024"}, "14444EBU": {"g": "lv-one-evo-black-edition-acero-negro", "hp": true, "ph": ["productos/c/14444ebu-studio.jpg"], "mt": ["productos/c/14444ebu-1.jpg", "productos/c/14444ebu-2.jpg", "productos/c/14444ebu-3.jpg"], "url": "https://www.leovince.com/es-ar/product/14444ebu-lv-one-evo-black-edition-cf-moto-800nk-advanced-sport-2023-2024"}, "14414EU": {"g": "lv-one-evo-acero-inoxidable", "hp": true, "ph": ["productos/c/14414eu-studio.jpg"], "mt": ["productos/c/14414eu-bike-1.jpg", "productos/c/14414eu-bike-2.jpg", "productos/c/14414eu-bike-3.jpg"], "url": "https://www.leovince.com/es-ar/product/14414eu-lv-one-evo-cf-moto-800-mt-sport-touring-explore-limited-edition-2022-2024?_gl=1*12lb7ed*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDk1My4wLjAuMTM0MTc5MzM1Mg.."}, "14414EBU": {"g": "lv-one-evo-black-edition-acero-negro", "hp": true, "ph": ["productos/c/14414ebu-1.jpg"], "mt": ["productos/c/14414ebu-studio.jpg", "productos/c/14414ebu-bike-2.jpg", "productos/c/14414ebu-bike-3.jpg"], "url": "https://www.leovince.com/es-ar/product/14414ebu-lv-one-evo-black-edition-cf-moto-800-mt-sport-touring-explore-limited-edition-2022-2024?_gl=1*12lb7ed*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDk1My4wLjAuMTM0MTc5MzM1Mg.."}, "15250U": {"g": "lv-10-acero-inoxidable", "hp": true, "ph": ["productos/c/15250u-studio.jpg"], "mt": ["productos/c/15250u-1.jpg", "productos/c/15250u-2.jpg", "productos/c/15250u-3.jpg"], "url": "https://www.leovince.com/es-ar/product/15250u-lv-10-ducati-scrambler-800-icon-icon-dark-nightshift-urban-motard-2021-2022-2?_gl=1*1nwm7mw*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MTE1NC4wLjAuMTM0MTc5MzM1Mg.."}, "15250BU": {"g": "lv-10-black-acero-negro", "hp": true, "ph": ["productos/c/15250bu-studio.jpg"], "mt": ["productos/c/15250bu-1.jpg", "productos/c/15250bu-2.jpg", "productos/c/15250bu-3.jpg"], "url": "https://www.leovince.com/es-ar/product/15250bu-lv-10-black-edition-ducati-scrambler-800-icon-icon-dark-nightshift-urban-motard-2021-2022-2?_gl=1*1l3nl15*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MTE4OC4wLjAuMTM0MTc5MzM1Mg.."}, "15266": {"g": "lv-10-acero-inoxidable", "hp": false, "ph": [], "mt": [], "url": "https://www.leovince.com/es-ar/product/15266-lv-10-ducati-scrambler-800-icon-full-throttle-night-shift-2025-2025"}, "15266B": {"g": "lv-10-black-acero-negro", "hp": false, "ph": [], "mt": [], "url": "https://www.leovince.com/es-ar/product/15266b-lv-10-black-edition-ducati-scrambler-800-icon-full-throttle-night-shift-2025-2025"}, "80045": {"g": "tubo-supresor-de-catalizador", "hp": false, "ph": [], "mt": ["productos/c/800450-studio.jpg"], "url": "https://www.leovince.com/es-ar/product/80045-cat-eliminator-link-pipe-ducati-scrambler-800-icon-full-throttle-night-shift-2023-2024"}, "14436X": {"g": "lv-x-evo-acero-inoxidable", "hp": true, "ph": ["productos/c/14436x-studio.jpg"], "mt": ["productos/c/14436x-bike-1.jpg", "productos/c/14436x-bike-3.jpg", "productos/c/14436x-bike-4.jpg"], "url": "https://www.leovince.com/es-ar/product/14436x-x3-evo-gas-gas-ec-250-f-2020-2023"}, "14363EU": {"g": "lv-one-evo-acero-inoxidable", "hp": false, "ph": [], "mt": ["productos/c/14363eu-studio.jpg", "productos/c/14363eu-1.jpg", "productos/c/14363eu-2.jpg"], "url": "https://www.leovince.com/es-ar/product/14363eu-lv-one-evo-gas-gas-es-700-2022-2024"}, "14387EB": {"g": "lv-one-evo-black-edition-acero-negro", "hp": true, "ph": ["productos/c/14387eb-studio.jpg"], "mt": ["productos/c/14387eb-1.jpg", "productos/c/14387eb-2.jpg", "productos/c/14387eb-3.jpg"], "url": "https://www.leovince.com/es-ar/product/14387eb-lv-one-evo-black-edition-honda-nc-750-x-2021-2024"}, "14355EBU": {"g": "lv-one-evo-black-edition-acero-negro", "hp": true, "ph": ["productos/c/14355ebu-studio.jpg"], "mt": ["productos/c/14355ebu-1.jpg", "productos/c/14355ebu-2.jpg"], "url": "https://www.leovince.com/es-ar/product/14355ebu-lv-one-evo-black-edition-honda-crf-1100-l-africa-twin-adventure-sport-dct-2024-2025"}, "14447X": {"g": "lv-x-evo-acero-inoxidable", "hp": true, "ph": ["productos/c/14447x-studio.jpg"], "mt": [], "url": "https://www.leovince.com/es-ar/product/14447x-x3-evo-husqvarna-fe-250-2024-2025"}, "15242": {"g": "lv-10-acero-inoxidable", "hp": true, "ph": ["productos/c/152420-studio.jpg"], "mt": ["productos/c/152420-1.jpg", "productos/c/152420-2.jpg", "productos/c/152420-3.jpg"], "url": "https://www.leovince.com/es-ar/product/15242-lv-10-husqvarna-svartpilen-401-2020-2023"}, "15242B": {"g": "lv-10-black-acero-negro", "hp": true, "ph": ["productos/c/15242b-studio.jpg"], "mt": ["productos/c/15242b-1.jpg", "productos/c/15242b-2.jpg", "productos/c/15242b-3.jpg"], "url": "https://www.leovince.com/es-ar/product/15242b-lv-10-black-edition-husqvarna-svartpilen-401-2020-2023"}, "14419E": {"g": "lv-one-evo-acero-inoxidable", "hp": true, "ph": ["productos/c/14419e-studio.jpg"], "mt": ["productos/c/14419e-1.jpg", "productos/c/14419e-2.jpg", "productos/c/14419e-3.jpg", "productos/c/14419e-bike-1.jpg"], "url": "https://www.leovince.com/es-ar/product/14419e-lv-one-evo-kawasaki-versys-x-300-adventure-2017-2022-2"}, "14419EBU": {"g": "lv-one-evo-acero-negro", "hp": true, "ph": ["productos/c/14419e-studio.jpg"], "mt": ["productos/c/14419ebu-studio.jpg", "productos/c/14419ebu-1.jpg", "productos/c/14419ebu-2.jpg", "productos/c/14419ebu-3.jpg"], "url": "https://www.leovince.com/es-ar/product/14419eb-lv-one-evo-black-edition-kawasaki-versys-x-300-adventure-2017-2022-2"}, "15218": {"g": "lv-10-acero-inoxidable", "hp": false, "ph": [], "mt": [], "url": "https://www.leovince.com/es-ar/product/15218u-lv-10-kawasaki-z-500-se-2024-2025"}, "15218B": {"g": "lv-10-black-acero-negro", "hp": false, "ph": [], "mt": [], "url": "https://www.leovince.com/es-ar/product/15218bu-lv-10-black-edition-kawasaki-z-500-se-2024-2025"}, "14259E": {"g": "lv-one-evo-acero-inoxidable", "hp": true, "ph": ["productos/c/14259e-studio.jpg"], "mt": ["productos/c/14259e-bike-1.jpg"], "url": "https://www.leovince.com/es-ar/product/14259eu-lv-one-evo-kawasaki-z-500-se-2024-2025"}, "14379ENU": {"g": "sistema-completo---lv-one-evo-acero-inoxidable", "hp": true, "ph": ["productos/c/14379enu-studio.jpg"], "mt": [], "url": "https://www.leovince.com/es-ar/product/14379enu-lv-one-evo-kawasaki-versys-650-2021-2024"}, "3549": {"g": "lv-x-aluminio", "hp": true, "ph": ["productos/c/3549-studio.jpg"], "mt": [], "url": "https://www.leovince.com/es-ar/product/3549-x3-kawasaki-klr-650-1997-2022"}, "14434X": {"g": "lv-x-evo-acero-inoxidable", "hp": false, "ph": [], "mt": [], "url": "https://www.leovince.com/es-ar/product/14434x-x3-evo-kawasaki-klr-650-1997-2022-2"}, "15239B": {"g": "lv-10-black-acero-negro", "hp": true, "ph": ["productos/c/15239b-studio.jpg"], "mt": ["productos/c/15239b-1.jpg", "productos/c/15239b-2.jpg"], "url": "https://www.leovince.com/es-ar/product/15239b-lv-10-black-edition-kawasaki-z-900-2020-2024-2"}, "15404BU": {"g": "lv-corsa-acero-negro", "hp": true, "ph": ["productos/c/15404bu-studio.jpg"], "mt": ["productos/c/15404bu-1.jpg", "productos/c/15404bu-2.jpg", "productos/c/15404bu-3.jpg"], "url": "https://www.leovince.com/es-ar/product/15404bu-lv-corsa-black-edition-kawasaki-z-900-2020-2024-2"}, "14332EU": {"g": "lv-pro-acero-inoxidable", "hp": true, "ph": ["productos/c/14332eu-studio.jpg"], "mt": ["productos/c/14332eu-1.jpg", "productos/c/14332eu-2.jpg", "productos/c/14332eu-3.jpg"], "url": "https://www.leovince.com/es-ar/product/14332eu-lv-pro-kawasaki-z-900-2020-2024-2"}, "80014": {"g": "colector-acero-inoxidable", "hp": false, "ph": [], "mt": ["productos/c/800140-studio.jpg"], "url": "https://www.leovince.com/es-ar/product/80014-header-pipes-kawasaki-z-900-2020-2024-2"}, "8085": {"g": "proteccion-carbono", "hp": true, "ph": ["productos/8085-studio.jpg"], "mt": [], "url": "https://www.leovince.com/es-ar/product/8085-carter-kawasaki-z-900-2025-2025"}, "15406BU": {"g": "lv-corsa-acero-negro", "hp": true, "ph": ["productos/c/15406bu-studio.jpg"], "mt": ["productos/c/15406bu-1.jpg", "productos/c/15406bu-2.jpg", "productos/c/15406bu-3.jpg"], "url": "https://www.leovince.com/es-ar/product/15406bu-lv-corsa-black-edition-kawasaki-zx-10rr-ninja-2021-2024-2"}, "14346EC": {"g": "lv-one-evo-acero-inoxidable", "hp": true, "ph": ["productos/c/14346ec-studio.jpg"], "mt": [], "url": "https://www.leovince.com/en-vn/product/14346ec-lv-one-evo-ktm-390-adventure-2020-2023"}, "14346EB": {"g": "lv-one-evo-black-edition-acero-negro", "hp": true, "ph": ["productos/c/14346eb-studio.jpg"], "mt": ["productos/c/14346eb-1.jpg", "productos/c/14346eb-2.jpg", "productos/c/14346eb-3.jpg"], "url": "https://www.leovince.com/es-ar/product/14346ebu-lv-one-evo-black-edition-ktm-390-adventure-2020-2024"}, "14347E": {"g": "lv-one-evo-carbono", "hp": true, "ph": ["productos/c/14347e-studio.jpg"], "mt": ["productos/c/14347e-1.jpg", "productos/c/14347e-2.jpg", "productos/c/14347e-3.jpg"], "url": "https://www.leovince.com/es-ar/product/14347e-lv-one-evo-carbon-fiber-ktm-390-adventure-2020-2023"}, "3399EU": {"g": "gp-corsa-evo-carbono", "hp": true, "ph": ["productos/c/3399eu-studio.jpg"], "mt": ["productos/c/3399eu-bike-1.jpg", "productos/c/3399eu-bike-8.jpg", "productos/c/3399eu-bike-14.jpg"], "url": "https://www.leovince.com/es-ar/product/3399e-gp-corsa-evo-ktm-duke-390-2021-2023?_gl=1*c1j1e0*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MjE5Ny4wLjAuMTM0MTc5MzM1Mg.."}, "80046": {"g": "tubo-supresor-de-catalizador", "hp": false, "ph": [], "mt": ["productos/c/800460-studio.jpg"], "url": "https://www.leovince.com/es-ar/product/80046-cat-eliminator-link-pipe-ktm-790-adventure-r-2023-2025"}, "14192E": {"g": "lv-one-evo-acero-inoxidable", "hp": true, "ph": ["productos/c/14192e-studio.jpg"], "mt": ["productos/c/14192e-1.jpg", "productos/c/14192e-2.jpg", "productos/c/14192e-3.jpg"], "url": "https://www.leovince.com/es-ar/product/14192eu-lv-one-evo-ktm-1290-super-adventure-r-s-t-2017-2020"}, "14045": {"g": "nero-acero-negro", "hp": true, "ph": ["productos/c/140450-studio.jpg"], "mt": ["productos/c/140450-1.jpg", "productos/c/140450-2.jpg"], "url": "https://www.leovince.com/es-ar/product/14045-nero-ktm-1290-super-adventure-r-s-t-2017-2020"}, "15308BU": {"g": "lv-12-r-black-edition-acero-negro", "hp": true, "ph": ["productos/c/15308bu-studio.jpg"], "mt": ["productos/c/15308bu-1.jpg", "productos/c/15308bu-2.jpg", "productos/c/15308bu-3.jpg"], "url": "https://www.leovince.com/es-ar/product/15308bu-lv-12-r-black-edition-ktm-1290-adventure-r-s-2021-2024-2"}, "14410EU": {"g": "lv-pro-acero-inoxidable", "hp": true, "ph": ["productos/c/14410eu-studio.jpg"], "mt": ["productos/c/14410eu-1.jpg", "productos/c/14410eu-2.jpg", "productos/c/14410eu-3.jpg"], "url": "https://www.leovince.com/es-ar/product/14410eu-lv-pro-moto-morini-x-cape-650-a2-2021-2024"}, "15008BU": {"g": "classic-racer-black-edition-acero-negro", "hp": true, "ph": ["productos/c/15008bu-studio.jpg"], "mt": ["productos/c/15008bu-bike-1.jpg", "productos/c/15008bu-bike-2.jpg", "productos/c/15008bu-bike-3.jpg"], "url": "https://www.leovince.com/es-ar/product/15008bu-classic-racer-black-edition-royal-enfield-meteor-350-2021-2024"}, "15129U": {"g": "gp-one-acero-negro", "hp": true, "ph": ["productos/c/15129u-studio.jpg"], "mt": ["productos/c/15129u-1.jpg", "productos/c/15129u-2.jpg", "productos/c/15129u-3.jpg"], "url": "https://www.leovince.com/es-ar/product/15129u-gp-one-royal-enfield-hunter-350-2022-2024-2"}, "15007U": {"g": "classic-racer-acero-inoxidable", "hp": true, "ph": ["productos/c/15007u-studio.jpg"], "mt": [], "url": "https://www.leovince.com/es-ar/product/15007u-classic-racer-royal-enfield-continental-gt-650-interceptor-650-2019-2024?_gl=1*cara4z*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1Mjc5MC4wLjAuMTM0MTc5MzM1Mg.."}, "15007BU": {"g": "classic-racer-black-edition-acero-negro", "hp": false, "ph": [], "mt": [], "url": "https://www.leovince.com/es-ar/product/15007bu-classic-racer-black-edition-royal-enfield-continental-gt-650-interceptor-650-2019-2024"}, "14352EB": {"g": "lv-one-evo-black-edition-acero-negro", "hp": true, "ph": ["productos/c/14352eb-1.jpg"], "mt": ["productos/c/14352eb-studio.jpg", "productos/c/14352eb-bike-6.jpg", "productos/c/14352eb-bike-11.jpg", "productos/c/14352eb-bike-17.jpg", "productos/c/14352eb-bike-20.jpg", "productos/c/14352eb-bike-23.jpg"], "url": "https://www.leovince.com/es-ar/product/14352ebu-lv-one-evo-black-edition-triumph-tiger-850-900-gt-rally-pro-2020-2023"}, "14450EBU": {"g": "lv-one-evo-black-edition-acero-negro", "hp": false, "ph": [], "mt": [], "url": "https://www.leovince.com/es-ar/product/14450ebu-lv-one-evo-black-edition-triumph-tiger-900-gt-gt-pro-rally-pro-2024-2025"}, "14421EU": {"g": "lv-one-evo-acero-inoxidable", "hp": false, "ph": [], "mt": ["productos/c/14421eu-studio.jpg", "productos/c/14421eu-1.jpg", "productos/c/14421eu-2.jpg", "productos/c/14421eu-3.jpg"], "url": "https://www.leovince.com/es-ar/product/14421eu-lv-one-evo-triumph-tiger-1200-gt-rally-pro-explorer-2022-2024"}, "14257EU": {"g": "lv-pro-acero-inoxidable", "hp": true, "ph": ["productos/c/14257eu-studio.jpg"], "mt": ["productos/c/14257eu-bike-1.jpg", "productos/c/14257eu-bike-8.jpg", "productos/c/14257eu-bike-14.jpg"], "url": "https://www.leovince.com/es-ar/product/14257eu-lv-pro-yamaha-mt-03-2022-2023-2"}, "3015200801R": {"g": "lv-10-db-killer-acero-inoxidable", "hp": true, "ph": ["productos/c/3015200801r-studio.jpg"], "mt": ["productos/c/3015200801r-2.jpg", "productos/c/3015200801r-3.jpg"], "url": "https://www.leovince.com/es-ar/product/3015200801r-dbkiller-2"}};
+        const GROUPS = {"lv-one-evo-acero-negro": {"n": "LV One Evo", "mat": "Acero Negro", "mcat": "Negro", "main": "productos/c/14402ebu-studio.jpg", "ph": ["productos/c/14402ebu-studio.jpg"], "motos": [["Aprilia", "Tuareg 660", "2022 - 2024", "14402EBU", "https://www.leovince.com/es-ar/product/14402ebu-lv-one-evo-black-edition-aprilia-tuareg-660-2022-2024?_gl=1*1hixatk*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDI4Mi4wLjAuMTM0MTc5MzM1Mg.."], ["Kawasaki", "Versys 300", "2018 - 2024", "14419EBU", "https://www.leovince.com/es-ar/product/14419eb-lv-one-evo-black-edition-kawasaki-versys-x-300-adventure-2017-2022-2"]], "o": 1, "desc": ["Slip-on homologado de acero, el equilibrio perfecto entre sonido deportivo, estética y prestaciones para uso diario y ruta. Acabado en acero negro.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "lv-one-evo-acero-inoxidable": {"n": "LV One Evo", "mat": "Acero Inoxidable", "mcat": "Inoxidable", "main": "productos/c/14423eu-studio.jpg", "ph": ["productos/c/14423eu-studio.jpg"], "motos": [["Benelli", "BN 302 S", "2019 - 2023", "14423EU", "https://www.leovince.com/es-ar/product/14423eu-lv-one-evo-benelli-bn-302-s-2019-2020-2?_gl=1*qn0pmh*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM0OTMwMS4wLjAuMTM0MTc5MzM1Mg.."], ["Benelli", "TNT 300", "2019 - 2023", "14423EU", "https://www.leovince.com/es-ar/product/14423eu-lv-one-evo-benelli-bn-302-s-2019-2020-2?_gl=1*qn0pmh*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM0OTMwMS4wLjAuMTM0MTc5MzM1Mg.."], ["Benelli", "TRK 502", "2017 - 2020", "14230E", "https://www.leovince.com/es-ar/product/14230e-lv-one-evo-benelli-trk-502-2017-2020"], ["Benelli", "TRK 502 X", "2018 - 2024", "14281EU", "https://www.leovince.com/es-ar/product/14281eu-lv-one-evo-benelli-trk-502-x-2018-2024"], ["Benelli", "TRK 702", "2023 - 2024", "14446EU", "https://www.leovince.com/es-ar/product/14446eu-lv-one-evo-benelli-trk-702-702x-2023-2024-2"], ["Benelli", "TRK 702 X", "2023 - 2024", "14446EU", "https://www.leovince.com/es-ar/product/14446eu-lv-one-evo-benelli-trk-702-702x-2023-2024-2"], ["BMW", "F 850 GS", "2018 - 2024", "14263EU", "https://www.leovince.com/es-ar/product/14263eu-lv-one-evo-bmw-f-850-gs-adventure-2018-2024"], ["BMW", "F 750 GS", "2018 - 2024", "14263EU", "https://www.leovince.com/es-ar/product/14263eu-lv-one-evo-bmw-f-850-gs-adventure-2018-2024"], ["CFMoto", "800 NK", "2023 - 2025", "14444EU", "https://www.leovince.com/es-ar/product/14444eu-lv-one-evo-cf-moto-800nk-advanced-sport-2023-2024"], ["CFMoto", "800 MT Touring", "2020 - 2025", "14414EU", "https://www.leovince.com/es-ar/product/14414eu-lv-one-evo-cf-moto-800-mt-sport-touring-explore-limited-edition-2022-2024?_gl=1*12lb7ed*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDk1My4wLjAuMTM0MTc5MzM1Mg.."], ["CFMoto", "Sport", "2020 - 2025", "14414EU", "https://www.leovince.com/es-ar/product/14414eu-lv-one-evo-cf-moto-800-mt-sport-touring-explore-limited-edition-2022-2024?_gl=1*12lb7ed*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDk1My4wLjAuMTM0MTc5MzM1Mg.."], ["CFMoto", "Explorer", "2020 - 2025", "14414EU", "https://www.leovince.com/es-ar/product/14414eu-lv-one-evo-cf-moto-800-mt-sport-touring-explore-limited-edition-2022-2024?_gl=1*12lb7ed*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDk1My4wLjAuMTM0MTc5MzM1Mg.."], ["Husqvarna", "Norden 901", "2022 - 2025", "14414EU", "https://www.leovince.com/es-ar/product/14414eu-lv-one-evo-cf-moto-800-mt-sport-touring-explore-limited-edition-2022-2024?_gl=1*12lb7ed*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDk1My4wLjAuMTM0MTc5MzM1Mg.."], ["KTM", "790 Adventure", "2019 - 2025", "14414EU", "https://www.leovince.com/es-ar/product/14414eu-lv-one-evo-cf-moto-800-mt-sport-touring-explore-limited-edition-2022-2024?_gl=1*12lb7ed*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDk1My4wLjAuMTM0MTc5MzM1Mg.."], ["KTM", "890 Adventure", "2019 - 2025", "14414EU", "https://www.leovince.com/es-ar/product/14414eu-lv-one-evo-cf-moto-800-mt-sport-touring-explore-limited-edition-2022-2024?_gl=1*12lb7ed*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDk1My4wLjAuMTM0MTc5MzM1Mg.."], ["Gas Gas", "ES 700", "2022 - 2024", "14363EU", "https://www.leovince.com/es-ar/product/14363eu-lv-one-evo-gas-gas-es-700-2022-2024"], ["Gas Gas", "SM 700", "2022 - 2024", "14363EU", "https://www.leovince.com/es-ar/product/14363eu-lv-one-evo-gas-gas-es-700-2022-2024"], ["KTM", "690 Enduro", "2019 - 2024", "14363EU", "https://www.leovince.com/es-ar/product/14363eu-lv-one-evo-gas-gas-es-700-2022-2024"], ["KTM", "690 Enduro R", "2019 - 2024", "14363EU", "https://www.leovince.com/es-ar/product/14363eu-lv-one-evo-gas-gas-es-700-2022-2024"], ["KTM", "690 SMC", "2019 - 2024", "14363EU", "https://www.leovince.com/es-ar/product/14363eu-lv-one-evo-gas-gas-es-700-2022-2024"], ["KTM", "690 SMC R", "2019 - 2024", "14363EU", "https://www.leovince.com/es-ar/product/14363eu-lv-one-evo-gas-gas-es-700-2022-2024"], ["Kawasaki", "Versys 300", "2018 - 2024", "14419E", "https://www.leovince.com/es-ar/product/14419e-lv-one-evo-kawasaki-versys-x-300-adventure-2017-2022-2"], ["Kawasaki", "Z 400", "2018 - 2025", "14259E", "https://www.leovince.com/es-ar/product/14259eu-lv-one-evo-kawasaki-z-500-se-2024-2025"], ["Kawasaki", "Z 500", "2018 - 2025", "14259E", "https://www.leovince.com/es-ar/product/14259eu-lv-one-evo-kawasaki-z-500-se-2024-2025"], ["Kawasaki", "Ninja 400", "2018 - 2025", "14259E", "https://www.leovince.com/es-ar/product/14259eu-lv-one-evo-kawasaki-z-500-se-2024-2025"], ["Kawasaki", "Ninja 500", "2018 - 2025", "14259E", "https://www.leovince.com/es-ar/product/14259eu-lv-one-evo-kawasaki-z-500-se-2024-2025"], ["KTM", "390 Adventure", "2020 - 2025", "14346EC", "https://www.leovince.com/en-vn/product/14346ec-lv-one-evo-ktm-390-adventure-2020-2023"], ["KTM", "250 Adventure", "2020 - 2025", "14346EC", "https://www.leovince.com/en-vn/product/14346ec-lv-one-evo-ktm-390-adventure-2020-2023"], ["KTM", "1290 Super Adventure R", "2015 - 2021", "14192E", "https://www.leovince.com/es-ar/product/14192eu-lv-one-evo-ktm-1290-super-adventure-r-s-t-2017-2020"], ["KTM", "1290 Super Adventure S", "2015 - 2021", "14192E", "https://www.leovince.com/es-ar/product/14192eu-lv-one-evo-ktm-1290-super-adventure-r-s-t-2017-2020"], ["KTM", "1290 Super Adventure T", "2015 - 2021", "14192E", "https://www.leovince.com/es-ar/product/14192eu-lv-one-evo-ktm-1290-super-adventure-r-s-t-2017-2020"], ["KTM", "1190 Adventure", "2015 - 2021", "14192E", "https://www.leovince.com/es-ar/product/14192eu-lv-one-evo-ktm-1290-super-adventure-r-s-t-2017-2020"], ["KTM", "1190 Adventure R", "2015 - 2021", "14192E", "https://www.leovince.com/es-ar/product/14192eu-lv-one-evo-ktm-1290-super-adventure-r-s-t-2017-2020"], ["KTM", "1090 Adventure", "2015 - 2021", "14192E", "https://www.leovince.com/es-ar/product/14192eu-lv-one-evo-ktm-1290-super-adventure-r-s-t-2017-2020"], ["KTM", "1090 Adventure R", "2015 - 2021", "14192E", "https://www.leovince.com/es-ar/product/14192eu-lv-one-evo-ktm-1290-super-adventure-r-s-t-2017-2020"], ["Triumph", "Tiger 1200", "2022 - 2024", "14421EU", "https://www.leovince.com/es-ar/product/14421eu-lv-one-evo-triumph-tiger-1200-gt-rally-pro-explorer-2022-2024"]], "o": 2, "desc": ["Slip-on homologado de acero, el equilibrio perfecto entre sonido deportivo, estética y prestaciones para uso diario y ruta. Acabado en acero inoxidable.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "lv-10-acero-inoxidable": {"n": "LV-10", "mat": "Acero Inoxidable", "mcat": "Inoxidable", "main": "productos/c/152260-studio.jpg", "ph": ["productos/c/152260-studio.jpg"], "motos": [["Benelli", "Leoncino 500", "2017 - 2024", "15226", "https://www.leovince.com/es-ar/product/15226-lv-10-benelli-leoncino-trail-500-2017-2024"], ["Benelli", "752 S", "2019 - 2024", "15259", "https://www.leovince.com/es-ar/product/15259-lv-10-benelli-752-s-2019-2024?_gl=1*yxctqq*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDgzMC4wLjAuMTM0MTc5MzM1Mg.."], ["Ducati", "Scrambler 800 Icon", "2021 - 2024", "15250U", "https://www.leovince.com/es-ar/product/15250u-lv-10-ducati-scrambler-800-icon-icon-dark-nightshift-urban-motard-2021-2022-2?_gl=1*1nwm7mw*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MTE1NC4wLjAuMTM0MTc5MzM1Mg.."], ["Ducati", "Classic", "2021 - 2024", "15250U", "https://www.leovince.com/es-ar/product/15250u-lv-10-ducati-scrambler-800-icon-icon-dark-nightshift-urban-motard-2021-2022-2?_gl=1*1nwm7mw*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MTE1NC4wLjAuMTM0MTc5MzM1Mg.."], ["Ducati", "Scrambler 800 Icon", "2024 - 2025", "15266", "https://www.leovince.com/es-ar/product/15266-lv-10-ducati-scrambler-800-icon-full-throttle-night-shift-2025-2025"], ["Ducati", "Classic", "2024 - 2025", "15266", "https://www.leovince.com/es-ar/product/15266-lv-10-ducati-scrambler-800-icon-full-throttle-night-shift-2025-2025"], ["Husqvarna", "Svartpilen 401", "2020 - 2023", "15242", "https://www.leovince.com/es-ar/product/15242-lv-10-husqvarna-svartpilen-401-2020-2023"], ["Husqvarna", "Vitpilen 401", "2020 - 2023", "15242", "https://www.leovince.com/es-ar/product/15242-lv-10-husqvarna-svartpilen-401-2020-2023"], ["Kawasaki", "Z 400", "2018 - 2025", "15218", "https://www.leovince.com/es-ar/product/15218u-lv-10-kawasaki-z-500-se-2024-2025"], ["Kawasaki", "Z 500", "2018 - 2025", "15218", "https://www.leovince.com/es-ar/product/15218u-lv-10-kawasaki-z-500-se-2024-2025"], ["Kawasaki", "Ninja 400", "2018 - 2025", "15218", "https://www.leovince.com/es-ar/product/15218u-lv-10-kawasaki-z-500-se-2024-2025"], ["Kawasaki", "Ninja 500", "2018 - 2025", "15218", "https://www.leovince.com/es-ar/product/15218u-lv-10-kawasaki-z-500-se-2024-2025"]], "o": 5, "desc": ["Slip-on de inspiración racing, liviano y compacto, con un sonido lleno y una estética inconfundible. Acabado en acero inoxidable.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "lv-one-evo-black-edition-acero-negro": {"n": "LV One Evo Black Edition", "mat": "Acero Negro", "mcat": "Negro", "main": "productos/c/14055u-studio.jpg", "ph": ["productos/c/14055u-studio.jpg"], "motos": [["BMW", "F 850 GS", "2018 - 2024", "14055U", "https://www.leovince.com/es-ar/product/14055u-nero-bmw-f-850-gs-adventure-2018-2024"], ["BMW", "F 750 GS", "2018 - 2024", "14055U", "https://www.leovince.com/es-ar/product/14055u-nero-bmw-f-850-gs-adventure-2018-2024"], ["CFMoto", "800 NK", "2023 - 2025", "14444EBU", "https://www.leovince.com/es-ar/product/14444ebu-lv-one-evo-black-edition-cf-moto-800nk-advanced-sport-2023-2024"], ["CFMoto", "800 MT Touring", "2020 - 2025", "14414EBU", "https://www.leovince.com/es-ar/product/14414ebu-lv-one-evo-black-edition-cf-moto-800-mt-sport-touring-explore-limited-edition-2022-2024?_gl=1*12lb7ed*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDk1My4wLjAuMTM0MTc5MzM1Mg.."], ["CFMoto", "Sport", "2020 - 2025", "14414EBU", "https://www.leovince.com/es-ar/product/14414ebu-lv-one-evo-black-edition-cf-moto-800-mt-sport-touring-explore-limited-edition-2022-2024?_gl=1*12lb7ed*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDk1My4wLjAuMTM0MTc5MzM1Mg.."], ["CFMoto", "Explorer", "2020 - 2025", "14414EBU", "https://www.leovince.com/es-ar/product/14414ebu-lv-one-evo-black-edition-cf-moto-800-mt-sport-touring-explore-limited-edition-2022-2024?_gl=1*12lb7ed*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDk1My4wLjAuMTM0MTc5MzM1Mg.."], ["Husqvarna", "Norden 901", "2022 - 2025", "14414EBU", "https://www.leovince.com/es-ar/product/14414ebu-lv-one-evo-black-edition-cf-moto-800-mt-sport-touring-explore-limited-edition-2022-2024?_gl=1*12lb7ed*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDk1My4wLjAuMTM0MTc5MzM1Mg.."], ["KTM", "790 Adventure", "2019 - 2025", "14414EBU", "https://www.leovince.com/es-ar/product/14414ebu-lv-one-evo-black-edition-cf-moto-800-mt-sport-touring-explore-limited-edition-2022-2024?_gl=1*12lb7ed*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDk1My4wLjAuMTM0MTc5MzM1Mg.."], ["KTM", "890 Adventure", "2019 - 2025", "14414EBU", "https://www.leovince.com/es-ar/product/14414ebu-lv-one-evo-black-edition-cf-moto-800-mt-sport-touring-explore-limited-edition-2022-2024?_gl=1*12lb7ed*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDk1My4wLjAuMTM0MTc5MzM1Mg.."], ["Honda", "NC 750 X", "2021 - 2024", "14387EB", "https://www.leovince.com/es-ar/product/14387eb-lv-one-evo-black-edition-honda-nc-750-x-2021-2024"], ["Honda", "CRF 1000 - Africa Twin", "2024 - 2025", "14355EBU", "https://www.leovince.com/es-ar/product/14355ebu-lv-one-evo-black-edition-honda-crf-1100-l-africa-twin-adventure-sport-dct-2024-2025"], ["KTM", "390 Adventure", "2020 - 2025", "14346EB", "https://www.leovince.com/es-ar/product/14346ebu-lv-one-evo-black-edition-ktm-390-adventure-2020-2024"], ["KTM", "250 Adventure", "2020 - 2025", "14346EB", "https://www.leovince.com/es-ar/product/14346ebu-lv-one-evo-black-edition-ktm-390-adventure-2020-2024"], ["Triumph", "Tiger 900 GT", "2020 - 2023", "14352EB", "https://www.leovince.com/es-ar/product/14352ebu-lv-one-evo-black-edition-triumph-tiger-850-900-gt-rally-pro-2020-2023"], ["Triumph", "Rally", "2020 - 2023", "14352EB", "https://www.leovince.com/es-ar/product/14352ebu-lv-one-evo-black-edition-triumph-tiger-850-900-gt-rally-pro-2020-2023"], ["Triumph", "Pro", "2020 - 2023", "14352EB", "https://www.leovince.com/es-ar/product/14352ebu-lv-one-evo-black-edition-triumph-tiger-850-900-gt-rally-pro-2020-2023"], ["Triumph", "Tiger 900 GT", "2024 - 2025", "14450EBU", "https://www.leovince.com/es-ar/product/14450ebu-lv-one-evo-black-edition-triumph-tiger-900-gt-gt-pro-rally-pro-2024-2025"], ["Triumph", "Rally", "2024 - 2025", "14450EBU", "https://www.leovince.com/es-ar/product/14450ebu-lv-one-evo-black-edition-triumph-tiger-900-gt-gt-pro-rally-pro-2024-2025"], ["Triumph", "Pro", "2024 - 2025", "14450EBU", "https://www.leovince.com/es-ar/product/14450ebu-lv-one-evo-black-edition-triumph-tiger-900-gt-gt-pro-rally-pro-2024-2025"]], "o": 9, "desc": ["La versión Black Edition del LV One Evo: acabado negro total, sonido profundo y look agresivo, homologado. Acabado en acero negro.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "lv-14-acero-negro": {"n": "LV-14", "mat": "Acero Negro", "mcat": "Negro", "main": "productos/c/15604b-studio.jpg", "ph": ["productos/c/15604b-studio.jpg"], "motos": [["BMW", "R 1300 GS", "2024 - 2025", "15604B", "https://www.leovince.com/es-ar/product/15604b-lv-14-black-edition-bmw-r-1300-gs-adventure-2024-2025-2"]], "o": 10, "desc": ["Slip-on de perfil deportivo, sonido potente y construcción liviana para el uso más exigente. Acabado en acero negro.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "lv-10-black-acero-negro": {"n": "LV-10 Black", "mat": "Acero Negro", "mcat": "Negro", "main": "productos/c/15265bu-studio.jpg", "ph": ["productos/c/15265bu-studio.jpg"], "motos": [["CFMoto", "450 SR", "2023 - 2025", "15265BU", "https://www.leovince.com/es-ar/product/15265bu-lv-10-black-edition-cf-moto-450-ss-450-sr-2023-2024?_gl=1*3nfen3*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDg3MS4wLjAuMTM0MTc5MzM1Mg.."], ["CFMoto", "700 CL-X", "2020 - 2025", "15256B", "https://www.leovince.com/es-ar/product/15256b-lv-10-black-edition-cf-moto-700-cl-x-heritage-sport-2021-2023?_gl=1*crqvsj*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MDkwOS4wLjAuMTM0MTc5MzM1Mg.."], ["Ducati", "Scrambler 800 Icon", "2021 - 2024", "15250BU", "https://www.leovince.com/es-ar/product/15250bu-lv-10-black-edition-ducati-scrambler-800-icon-icon-dark-nightshift-urban-motard-2021-2022-2?_gl=1*1l3nl15*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MTE4OC4wLjAuMTM0MTc5MzM1Mg.."], ["Ducati", "Classic", "2021 - 2024", "15250BU", "https://www.leovince.com/es-ar/product/15250bu-lv-10-black-edition-ducati-scrambler-800-icon-icon-dark-nightshift-urban-motard-2021-2022-2?_gl=1*1l3nl15*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MTE4OC4wLjAuMTM0MTc5MzM1Mg.."], ["Ducati", "Scrambler 800 Icon", "2024 - 2025", "15266B", "https://www.leovince.com/es-ar/product/15266b-lv-10-black-edition-ducati-scrambler-800-icon-full-throttle-night-shift-2025-2025"], ["Ducati", "Classic", "2024 - 2025", "15266B", "https://www.leovince.com/es-ar/product/15266b-lv-10-black-edition-ducati-scrambler-800-icon-full-throttle-night-shift-2025-2025"], ["Husqvarna", "Svartpilen 401", "2020 - 2023", "15242B", "https://www.leovince.com/es-ar/product/15242b-lv-10-black-edition-husqvarna-svartpilen-401-2020-2023"], ["Husqvarna", "Vitpilen 401", "2020 - 2023", "15242B", "https://www.leovince.com/es-ar/product/15242b-lv-10-black-edition-husqvarna-svartpilen-401-2020-2023"], ["Kawasaki", "Z 400", "2018 - 2025", "15218B", "https://www.leovince.com/es-ar/product/15218bu-lv-10-black-edition-kawasaki-z-500-se-2024-2025"], ["Kawasaki", "Z 500", "2018 - 2025", "15218B", "https://www.leovince.com/es-ar/product/15218bu-lv-10-black-edition-kawasaki-z-500-se-2024-2025"], ["Kawasaki", "Ninja 400", "2018 - 2025", "15218B", "https://www.leovince.com/es-ar/product/15218bu-lv-10-black-edition-kawasaki-z-500-se-2024-2025"], ["Kawasaki", "Ninja 500", "2018 - 2025", "15218B", "https://www.leovince.com/es-ar/product/15218bu-lv-10-black-edition-kawasaki-z-500-se-2024-2025"], ["Kawasaki", "Z900", "2020 - 2024", "15239B", "https://www.leovince.com/es-ar/product/15239b-lv-10-black-edition-kawasaki-z-900-2020-2024-2"]], "o": 11, "desc": ["El LV-10 en acabado negro: el mismo espíritu racing con un look más oscuro y agresivo. Acabado en acero negro.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "lv-14-acero-inoxidable": {"n": "LV-14", "mat": "Acero Inoxidable", "mcat": "Inoxidable", "main": "productos/c/15612u-studio.jpg", "ph": ["productos/c/15612u-studio.jpg"], "motos": [["CFMoto", "450 MT", "2024 - 2025", "15612U", "https://www.leovince.com/es-ar/product/15612u-lv-14-cf-moto-450-mt-2024-2025"]], "o": 12, "desc": ["Slip-on de perfil deportivo, sonido potente y construcción liviana para el uso más exigente. Acabado en acero inoxidable.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "lv-14-black-edition-acero-negro": {"n": "LV-14 Black Edition", "mat": "Acero Negro", "mcat": "Negro", "main": "productos/c/15612bu-studio.jpg", "ph": ["productos/c/15612bu-studio.jpg"], "motos": [["CFMoto", "450 MT", "2024 - 2025", "15612BU", "https://www.leovince.com/es-ar/product/15612bu-lv-14-black-edition-cf-moto-450-mt-2024-2025"]], "o": 13, "desc": ["El LV-14 en acabado negro total: máxima presencia y sonido racing. Acabado en acero negro.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "tubo-supresor-de-catalizador": {"n": "Tubo supresor de catalizador", "mat": "", "mcat": "Otro", "main": "../../img/logos/leovince.png", "ph": [], "motos": [["Ducati", "Scrambler 800 Icon", "2024 - 2025", "80045", "https://www.leovince.com/es-ar/product/80045-cat-eliminator-link-pipe-ducati-scrambler-800-icon-full-throttle-night-shift-2023-2024"], ["Ducati", "Classic", "2024 - 2025", "80045", "https://www.leovince.com/es-ar/product/80045-cat-eliminator-link-pipe-ducati-scrambler-800-icon-full-throttle-night-shift-2023-2024"], ["KTM", "790 Adventure", "2021 - 2025", "80046", "https://www.leovince.com/es-ar/product/80046-cat-eliminator-link-pipe-ktm-790-adventure-r-2023-2025"], ["KTM", "890 Adventure", "2021 - 2025", "80046", "https://www.leovince.com/es-ar/product/80046-cat-eliminator-link-pipe-ktm-790-adventure-r-2023-2025"]], "o": 23, "desc": ["Tubo de-cat que reemplaza el catalizador para liberar flujo y sonido (uso en pista).", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "lv-x-evo-acero-inoxidable": {"n": "LV-X Evo", "mat": "Acero Inoxidable", "mcat": "Inoxidable", "main": "productos/c/14436x-studio.jpg", "ph": ["productos/c/14436x-studio.jpg"], "motos": [["Gas Gas", "EC 250 F", "2020 - 2023", "14436X", "https://www.leovince.com/es-ar/product/14436x-x3-evo-gas-gas-ec-250-f-2020-2023"], ["Gas Gas", "EC 350 F", "2020 - 2023", "14436X", "https://www.leovince.com/es-ar/product/14436x-x3-evo-gas-gas-ec-250-f-2020-2023"], ["Husqvarna", "FE 250", "2020 - 2023", "14436X", "https://www.leovince.com/es-ar/product/14436x-x3-evo-gas-gas-ec-250-f-2020-2023"], ["Husqvarna", "FE 350", "2020 - 2023", "14436X", "https://www.leovince.com/es-ar/product/14436x-x3-evo-gas-gas-ec-250-f-2020-2023"], ["Husqvarna", "FE 450", "2020 - 2023", "14436X", "https://www.leovince.com/es-ar/product/14436x-x3-evo-gas-gas-ec-250-f-2020-2023"], ["Husqvarna", "FE 501", "2020 - 2023", "14436X", "https://www.leovince.com/es-ar/product/14436x-x3-evo-gas-gas-ec-250-f-2020-2023"], ["KTM", "250 EXC-F", "2020 - 2023", "14436X", "https://www.leovince.com/es-ar/product/14436x-x3-evo-gas-gas-ec-250-f-2020-2023"], ["KTM", "350 EXC-F", "2020 - 2023", "14436X", "https://www.leovince.com/es-ar/product/14436x-x3-evo-gas-gas-ec-250-f-2020-2023"], ["KTM", "450 EXC-F", "2020 - 2023", "14436X", "https://www.leovince.com/es-ar/product/14436x-x3-evo-gas-gas-ec-250-f-2020-2023"], ["KTM", "500 EXC-F", "2020 - 2023", "14436X", "https://www.leovince.com/es-ar/product/14436x-x3-evo-gas-gas-ec-250-f-2020-2023"], ["Husqvarna", "FE 250", "2024 - 2025", "14447X", "https://www.leovince.com/es-ar/product/14447x-x3-evo-husqvarna-fe-250-2024-2025"], ["Husqvarna", "FE 350", "2024 - 2025", "14447X", "https://www.leovince.com/es-ar/product/14447x-x3-evo-husqvarna-fe-250-2024-2025"], ["Husqvarna", "FE 450", "2024 - 2025", "14447X", "https://www.leovince.com/es-ar/product/14447x-x3-evo-husqvarna-fe-250-2024-2025"], ["Husqvarna", "FE 501", "2024 - 2025", "14447X", "https://www.leovince.com/es-ar/product/14447x-x3-evo-husqvarna-fe-250-2024-2025"], ["KTM", "250 EXC-F", "2024 - 2025", "14447X", "https://www.leovince.com/es-ar/product/14447x-x3-evo-husqvarna-fe-250-2024-2025"], ["KTM", "350 EXC-F", "2024 - 2025", "14447X", "https://www.leovince.com/es-ar/product/14447x-x3-evo-husqvarna-fe-250-2024-2025"], ["KTM", "450 EXC-F", "2024 - 2025", "14447X", "https://www.leovince.com/es-ar/product/14447x-x3-evo-husqvarna-fe-250-2024-2025"], ["KTM", "500 EXC-F", "2024 - 2025", "14447X", "https://www.leovince.com/es-ar/product/14447x-x3-evo-husqvarna-fe-250-2024-2025"], ["Kawasaki", "KLR 650", "1997 - 2024", "14434X", "https://www.leovince.com/es-ar/product/14434x-x3-evo-kawasaki-klr-650-1997-2022-2"]], "o": 24, "desc": ["Slip-on de diseño moderno y compacto, ideal para maxi-enduro y trail, con gran sonido y peso reducido. Acabado en acero inoxidable.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "sistema-completo---lv-one-evo-acero-inoxidable": {"n": "Sistema completo - LV One Evo", "mat": "Acero Inoxidable", "mcat": "Inoxidable", "main": "productos/c/14379enu-studio.jpg", "ph": ["productos/c/14379enu-studio.jpg"], "motos": [["Kawasaki", "Z 650", "2021 - 2024", "14379ENU", "https://www.leovince.com/es-ar/product/14379enu-lv-one-evo-kawasaki-versys-650-2021-2024"], ["Kawasaki", "Ninja 650", "2021 - 2024", "14379ENU", "https://www.leovince.com/es-ar/product/14379enu-lv-one-evo-kawasaki-versys-650-2021-2024"], ["Kawasaki", "Versys 650", "2021 - 2024", "14379ENU", "https://www.leovince.com/es-ar/product/14379enu-lv-one-evo-kawasaki-versys-650-2021-2024"]], "o": 36, "desc": ["Sistema completo LV One Evo (colector + silenciador): máxima ganancia de prestaciones y sonido. Acabado en acero inoxidable.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "lv-x-aluminio": {"n": "LV-X", "mat": "Aluminio", "mcat": "Otro", "main": "productos/c/3549-studio.jpg", "ph": ["productos/c/3549-studio.jpg"], "motos": [["Kawasaki", "KLR 650", "1997 - 2024", "3549", "https://www.leovince.com/es-ar/product/3549-x3-kawasaki-klr-650-1997-2022"]], "o": 37, "desc": ["Slip-on compacto de estética moderna, pensado para adventure y trail. Acabado en aluminio.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "lv-corsa-acero-negro": {"n": "LV Corsa", "mat": "Acero Negro", "mcat": "Negro", "main": "productos/c/15404bu-studio.jpg", "ph": ["productos/c/15404bu-studio.jpg"], "motos": [["Kawasaki", "Z900", "2020 - 2024", "15404BU", "https://www.leovince.com/es-ar/product/15404bu-lv-corsa-black-edition-kawasaki-z-900-2020-2024-2"], ["Kawasaki", "ZX-10R", "2021 - 2024", "15406BU", "https://www.leovince.com/es-ar/product/15406bu-lv-corsa-black-edition-kawasaki-zx-10rr-ninja-2021-2024-2"], ["Kawasaki", "ZX-10RR", "2021 - 2024", "15406BU", "https://www.leovince.com/es-ar/product/15406bu-lv-corsa-black-edition-kawasaki-zx-10rr-ninja-2021-2024-2"]], "o": 40, "desc": ["Silenciador de competición con el ADN racing de Leo Vince: máximo rendimiento y sonido. Acabado en acero negro.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "lv-pro-acero-inoxidable": {"n": "LV Pro", "mat": "Acero Inoxidable", "mcat": "Inoxidable", "main": "productos/c/14332eu-studio.jpg", "ph": ["productos/c/14332eu-studio.jpg"], "motos": [["Kawasaki", "Z900", "2020 - 2024", "14332EU", "https://www.leovince.com/es-ar/product/14332eu-lv-pro-kawasaki-z-900-2020-2024-2"], ["Moto Morini", "X-Cape 650", "2021 - 2024", "14410EU", "https://www.leovince.com/es-ar/product/14410eu-lv-pro-moto-morini-x-cape-650-a2-2021-2024"], ["Yamaha", "MT-03", "2022 - 2025", "14257EU", "https://www.leovince.com/es-ar/product/14257eu-lv-pro-yamaha-mt-03-2022-2023-2"], ["Yamaha", "YZF-R3", "2022 - 2025", "14257EU", "https://www.leovince.com/es-ar/product/14257eu-lv-pro-yamaha-mt-03-2022-2023-2"]], "o": 41, "desc": ["Línea Pro de altas prestaciones, construcción premium y sonido racing. Acabado en acero inoxidable.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "colector-acero-inoxidable": {"n": "Colector", "mat": "Acero Inoxidable", "mcat": "Inoxidable", "main": "../../img/logos/leovince.png", "ph": [], "motos": [["Kawasaki", "Z900", "2020 - 2024", "80014", "https://www.leovince.com/es-ar/product/80014-header-pipes-kawasaki-z-900-2020-2024-2"]], "o": 42, "desc": ["Colector de escape de alto flujo para completar tu sistema Leo Vince. Acabado en acero inoxidable.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "proteccion-carbono": {"n": "Protección carbono", "mat": "", "mcat": "Carbono", "main": "productos/8085-studio.jpg", "ph": ["productos/8085-studio.jpg"], "motos": [["Kawasaki", "Z900", "2020 - 2024", "8085", "https://www.leovince.com/es-ar/product/8085-carter-kawasaki-z-900-2025-2025"]], "o": 43, "desc": ["Protección de carbono para el silenciador, suma estética y resistencia al calor.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "lv-one-evo-carbono": {"n": "LV One Evo", "mat": "Carbono", "mcat": "Carbono", "main": "productos/c/14347e-studio.jpg", "ph": ["productos/c/14347e-studio.jpg"], "motos": [["KTM", "390 Adventure", "2020 - 2025", "14347E", "https://www.leovince.com/es-ar/product/14347e-lv-one-evo-carbon-fiber-ktm-390-adventure-2020-2023"], ["KTM", "250 Adventure", "2020 - 2025", "14347E", "https://www.leovince.com/es-ar/product/14347e-lv-one-evo-carbon-fiber-ktm-390-adventure-2020-2023"]], "o": 47, "desc": ["Slip-on homologado de acero, el equilibrio perfecto entre sonido deportivo, estética y prestaciones para uso diario y ruta. Acabado en carbono.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "gp-corsa-evo-carbono": {"n": "GP Corsa Evo", "mat": "Carbono", "mcat": "Carbono", "main": "productos/c/3399eu-studio.jpg", "ph": ["productos/c/3399eu-studio.jpg"], "motos": [["KTM", "390 Duke", "2021 - 2023", "3399EU", "https://www.leovince.com/es-ar/product/3399e-gp-corsa-evo-ktm-duke-390-2021-2023?_gl=1*c1j1e0*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MjE5Ny4wLjAuMTM0MTc5MzM1Mg.."], ["KTM", "390 RC", "2021 - 2023", "3399EU", "https://www.leovince.com/es-ar/product/3399e-gp-corsa-evo-ktm-duke-390-2021-2023?_gl=1*c1j1e0*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1MjE5Ny4wLjAuMTM0MTc5MzM1Mg.."]], "o": 48, "desc": ["Silenciador GP de competición, mínimo peso y máxima performance en pista. Acabado en carbono.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "nero-acero-negro": {"n": "Nero", "mat": "Acero Negro", "mcat": "Negro", "main": "productos/c/140450-studio.jpg", "ph": ["productos/c/140450-studio.jpg"], "motos": [["KTM", "1290 Super Adventure R", "2015 - 2021", "14045", "https://www.leovince.com/es-ar/product/14045-nero-ktm-1290-super-adventure-r-s-t-2017-2020"], ["KTM", "1290 Super Adventure S", "2015 - 2021", "14045", "https://www.leovince.com/es-ar/product/14045-nero-ktm-1290-super-adventure-r-s-t-2017-2020"], ["KTM", "1290 Super Adventure T", "2015 - 2021", "14045", "https://www.leovince.com/es-ar/product/14045-nero-ktm-1290-super-adventure-r-s-t-2017-2020"], ["KTM", "1190 Adventure", "2015 - 2021", "14045", "https://www.leovince.com/es-ar/product/14045-nero-ktm-1290-super-adventure-r-s-t-2017-2020"], ["KTM", "1190 Adventure R", "2015 - 2021", "14045", "https://www.leovince.com/es-ar/product/14045-nero-ktm-1290-super-adventure-r-s-t-2017-2020"], ["KTM", "1090 Adventure", "2015 - 2021", "14045", "https://www.leovince.com/es-ar/product/14045-nero-ktm-1290-super-adventure-r-s-t-2017-2020"], ["KTM", "1090 Adventure R", "2015 - 2021", "14045", "https://www.leovince.com/es-ar/product/14045-nero-ktm-1290-super-adventure-r-s-t-2017-2020"]], "o": 51, "desc": ["Slip-on de línea Nero, acabado oscuro y sonido deportivo. Acabado en acero negro.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "lv-12-r-black-edition-acero-negro": {"n": "LV-12 R Black Edition", "mat": "Acero Negro", "mcat": "Negro", "main": "productos/c/15308bu-studio.jpg", "ph": ["productos/c/15308bu-studio.jpg"], "motos": [["KTM", "1290 Super Adventure R", "2021 - 2025", "15308BU", "https://www.leovince.com/es-ar/product/15308bu-lv-12-r-black-edition-ktm-1290-adventure-r-s-2021-2024-2"], ["KTM", "1290 Super Adventure S", "2021 - 2025", "15308BU", "https://www.leovince.com/es-ar/product/15308bu-lv-12-r-black-edition-ktm-1290-adventure-r-s-2021-2024-2"], ["KTM", "1290 Super Adventure T", "2021 - 2025", "15308BU", "https://www.leovince.com/es-ar/product/15308bu-lv-12-r-black-edition-ktm-1290-adventure-r-s-2021-2024-2"]], "o": 52, "desc": ["Slip-on LV-12 R en acabado negro: perfil racing y sonido pleno. Acabado en acero negro.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "classic-racer-black-edition-acero-negro": {"n": "Classic Racer Black Edition", "mat": "Acero Negro", "mcat": "Negro", "main": "productos/c/15008bu-studio.jpg", "ph": ["productos/c/15008bu-studio.jpg"], "motos": [["Royal Enfield", "Meteor 350", "2021 - 2024", "15008BU", "https://www.leovince.com/es-ar/product/15008bu-classic-racer-black-edition-royal-enfield-meteor-350-2021-2024"], ["Royal Enfield", "Classic 350", "2021 - 2024", "15008BU", "https://www.leovince.com/es-ar/product/15008bu-classic-racer-black-edition-royal-enfield-meteor-350-2021-2024"], ["Royal Enfield", "Continental GT 650", "2019 - 2024", "15007BU", "https://www.leovince.com/es-ar/product/15007bu-classic-racer-black-edition-royal-enfield-continental-gt-650-interceptor-650-2019-2024"], ["Royal Enfield", "Interceptor 650", "2019 - 2024", "15007BU", "https://www.leovince.com/es-ar/product/15007bu-classic-racer-black-edition-royal-enfield-continental-gt-650-interceptor-650-2019-2024"]], "o": 54, "desc": ["Classic Racer en acabado negro: estética retro con presencia moderna. Acabado en acero negro.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "gp-one-acero-negro": {"n": "GP One", "mat": "Acero Negro", "mcat": "Negro", "main": "productos/c/15129u-studio.jpg", "ph": ["productos/c/15129u-studio.jpg"], "motos": [["Royal Enfield", "Hunter 350", "2022 - 2024", "15129U", "https://www.leovince.com/es-ar/product/15129u-gp-one-royal-enfield-hunter-350-2022-2024-2"]], "o": 55, "desc": ["Silenciador GP de estilo racing, liviano y con sonido agresivo. Acabado en acero negro.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "classic-racer-acero-inoxidable": {"n": "Classic Racer", "mat": "Acero Inoxidable", "mcat": "Inoxidable", "main": "productos/c/15007u-studio.jpg", "ph": ["productos/c/15007u-studio.jpg"], "motos": [["Royal Enfield", "Continental GT 650", "2019 - 2024", "15007U", "https://www.leovince.com/es-ar/product/15007u-classic-racer-royal-enfield-continental-gt-650-interceptor-650-2019-2024?_gl=1*cara4z*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1Mjc5MC4wLjAuMTM0MTc5MzM1Mg.."], ["Royal Enfield", "Interceptor 650", "2019 - 2024", "15007U", "https://www.leovince.com/es-ar/product/15007u-classic-racer-royal-enfield-continental-gt-650-interceptor-650-2019-2024?_gl=1*cara4z*_up*MQ..*_ga*NjM1Mzc4NTM4LjE3MjczNDkyODY.*_ga_S8Y4WBPBC9*MTcyNzM0OTI4NS4xLjEuMTcyNzM1Mjc5MC4wLjAuMTM0MTc5MzM1Mg.."]], "o": 56, "desc": ["Silenciador de estética café-racer / clásica, con el sonido característico Leo Vince. Acabado en acero inoxidable.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}, "lv-10-db-killer-acero-inoxidable": {"n": "LV 10 db killer", "mat": "Acero Inoxidable", "mcat": "Inoxidable", "main": "productos/c/3015200801r-studio.jpg", "ph": ["productos/c/3015200801r-studio.jpg"], "motos": [["Varias", "Escapes LV 10 de todos los modelos", "-", "3015200801R", "https://www.leovince.com/es-ar/product/3015200801r-dbkiller-2"]], "o": 62, "desc": ["DB killer para la línea LV-10, regula el nivel de sonido. Acabado en acero inoxidable.", "Diseñado y fabricado en Italia. Consultá la homologación y la compatibilidad exacta para tu moto en la ficha oficial."]}};
+        const CODE2GROUP = {"14402EBU": "lv-one-evo-acero-negro", "14423EU": "lv-one-evo-acero-inoxidable", "14230E": "lv-one-evo-acero-inoxidable", "14281EU": "lv-one-evo-acero-inoxidable", "15226": "lv-10-acero-inoxidable", "14446EU": "lv-one-evo-acero-inoxidable", "15259": "lv-10-acero-inoxidable", "14263EU": "lv-one-evo-acero-inoxidable", "14055U": "lv-one-evo-black-edition-acero-negro", "15604B": "lv-14-acero-negro", "15265BU": "lv-10-black-acero-negro", "15612U": "lv-14-acero-inoxidable", "15612BU": "lv-14-black-edition-acero-negro", "15256B": "lv-10-black-acero-negro", "14444EU": "lv-one-evo-acero-inoxidable", "14444EBU": "lv-one-evo-black-edition-acero-negro", "14414EU": "lv-one-evo-acero-inoxidable", "14414EBU": "lv-one-evo-black-edition-acero-negro", "15250U": "lv-10-acero-inoxidable", "15250BU": "lv-10-black-acero-negro", "15266": "lv-10-acero-inoxidable", "15266B": "lv-10-black-acero-negro", "80045": "tubo-supresor-de-catalizador", "14436X": "lv-x-evo-acero-inoxidable", "14363EU": "lv-one-evo-acero-inoxidable", "14387EB": "lv-one-evo-black-edition-acero-negro", "14355EBU": "lv-one-evo-black-edition-acero-negro", "14447X": "lv-x-evo-acero-inoxidable", "15242": "lv-10-acero-inoxidable", "15242B": "lv-10-black-acero-negro", "14419E": "lv-one-evo-acero-inoxidable", "14419EBU": "lv-one-evo-acero-negro", "15218": "lv-10-acero-inoxidable", "15218B": "lv-10-black-acero-negro", "14259E": "lv-one-evo-acero-inoxidable", "14379ENU": "sistema-completo---lv-one-evo-acero-inoxidable", "3549": "lv-x-aluminio", "14434X": "lv-x-evo-acero-inoxidable", "15239B": "lv-10-black-acero-negro", "15404BU": "lv-corsa-acero-negro", "14332EU": "lv-pro-acero-inoxidable", "80014": "colector-acero-inoxidable", "8085": "proteccion-carbono", "15406BU": "lv-corsa-acero-negro", "14346EC": "lv-one-evo-acero-inoxidable", "14346EB": "lv-one-evo-black-edition-acero-negro", "14347E": "lv-one-evo-carbono", "3399EU": "gp-corsa-evo-carbono", "80046": "tubo-supresor-de-catalizador", "14192E": "lv-one-evo-acero-inoxidable", "14045": "nero-acero-negro", "15308BU": "lv-12-r-black-edition-acero-negro", "14410EU": "lv-pro-acero-inoxidable", "15008BU": "classic-racer-black-edition-acero-negro", "15129U": "gp-one-acero-negro", "15007U": "classic-racer-acero-inoxidable", "15007BU": "classic-racer-black-edition-acero-negro", "14352EB": "lv-one-evo-black-edition-acero-negro", "14450EBU": "lv-one-evo-black-edition-acero-negro", "14421EU": "lv-one-evo-acero-inoxidable", "14257EU": "lv-pro-acero-inoxidable", "3015200801R": "lv-10-db-killer-acero-inoxidable"};
+        const params = new URLSearchParams(location.search);
+        const code = params.get('code');
+        let key = params.get('model');
+        let escPhotos = null, mounted = [], url = '';
+        if (code && PRODUCTS[code]) {
+            const pr = PRODUCTS[code]; key = pr.g; url = pr.url;
+            escPhotos = pr.hp ? pr.ph.slice() : null;   // escape solo (portada + ángulos)
+            mounted = pr.mt ? pr.mt.slice() : [];       // escape puesto en la moto
+        }
+        if (!key || !GROUPS[key]) key = Object.keys(GROUPS)[0];
+        const g = GROUPS[key];
+        if (!escPhotos || !escPhotos.length) escPhotos = (g.ph && g.ph.length) ? g.ph.slice() : [g.main];
+        const gallery = escPhotos.concat(mounted);   // galería: el escape primero, luego cómo queda instalado
+        if (!url) { for (var i=0;i<g.motos.length;i++){ if(g.motos[i][4]){ url=g.motos[i][4]; break; } } }
+        if (g) {
+            document.title = g.n + ' | Leo Vince · Radsport Geist';
+            document.getElementById('bcName').textContent = g.n + (g.mat ? ' · ' + g.mat : '');
+            document.getElementById('pKicker').textContent = 'Escape Leo Vince';
+            document.getElementById('pTitle').textContent = g.n;
+            document.getElementById('pTag').textContent = g.mat || '';
+            const img = document.getElementById('mainImg');
+            img.src = gallery[0]; img.alt = 'Leo Vince ' + g.n;
+            const tw = document.getElementById('galleryThumbs');
+            if (gallery.length > 1) {
+                tw.innerHTML = gallery.map(function(m,i){ return '<div class="gallery-thumb'+(i===0?' active':'')+'" data-src="'+m+'"><img src="'+m+'" alt=""></div>'; }).join('');
+                const th = tw.querySelectorAll('.gallery-thumb');
+                th.forEach(function(t){ t.addEventListener('click', function(){ img.src=t.dataset.src; th.forEach(function(x){x.classList.remove('active');}); t.classList.add('active'); }); });
+            }
+            const perCode = !!(code && PRODUCTS[code]);
+            const specs = [['Línea', g.n]];
+            if (g.mat) specs.push(['Material', g.mat]);
+            if (perCode) specs.push(['Código', url ? '<a class="fit-code" href="'+url+'" target="_blank" rel="noopener">'+code+'</a>' : code]);
+            specs.push(['Fabricación', 'Italia']);
+            document.getElementById('specsTable').innerHTML = specs.map(function(s){
+                return '<div class="specs-row"><span class="specs-key">'+s[0]+'</span><span class="specs-value">'+s[1]+'</span></div>'; }).join('');
+            document.getElementById('pDesc').innerHTML = g.desc.map(function(x){ return '<p>'+x+'</p>'; }).join('');
+            // Motos compatibles: por CÓDIGO (solo las que usan este escape) o, si venís del catálogo, por modelo
+            const motosShow = perCode ? g.motos.filter(function(m){ return m[3] === code; }) : g.motos;
+            const byBrand = {};
+            motosShow.forEach(function(m){ (byBrand[m[0]] = byBrand[m[0]] || []).push(m); });
+            let html = '';
+            Object.keys(byBrand).forEach(function(br){
+                html += '<div class="fit-brand"><h3>'+br+'</h3><div class="fit-grid">';
+                byBrand[br].forEach(function(m){
+                    if (perCode) {
+                        var cls = mounted.length ? ' fit-clickable' : '';
+                        html += '<div class="fit-item'+cls+'"><span>'+m[1]+'</span><span class="fit-meta">'+(m[2]||'')+'</span></div>';
+                    } else {
+                        // desde el catálogo: cada moto lleva a la ficha del escape exacto que le corresponde
+                        html += '<a class="fit-item fit-clickable" href="producto.html?code='+encodeURIComponent(m[3])+'"><span>'+m[1]+'</span><span class="fit-meta">'+(m[2]?m[2]+' · ':'')+'<span class="fit-code">Ver escape &rsaquo;</span></span></a>';
+                    }
+                });
+                html += '</div></div>';
+            });
+            document.getElementById('fitList').innerHTML = html;
+            const fitTitleEl = document.getElementById('fitTitle');
+            if (perCode) {
+                fitTitleEl.innerHTML = mounted.length
+                    ? 'Motos compatibles <span class="fitment-note">— tocá una para ver cómo queda instalado</span>'
+                    : 'Motos compatibles';
+                if (mounted.length) {
+                    var mi = 0;
+                    document.querySelectorAll('#fitList .fit-clickable').forEach(function(it){
+                        it.addEventListener('click', function(){
+                            img.src = mounted[mi % mounted.length]; mi++;
+                            document.querySelectorAll('.fit-item.active').forEach(function(x){ x.classList.remove('active'); });
+                            it.classList.add('active');
+                            document.querySelectorAll('.gallery-thumb').forEach(function(t){ t.classList.toggle('active', t.dataset.src===img.src); });
+                            document.getElementById('galleryMain').scrollIntoView({behavior:'smooth', block:'center'});
+                        });
+                    });
+                }
+            } else {
+                fitTitleEl.innerHTML = 'Motos compatibles <span class="fitment-note">— elegí tu moto para ver su escape</span>';
+            }
+        }
+        const galleryMain = document.getElementById('galleryMain');
+        const mImg = document.getElementById('mainImg');
+        if (galleryMain) {
+            galleryMain.addEventListener('mousemove', function(e){ const r=galleryMain.getBoundingClientRect(); mImg.style.transformOrigin=((e.clientX-r.left)/r.width*100)+'% '+((e.clientY-r.top)/r.height*100)+'%'; });
+            galleryMain.addEventListener('mouseleave', function(){ mImg.style.transformOrigin='center center'; });
+        }
+    </script>
+
+    <a href="https://wa.me/5491135713234" class="whatsapp-float" target="_blank" rel="noopener" title="Contactar por WhatsApp" aria-label="WhatsApp"><svg viewBox="0 0 32 32" width="28" height="28" fill="#fff" aria-hidden="true"><path d="M16.04 3C9.4 3 4 8.4 4 15.04c0 2.12.55 4.19 1.6 6.02L4 29l8.13-1.55a12 12 0 0 0 3.9.65h.01C22.68 28.1 28.08 22.7 28.08 16.06 28.08 8.4 22.68 3 16.04 3zm0 21.9h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.75.72.72-3.66-.24-.38a9.86 9.86 0 0 1-1.51-5.25c0-5.46 4.45-9.9 9.92-9.9 2.65 0 5.14 1.03 7.01 2.9a9.82 9.82 0 0 1 2.9 7 9.9 9.9 0 0 1-9.9 9.84zm5.44-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg></a>
+</body>
+</html>

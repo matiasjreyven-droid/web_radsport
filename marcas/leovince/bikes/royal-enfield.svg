@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 90" preserveAspectRatio="xMidYMid meet">
+  <text x="160" y="30" text-anchor="middle"
+        font-family="'Trajan Pro', Georgia, 'Times New Roman', serif"
+        font-weight="600" font-size="20" fill="#1B1B1B"
+        letter-spacing="3">ROYAL</text>
+  <text x="160" y="74" text-anchor="middle"
+        font-family="'Trajan Pro', Georgia, 'Times New Roman', serif"
+        font-weight="700" font-size="38" fill="#1B1B1B"
+        letter-spacing="2">ENFIELD</text>
+</svg>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giant Loop — Radsport Geist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --red: #D32F2F; --red-dark: #B71C1C; --red-light: #FFEBEE;
+            --gray: #333333; --gray-light: #f5f5f5; --white: #ffffff; --black: #000000;
+            --brand-accent: #D48326; --brand-accent-hover: #b86e1c;
+            --brand-accent-light: #fff8ed; --brand-subtle: #888888;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; color: var(--gray); background: var(--white); background-image: radial-gradient(circle, rgba(0,0,0,0.09) 1px, transparent 1px); background-size: 22px 22px; overflow-x: hidden; }
+
+        /* NAV */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 100%); transition: all 0.3s ease; }
+        nav.scrolled { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        nav.scrolled .logo-text { color: var(--gray); }
+        nav.scrolled .logo-dot { color: var(--red); }
+        nav.scrolled .nav-links a { color: var(--gray); }
+        .logo-text { display: flex; align-items: center; gap: 0; font-size: 1.3rem; letter-spacing: 0.15em; color: white; text-decoration: none; }
+        .logo-bold { font-weight: 900; }
+        .logo-dot { color: var(--red); margin: 0 0.35em; }
+        .logo-light { font-weight: 300; }
+        .nav-links { list-style: none; display: flex; gap: 2rem; }
+        .nav-links a { color: white; text-decoration: none; font-size: 0.75rem; font-weight: 300; letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--red); }
+        .nav-links a.active { color: var(--red); font-weight: 700; }
+        .nav-links li { position: relative; }
+        .nav-dropdown { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: #ffffff; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); padding: 0.2rem 0.3rem; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 44px; gap: 0; min-width: 280px; opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s, transform 0.2s; transform: translateX(-50%) translateY(8px); z-index: 1001; margin-top: 0.5rem; }
+        .nav-links li:hover .nav-dropdown, .nav-dropdown:hover { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .nav-dropdown a { display: flex; align-items: center; justify-content: center; padding: 0.4rem 0.8rem; min-height: 44px; border-radius: 8px; transition: background 0.15s, transform 0.15s; opacity: 0.7; }
+        .nav-dropdown a:hover { opacity: 1; }
+        .nav-dropdown a img { max-height: 29px; max-width: 67px; width: auto; height: auto; object-fit: contain; mix-blend-mode: multiply; }
+        .nav-dropdown-segments { grid-template-columns: 1fr; min-width: 180px; gap: 0.1rem; }
+        .nav-dropdown-segments a { font-size: 0.82rem !important; font-weight: 500 !important; color: var(--gray) !important; padding: 0.5rem 0.8rem; border-radius: 8px; transition: background 0.15s, color 0.15s; opacity: 1; }
+        .nav-dropdown-segments a:hover { background: var(--gray-light); color: var(--red) !important; }
+
+        /* HERO */
+        .brand-hero { height: 75vh; min-height: 500px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: white; position: relative; overflow: hidden; }
+        .brand-hero::before { content: ''; position: absolute; inset: 0; background: url('hero.jpg') center/cover; }
+        .brand-hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 100%); }
+        .brand-hero-content { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+        .brand-hero-logo { height: 90px; margin-bottom: 0.5rem; filter: brightness(0) invert(1) drop-shadow(0 4px 18px rgba(0,0,0,0.55)); }
+        .brand-hero-tagline { font-size: 1.1rem; font-weight: 300; max-width: 520px; line-height: 1.8; opacity: 0.85; }
+        .brand-hero-segments { display: flex; gap: 0.6rem; margin-top: 1rem; align-items: center; }
+        .brand-hero-segments span { background: rgba(255,255,255,0.06); padding: 0.5rem 1.5rem; border-radius: 50px; font-size: 0.65rem; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 400; border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(8px); transition: all 0.3s ease; }
+        .brand-hero-segments span:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.4); }
+        .brand-hero-segments .seg-divider { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.4); border: none; padding: 0; backdrop-filter: none; }
+
+        /* ABOUT */
+        .brand-about { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 5rem; align-items: center; position: relative; }
+        .brand-about::before { content: ''; position: absolute; top: 0; left: 0; width: 5px; height: 100%; background: linear-gradient(180deg, var(--brand-accent), transparent); }
+        .brand-about-subtitle { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 3px; color: var(--brand-accent); font-weight: 500; margin-bottom: 1.5rem; }
+        .brand-about h2 { font-size: 2rem; font-weight: 900; margin-bottom: 1.5rem; }
+        .brand-about h2 span { color: var(--brand-accent); }
+        .brand-about p { font-size: 0.92rem; line-height: 1.85; color: #555; margin-bottom: 1rem; }
+        .brand-about p em { font-style: normal; color: var(--brand-accent); font-weight: 500; }
+        .brand-origin { display: flex; gap: 2.5rem; margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid #e8e8e8; }
+        .brand-origin-item { font-size: 0.72rem; color: #999; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 500; }
+        .brand-origin-item strong { display: block; font-size: 1.05rem; color: var(--gray); text-transform: none; letter-spacing: 0; font-weight: 800; margin-top: 0.3rem; }
+        .brand-about-image { border-radius: 16px; overflow: hidden; height: 400px; position: relative; }
+        .brand-about-image img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* CATEGORIES */
+        .brand-categories { padding: 5rem 3rem; max-width: 1200px; margin: 0 auto; }
+        .brand-categories-subtitle { font-size: 0.8rem; color: var(--brand-accent); text-transform: uppercase; letter-spacing: 3px; font-weight: 500; margin-bottom: 0.5rem; }
+        .brand-categories h2 { font-size: 2rem; font-weight: 900; margin-bottom: 2.5rem; }
+        .cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+        .cat-card-featured { grid-column: span 3; display: grid; grid-template-columns: 1fr 1fr; background: var(--gray); border-radius: 16px; overflow: hidden; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; text-decoration: none; color: white; }
+        .cat-card-featured:hover { transform: translateY(-4px); box-shadow: 0 12px 35px rgba(0,0,0,0.15); }
+        .cat-featured-img { height: 280px; background: url('ver-todos.jpg') center/cover; }
+        .cat-featured-body { display: flex; flex-direction: column; justify-content: center; padding: 2.5rem; }
+        .cat-featured-body h3 { font-size: 1.6rem; font-weight: 900; margin-bottom: 0.5rem; }
+        .cat-featured-body p { font-size: 0.9rem; opacity: 0.7; line-height: 1.7; margin-bottom: 1.2rem; }
+        .cat-featured-body .cat-cta { font-size: 0.8rem; font-weight: 700; color: white; text-transform: uppercase; letter-spacing: 2px; }
+        .cat-card { background: white; border-radius: 14px; overflow: hidden; border: 1px solid #e8e8e8; transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; text-decoration: none; color: var(--gray); display: block; }
+        .cat-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.07); }
+        .cat-card-img { height: 260px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .cat-card-img img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transition: transform 0.4s; }
+        .cat-card:hover .cat-card-img img { transform: scale(1.05); }
+        .cat-card-body { padding: 1.3rem 1.5rem; }
+        .cat-card-body h3 { font-size: 1.05rem; font-weight: 800; margin-bottom: 0.2rem; }
+        .cat-card-body p { font-size: 0.78rem; color: #888; margin-bottom: 0.5rem; }
+
+        /* CTA */
+        .brand-cta { padding: 4rem 3rem 5rem; }
+        .brand-cta-box { max-width: 900px; margin: 0 auto; background: var(--gray); color: white; padding: 4rem 3.5rem; border-radius: 24px; text-align: center; position: relative; overflow: hidden; }
+        .cta-eyebrow { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; opacity: 0.4; font-weight: 400; margin-bottom: 1rem; position: relative; }
+        .brand-cta-box h2 { font-size: 1.5rem; font-weight: 300; margin-bottom: 2.5rem; letter-spacing: 0.3px; line-height: 1.6; position: relative; }
+        .brand-cta-box h2 em { font-style: normal; font-weight: 800; letter-spacing: 2px; }
+        .cta-buttons { display: flex; gap: 1rem; justify-content: center; position: relative; z-index: 1; }
+        .btn-whatsapp { display: inline-flex; align-items: center; gap: 0.5rem; background: #25D366; color: white; padding: 0.9rem 2.5rem; border-radius: 50px; font-weight: 600; font-size: 0.8rem; text-decoration: none; letter-spacing: 1.5px; text-transform: uppercase; transition: all 0.3s ease; }
+        .btn-whatsapp:hover { transform: translateY(-2px); background: #1fb855; }
+
+        /* FOOTER */
+        footer { background: #1a1a1a; color: #888; padding: 3rem 2rem 1.5rem; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 2rem; }
+        .footer-section h4 { color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; letter-spacing: 0.5px; }
+        .footer-section ul { list-style: none; }
+        .footer-section li { margin-bottom: 0.5rem; }
+        .footer-section a { color: #888; text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+        .footer-section a:hover { color: var(--red); }
+        .footer-bottom { text-align: center; padding-top: 1.5rem; border-top: 1px solid #333; font-size: 0.72rem; color: #555; }
+
+        /* WHATSAPP FLOAT */
+        .whatsapp-float { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 55px; height: 55px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; text-decoration: none; box-shadow: 0 4px 15px rgba(37,211,102,0.3); z-index: 999; transition: transform 0.2s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { animation: fadeInUp 0.6s ease forwards; }
+
+        @media (max-width: 768px) {
+            .brand-about { grid-template-columns: 1fr; gap: 2rem; padding: 4rem 2rem; }
+            .cat-grid { grid-template-columns: 1fr; }
+            .cat-card-featured { grid-column: span 1; grid-template-columns: 1fr; }
+            .brand-hero { height: 60vh; }
+            .footer-content { grid-template-columns: repeat(2, 1fr); }
+            .cta-buttons { flex-direction: column; align-items: center; }
+        }
+        /* CTA con branding de la marca (no gris generico + boton blanco) */
+        .brand-cta-box { background: var(--brand-accent) !important; }
+        .brand-cta-box .cta-eyebrow { opacity: 0.7 !important; }
+        .btn-whatsapp { background: #fff !important; color: var(--brand-accent) !important; }
+        .btn-whatsapp:hover { background: #fff !important; filter: brightness(0.92); transform: translateY(-2px); }
+            .footer-marcas ul { columns: 2; column-gap: 2rem; }
+            /* ===== CTA Distribuidores (global) ===== */
+        .brand-cta { padding: 4rem 2rem 5rem; }
+        .brand-cta-box { max-width: 1200px !important; margin: 0 auto; background: var(--brand-accent, #111) !important; color: #fff !important; padding: 2.8rem 3.5rem; border-radius: 24px; text-align: center; position: relative; overflow: hidden; }
+        .brand-cta-box .cta-eyebrow { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 3px; opacity: 0.55 !important; color: #fff !important; font-weight: 400; margin-bottom: 1rem; }
+        .brand-cta-box h2 { color: #fff; }
+        .brand-cta-box h2 em { font-style: normal; }
+        .brand-cta-box .cta-buttons { display: flex; flex-direction: row; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 0; }
+        .brand-cta-box .btn-cta-donde, .brand-cta-box .btn-cta-comercio { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: .2rem; padding: 1.05rem 3rem; border-radius: 50px; text-decoration: none; transition: all 0.3s ease; border: 2px solid transparent; cursor: pointer; min-width: 250px; }
+        .brand-cta-box .cta-btn-title { font-weight: 700; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; }
+        .brand-cta-box .cta-btn-sub { font-size: 0.72rem; letter-spacing: 0.2px; opacity: 0.85; text-transform: none; font-weight: 400; }
+        .brand-cta-box .cta-note { margin: 1.4rem 0 0; color: rgba(255,255,255,0.9); font-size: 0.8rem; text-align: center; }
+        .brand-cta-box .btn-cta-donde { background: #fff; color: var(--brand-accent, #111); }
+        .brand-cta-box .btn-cta-donde:hover { transform: translateY(-2px); }
+        .brand-cta-box .btn-cta-comercio { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.9); }
+        .brand-cta-box .btn-cta-comercio:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
+        @media (max-width: 600px){ .brand-cta-box .cta-buttons { flex-direction: column; align-items: center; } .brand-cta-box { padding: 3rem 1.5rem !important; } }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar">
+        <a href="../../index.html" class="logo-text">
+            <span class="logo-bold">RADSPORT</span>
+            <span class="logo-dot">&bull;</span>
+            <span class="logo-light">GEIST</span>
+        </a>
+        <ul class="nav-links">
+            <li>
+                <a href="../../index.html#worlds">Segmentos</a>
+            </li>
+            <li>
+                <a href="../../index.html#brands" class="active">Marcas</a>
+            </li>
+            <li><a href="../../productos.html">Productos</a></li>
+            <li><a href="../../donde-comprar/moto.html">Dónde Comprar</a></li>
+            <li><a href="../../sobre-nosotros.html">Sobre Nosotros</a></li>
+            <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <section class="brand-hero">
+        <div class="brand-hero-content">
+            <img class="brand-hero-logo" src="../../img/logos/giantloop.png" alt="Giant Loop">
+            <p class="brand-hero-tagline">Equipaje y accesorios para aventura en moto.</p>
+            <div class="brand-hero-segments">
+                <span>Moto</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="brand-about">
+        <div>
+            <div class="brand-about-subtitle">Sobre Giant Loop</div>
+            <p>Giant Loop es una marca estadounidense especializada en <em>equipaje y accesorios para moto aventura</em>. Nacida en Bend, Oregon, cada producto está diseñado y testeado en los terrenos más extremos.</p>
+            <p>Desde alforjas impermeables hasta tankbags y bolsos de viaje, Giant Loop equipa a los <em>riders que buscan explorar sin límites</em>. Calidad, durabilidad y funcionalidad en cada detalle.</p>
+            <div class="brand-origin">
+                <div class="brand-origin-item">Origen<strong>EE.UU.</strong></div>
+                <div class="brand-origin-item">Desde<strong>2008</strong></div>
+            </div>
+        </div>
+        <div class="brand-about-image">
+            <img src="about.jpg" alt="Giant Loop">
+        </div>
+    </section>
+
+
+    <section class="brand-categories">
+        <div class="brand-categories-subtitle">Productos</div>
+        <h2>Explorá el Catálogo Giant Loop</h2>
+        <div class="cat-grid">
+            <a href="productos.html" class="cat-card-featured">
+                <div class="cat-featured-img"></div>
+                <div class="cat-featured-body">
+                    <h3>Ver Todos los Productos</h3>
+                    <p>Todo el catálogo Giant Loop en un solo lugar.</p>
+                    <div class="cat-cta">10 productos &rarr;</div>
+                </div>
+            </a>
+
+            <a href="productos.html?cat=alforja" class="cat-card">
+                <div class="cat-card-img">
+                    <img src="https://radsport.com.ar/wp-content/uploads/Giant-Loop-Mototrekk-1-1.webp" alt="Alforjas Giant Loop">
+                </div>
+                <div class="cat-card-body">
+                    <h3>Alforjas</h3>
+                    <p>Dry bags y equipaje</p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <section class="brand-cta">
+        <div class="brand-cta-box">
+            <div class="cta-buttons">
+                <a href="../../donde-comprar/moto.html" class="btn-cta-donde">
+                    <span class="cta-btn-title">Dónde comprar</span>
+                    <span class="cta-btn-sub">mapa de comercios</span>
+                </a>
+                <a href="https://wa.me/5491135713234?text=Hola%2C%20quiero%20vender%20Giant%20Loop" class="btn-cta-comercio" target="_blank">
+                    <span class="cta-btn-title">Soy comercio</span>
+                    <span class="cta-btn-sub">quiero vender Giant Loop</span>
+                </a>
+            </div>
+            <p class="cta-note">Contamos con una red exclusiva de comercios por zona. Si querés ser parte, escribinos.</p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Segmentos</h4>
+                <ul>
+                    <li><a href="../../segmentos/moto.html">Moto</a></li>
+                    <li><a href="../../segmentos/atv.html">ATV / UTV / SSV</a></li>
+                    <li><a href="../../segmentos/bici.html">Bicicleta</a></li>
+                    <li><a href="../../segmentos/industrial.html">Industrial</a></li>
+                </ul>
+            </div>
+            <div class="footer-section footer-marcas">
+                <h4>Marcas</h4>
+                <ul>
+                    <li><a href="../../marcas/cst/cst.html">CST</a></li>
+                    <li><a href="../../marcas/leovince/leovince.html">Leo Vince</a></li>
+                    <li><a href="../../marcas/shot/shot.html">SHOT</a></li>
+                    <li><a href="../../marcas/uswe/uswe.html">USWE</a></li>
+                    <li><a href="../../marcas/giantloop/giantloop.html">Giant Loop</a></li>
+                    <li><a href="../../marcas/nils/nils.html">NILS</a></li>
+                    <li><a href="../../marcas/nitromousse/nitromousse.html">Nitro Mousse</a></li>
+                    <li><a href="../../marcas/lucioli/lucioli.html">Lucioli</a></li>
+                    <li><a href="../../marcas/wrp/wrp.html">WRP</a></li>
+                    <li><a href="../../marcas/sidi/sidi.html">SIDI</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="../../sobre-nosotros.html">Quiénes Somos</a></li>
+                    <li><a href="../../donde-comprar/moto.html">Dónde Comprar</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Redes</h4>
+                <ul>
+                    <li><a href="https://www.instagram.com/radsport_geist/" target="_blank">Instagram</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Radsport Geist. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/5491135713234" class="whatsapp-float" target="_blank" rel="noopener" title="Contactar por WhatsApp" aria-label="WhatsApp"><svg viewBox="0 0 32 32" width="28" height="28" fill="#fff" aria-hidden="true"><path d="M16.04 3C9.4 3 4 8.4 4 15.04c0 2.12.55 4.19 1.6 6.02L4 29l8.13-1.55a12 12 0 0 0 3.9.65h.01C22.68 28.1 28.08 22.7 28.08 16.06 28.08 8.4 22.68 3 16.04 3zm0 21.9h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.75.72.72-3.66-.24-.38a9.86 9.86 0 0 1-1.51-5.25c0-5.46 4.45-9.9 9.92-9.9 2.65 0 5.14 1.03 7.01 2.9a9.82 9.82 0 0 1 2.9 7 9.9 9.9 0 0 1-9.9 9.84zm5.44-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg></a>
+
+    <script>
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.pageYOffset > 50);
+        });
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
+        document.querySelectorAll('.cat-card, .cat-card-featured, .brand-about, .brand-cta-box').forEach(el => {
+            el.style.opacity = '0';
+            observer.observe(el);
+        });
+    </script>
+<script>
+/* Conteo automatico de productos (lee el catalogo de la marca) */
+(function () {
+  fetch('productos.html').then(function (r) { return r.text(); }).then(function (html) {
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var cards = doc.querySelectorAll('.product-card');
+    var total = cards.length, byCat = {};
+    cards.forEach(function (c) {
+      var k = c.getAttribute('data-category') || '';
+      byCat[k] = (byCat[k] || 0) + 1;
+    });
+    function fmt(n) { return n + ' producto' + (n !== 1 ? 's' : ''); }
+    document.querySelectorAll('.cat-card-featured .cat-cta').forEach(function (el) {
+      var arrow = /\u2192|&rarr;|→/.test(el.innerHTML) ? ' →' : '';
+      el.textContent = fmt(total) + arrow;
+    });
+    document.querySelectorAll('.cat-card').forEach(function (card) {
+      var href = card.getAttribute('href') || '';
+      var m = href.match(/[?&]cat=([^&]+)/);
+      var el = card.querySelector('.count');
+      if (m && el) { el.textContent = fmt(byCat[m[1]] || 0); }
+    });
+  }).catch(function () {});
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pastillas de freno WRP — Radsport Geist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --red: #D32F2F; --red-dark: #B71C1C; --gray: #333333; --gray-light: #f5f5f5; --white: #ffffff; --black: #000000;
+            --brand-accent: #E83630; --brand-accent-hover: #c52d28;
+            --brand-accent-light: #fff0ef; --brand-subtle: #888888;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; color: var(--gray); background: var(--white); background-image: radial-gradient(circle, rgba(0,0,0,0.09) 1px, transparent 1px); background-size: 22px 22px; overflow-x: hidden; }
+
+        /* NAV */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.3s ease; }
+        .logo-text { display: flex; align-items: center; gap: 0; font-size: 1.3rem; letter-spacing: 0.15em; color: var(--gray); text-decoration: none; }
+        .logo-bold { font-weight: 900; } .logo-dot { color: var(--red); margin: 0 0.35em; } .logo-light { font-weight: 300; }
+        .nav-links { list-style: none; display: flex; gap: 2rem; }
+        .nav-links a { color: var(--gray); text-decoration: none; font-size: 0.75rem; font-weight: 300; letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--red); } .nav-links a.active { color: var(--red); font-weight: 600; }
+        .nav-links li { position: relative; }
+        .nav-dropdown { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); background: #ffffff; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.12); padding: 0.2rem 0.3rem; display: grid; grid-template-columns: 1fr 1fr; grid-auto-rows: 44px; gap: 0; min-width: 280px; opacity: 0; visibility: hidden; transition: opacity 0.2s, visibility 0.2s, transform 0.2s; transform: translateX(-50%) translateY(8px); z-index: 1001; margin-top: 0.5rem; }
+        .nav-links li:hover .nav-dropdown, .nav-dropdown:hover { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .nav-dropdown a { display: flex; align-items: center; justify-content: center; padding: 0.4rem 0.8rem; min-height: 44px; border-radius: 8px; transition: background 0.15s; opacity: 0.7; }
+        .nav-dropdown a:hover { opacity: 1; }
+        .nav-dropdown a img { max-height: 29px; max-width: 67px; width: auto; height: auto; object-fit: contain; mix-blend-mode: multiply; }
+        .nav-dropdown-segments { grid-template-columns: 1fr; min-width: 180px; gap: 0.1rem; }
+        .nav-dropdown-segments a { font-size: 0.82rem !important; font-weight: 500 !important; color: var(--gray) !important; padding: 0.5rem 0.8rem; border-radius: 8px; opacity: 1; }
+        .nav-dropdown-segments a:hover { background: var(--gray-light); color: var(--red) !important; }
+
+        /* PAGE HEADER */
+        .page-header { padding: 1.5rem 3rem 1rem; max-width: 1600px; margin: 0 auto; }
+        .page-header-breadcrumb { font-size: 0.72rem; color: var(--brand-subtle); margin-bottom: 1rem; }
+        .page-header-breadcrumb a { color: var(--brand-subtle); text-decoration: none; } .page-header-breadcrumb a:hover { color: var(--brand-accent); }
+        .page-header-breadcrumb span { margin: 0 0.4rem; }
+        .page-header-hero { background: url('hero.jpg') center/cover no-repeat; position: relative; display: flex; align-items: center; justify-content: center; padding-top: 3.5rem; height: 220px; }
+        .page-header-hero::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.6); }
+        .page-header-hero img { height: 90px; position: relative; z-index: 1; }
+        .brand-bar { background: var(--white); border-bottom: 1px solid #e5e5e5; padding: 1.2rem 1.5rem; display: flex; align-items: center; justify-content: center; gap: 1.4rem; flex-wrap: nowrap; overflow-x: auto; min-height: 80px; scrollbar-width: none; }
+        .brand-bar::-webkit-scrollbar { display: none; }
+        .brand-bar a { flex-shrink: 0; }
+        .brand-bar a img { max-height: 50px !important; max-width: 100px; }
+        .brand-bar a:not(.brand-all) { flex: 0 0 100px !important; width: 100px !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+        .brand-bar a:not(.brand-all) img { max-height: 50px !important; max-width: 100% !important; width: auto !important; height: auto !important; object-fit: contain !important; }
+
+        .brand-bar a { display: flex; align-items: center; justify-content: center; height: 100%; opacity: 0.15; transition: opacity 0.25s, transform 0.25s; text-decoration: none; }
+        .brand-bar a:hover { opacity: 0.7; transform: scale(1.08); }
+        .brand-bar a.active { opacity: 1; }
+        .brand-bar a.brand-hidden { display: none; }
+
+        /* "TODOS" badge en la brand-bar (vuelve al catálogo global) */
+        .brand-bar a.brand-all {
+            border: 2px solid var(--brand-accent);
+            border-radius: 50px;
+            padding: 0.6rem 1.4rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--brand-accent);
+            height: auto;
+        }
+        .brand-bar a.brand-all:hover {
+            background: var(--brand-accent);
+            color: white;
+            opacity: 1;
+        }
+        .brand-bar a.brand-all.active {
+            background: var(--brand-accent);
+            color: white;
+            opacity: 1;
+        }
+        .brand-bar a img { height: 40px; width: auto; object-fit: contain; }
+        .page-header-count { font-size: 0.8rem; color: var(--brand-subtle); font-weight: 400; }
+
+        /* SEGMENT TABS */
+        .segment-tabs { background: #1a1a1a; display: flex; justify-content: center; gap: 0; }
+        .segment-tab { padding: 0.7rem 2rem; color: rgba(255,255,255,0.35); text-decoration: none; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; transition: all 0.2s; border-bottom: 2px solid transparent; cursor: pointer; background: none; border-top: none; border-left: none; border-right: none; font-family: 'Inter', sans-serif; }
+        .segment-tab:hover { color: rgba(255,255,255,0.65); }
+        .segment-tab.active { color: white; border-bottom-color: var(--brand-accent); }
+
+        /* SEARCH */
+        .search-bar { padding: 0 3rem; max-width: 1600px; margin: 0 auto 1rem; }
+        .search-input { width: 100%; padding: 0.7rem 1.2rem 0.7rem 2.8rem; border: 1px solid var(--brand-accent); border-radius: 50px; font-size: 0.85rem; font-family: 'Inter', sans-serif; color: white; background: var(--brand-accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E") 1rem center no-repeat; outline: none; }
+        .search-input:focus { border-color: white; }
+        .search-input::placeholder { color: rgba(255,255,255,0.5); }
+
+        /* FILTERS */
+        .filters { padding: 0 3rem; max-width: 1600px; margin: 0 auto 2rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .filter-btn { padding: 0.5rem 1.3rem; border-radius: 50px; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.5px; border: 1px solid #ddd; background: white; color: var(--gray); cursor: pointer; transition: all 0.2s ease; }
+        .filter-btn:hover { border-color: var(--brand-accent); color: var(--brand-accent); }
+        .filter-btn.active { background: var(--brand-accent); color: white; border-color: var(--brand-accent); }
+
+        /* PRODUCTS GRID */
+        .products-grid { max-width: 1600px; margin: 0 auto; padding: 0 3rem 4rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+        .product-card { background: white; border-radius: 14px; overflow: hidden; border: 1px solid #e8e8e8; transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; text-decoration: none; color: var(--gray); display: block; }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.07); }
+        .product-card-img { height: 240px; background: var(--white); display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 1.5rem; }
+        .product-card-img img { max-width: 100%; max-height: 100%; object-fit: contain; transition: transform 0.4s; }
+        .product-card:hover .product-card-img img { transform: scale(1.05); }
+        .product-card-body { padding: 1rem 1.3rem 1.2rem; }
+        .product-card-category { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--brand-subtle); font-weight: 500; margin-bottom: 0.3rem; }
+        .product-card-body h3 { font-size: 0.88rem; font-weight: 700; line-height: 1.3; }
+        .no-results { grid-column: 1 / -1; text-align: center; padding: 4rem 2rem; color: var(--brand-subtle); font-size: 0.9rem; display: none; }
+
+        /* CTA */
+        .cta-bottom { max-width: 1600px; margin: 0 auto; padding: 0 3rem 4rem; }
+        .cta-bottom-box { background: var(--brand-accent-light); border-radius: 16px; padding: 2.5rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+        .cta-bottom-text h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.3rem; color: var(--brand-accent); }
+        .cta-bottom-text p { font-size: 0.82rem; color: var(--brand-subtle); }
+        .cta-bottom-btn { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--brand-accent); color: white; padding: 0.8rem 2rem; border-radius: 50px; font-size: 0.78rem; font-weight: 600; text-decoration: none; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; transition: all 0.2s ease; }
+        .cta-bottom-btn:hover { background: var(--brand-accent-hover); transform: translateY(-2px); }
+
+        /* FOOTER */
+        footer { background: #1a1a1a; color: #888; padding: 3rem 2rem 1.5rem; }
+        .footer-content { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 2rem; }
+        .footer-section h4 { color: white; font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; }
+        .footer-section ul { list-style: none; } .footer-section li { margin-bottom: 0.5rem; }
+        .footer-section a { color: #888; text-decoration: none; font-size: 0.8rem; transition: color 0.2s; }
+        .footer-section a:hover { color: var(--red); }
+        .footer-bottom { text-align: center; padding-top: 1.5rem; border-top: 1px solid #333; font-size: 0.72rem; color: #555; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .product-card { opacity: 0; animation: fadeInUp 0.4s ease forwards; }
+
+        @media (max-width: 1024px) { .products-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 768px) {
+            .products-grid { grid-template-columns: repeat(2, 1fr); padding: 0 1.5rem 3rem; }
+            .page-header { padding: 6rem 1.5rem 1.5rem; } .filters { padding: 0 1.5rem; }
+            .footer-content { grid-template-columns: repeat(2, 1fr); }
+            .cta-bottom-box { flex-direction: column; text-align: center; } .cta-bottom { padding: 0 1.5rem 3rem; }
+        }
+        @media (max-width: 480px) { .products-grid { grid-template-columns: 1fr; } }
+            /* Paginacion (16 productos por pagina) */
+        .pagination { display: flex; justify-content: center; align-items: center;
+            flex-wrap: wrap; gap: 0.5rem; padding: 2rem;
+            max-width: 1600px; margin: 0 auto; }
+        .pagination button { padding: 0.5rem 1rem; border: 1px solid #ddd;
+            background: white; cursor: pointer; border-radius: 6px;
+            font-size: 0.85rem; font-family: inherit; transition: all 0.15s; }
+        .pagination button:hover:not(:disabled) {
+            border-color: var(--brand-accent); color: var(--brand-accent); }
+        .pagination button.active {
+            background: var(--brand-accent); color: white;
+            border-color: var(--brand-accent); }
+        .pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
+        .pagination-info { font-size: 0.8rem; color: var(--brand-subtle); margin: 0 1rem; }
+        /* brand-bar como primer elemento: clearance del nav fijo */
+        .brand-bar { padding-top: 5rem; }
+        /* separar barra de segmentos del buscador */
+        .segment-tabs { margin-bottom: 1.6rem; }
+        /* filtro de segmentos: mismo ancho que el buscador */
+        .segment-tabs { width: calc(100% - 6rem); max-width: calc(1600px - 6rem); margin: 1.2rem auto 1.6rem; border-radius: 50px; overflow: hidden; }
+
+
+
+
+
+
+
+
+        .finder { max-width:1100px; margin:0 auto; padding:2.5rem 2rem 3rem; }
+        .finder-head { text-align:center; margin-bottom:2.5rem; }
+        .finder-eyebrow { font-size:0.72rem; text-transform:uppercase; letter-spacing:3px; color:var(--brand-accent); font-weight:700; margin-bottom:0.6rem; }
+        .finder-h1 { font-size:clamp(1.9rem,4vw,2.8rem); font-weight:900; color:var(--gray); letter-spacing:-0.02em; }
+        .finder-tabs { display:flex; gap:0.6rem; justify-content:center; margin-bottom:2.8rem; }
+        .finder-tab { padding:0.8rem 1.8rem; border:2px solid #e5e5e5; background:white; border-radius:50px; font-size:0.78rem; font-weight:700; letter-spacing:1px; text-transform:uppercase; cursor:pointer; color:var(--brand-subtle); transition:all 0.2s; }
+        .finder-tab:hover { border-color:var(--brand-accent); color:var(--brand-accent); }
+        .finder-tab.active { background:var(--brand-accent); border-color:var(--brand-accent); color:white; }
+        .panel { display:none; } .panel.active { display:block; }
+        .finder-step-label { font-size:0.72rem; text-transform:uppercase; letter-spacing:2px; color:var(--brand-accent); font-weight:700; margin-bottom:0.9rem; }
+        .marca-btns { display:flex; flex-wrap:wrap; gap:0.6rem; margin-bottom:2.2rem; }
+        .marca-btn { padding:0.7rem 1.4rem; border:1.5px solid #e0e0e0; background:white; border-radius:10px; font-size:0.9rem; font-weight:600; cursor:pointer; transition:all 0.2s; color:var(--gray); }
+        .marca-btn:hover { border-color:var(--brand-accent); }
+        .marca-btn.active { background:var(--brand-accent); border-color:var(--brand-accent); color:white; }
+        .model-select { width:100%; max-width:440px; padding:0.8rem 1rem; border:1.5px solid #e0e0e0; border-radius:10px; font-size:0.95rem; font-family:inherit; color:var(--gray); margin-bottom:2.5rem; cursor:pointer; }
+        .model-select:disabled { opacity:0.5; cursor:default; }
+        .combo { position:relative; max-width:440px; margin-bottom:2.5rem; }
+        .combo-input { width:100%; padding:0.8rem 1rem; border:1.5px solid #e0e0e0; border-radius:10px; font-size:0.95rem; font-family:inherit; color:var(--gray); outline:none; }
+        .combo-input:focus { border-color:var(--brand-accent); }
+        .combo-list { position:absolute; top:100%; left:0; right:0; background:white; border:1px solid #e5e5e5; border-radius:10px; box-shadow:0 8px 26px rgba(0,0,0,0.10); margin-top:5px; max-height:260px; overflow-y:auto; z-index:50; display:none; }
+        .combo-list.open { display:block; }
+        .combo-option { padding:0.65rem 1rem; font-size:0.9rem; cursor:pointer; color:var(--gray); }
+        .combo-option:hover, .combo-option.active { background:var(--brand-accent-light); color:var(--brand-accent); }
+        .combo-empty { padding:0.7rem 1rem; color:var(--brand-subtle); font-size:0.85rem; }
+        .finder-result { min-height:80px; }
+        .result-hint { text-align:center; color:var(--brand-subtle); padding:2rem; font-size:0.95rem; border:2px dashed #ececec; border-radius:14px; }
+        .result-title { font-size:1.05rem; font-weight:800; margin-bottom:1.3rem; color:var(--gray); }
+        .result-title span { color:var(--brand-accent); }
+        .pad-cards { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; }
+        .pad-card { background:white; border:1px solid #eaeaea; border-radius:14px; padding:1.5rem; text-decoration:none; color:var(--gray); display:flex; gap:1.2rem; align-items:center; transition:all 0.2s; box-shadow:0 2px 12px rgba(0,0,0,0.03); }
+        .pad-card:hover { border-color:var(--brand-accent); transform:translateY(-3px); box-shadow:0 10px 26px rgba(0,0,0,0.08); }
+        .pad-card img { width:112px; height:112px; object-fit:contain; flex-shrink:0; }
+        .pad-card-pos { font-size:0.66rem; text-transform:uppercase; letter-spacing:1.5px; color:var(--brand-accent); font-weight:700; }
+        .pad-card-code { font-size:1.3rem; font-weight:900; margin:0.25rem 0; letter-spacing:-0.01em; }
+        .pad-card-comp { font-size:0.82rem; color:var(--brand-subtle); line-height:1.4; }
+        .pad-card-badge { display:inline-block; margin-top:0.6rem; font-size:0.6rem; font-weight:700; text-transform:uppercase; letter-spacing:1px; padding:0.25rem 0.6rem; border-radius:50px; }
+        .pad-card-badge.stock { background:#e6f7ec; color:#1a8b48; }
+        .pad-card-badge.apedido { background:#fff3e0; color:#d17a00; }
+        .soon-box { text-align:center; padding:3.5rem 2rem; color:var(--brand-subtle); border:2px dashed #e0e0e0; border-radius:14px; font-size:0.95rem; line-height:1.7; }
+        .pad-search-wrap { max-width:560px; margin:0 auto 1.5rem; }
+        .pad-search { width:100%; padding:0.8rem 1.2rem; border:1.5px solid #e0e0e0; border-radius:50px; font-size:0.9rem; font-family:inherit; color:var(--gray); outline:none; }
+        .pad-search:focus { border-color:var(--brand-accent); }
+        .pad-filters { display:flex; gap:0.5rem; justify-content:center; flex-wrap:wrap; margin-bottom:2rem; }
+        .pad-filter { padding:0.5rem 1.1rem; border:1.5px solid #e5e5e5; background:white; border-radius:50px; font-size:0.72rem; font-weight:700; letter-spacing:0.6px; text-transform:uppercase; cursor:pointer; color:var(--brand-subtle); transition:all 0.2s; }
+        .pad-filter:hover { border-color:var(--brand-accent); color:var(--brand-accent); }
+        .pad-filter.active { background:var(--brand-accent); border-color:var(--brand-accent); color:white; }
+        .pad-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:1.1rem; }
+        .pad-gcard { background:white; border:1px solid #eaeaea; border-radius:14px; overflow:hidden; text-decoration:none; color:var(--gray); display:flex; flex-direction:column; transition:transform 0.2s, box-shadow 0.2s, border-color 0.2s; box-shadow:0 2px 12px rgba(0,0,0,0.03); }
+        .pad-gcard:hover { border-color:var(--brand-accent); transform:translateY(-3px); box-shadow:0 10px 26px rgba(0,0,0,0.08); }
+        .pad-gcard-img { background:#fafafa; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; padding:0.9rem; }
+        .pad-gcard-img img { max-width:100%; max-height:100%; object-fit:contain; }
+        .pad-gcard-body { padding:0.85rem 1rem 1rem; }
+        .pad-noresults { text-align:center; color:var(--brand-subtle); padding:2.5rem; font-size:0.95rem; }
+        .pad-pagination { display:flex; gap:0.4rem; justify-content:center; flex-wrap:wrap; margin-top:2.5rem; }
+        .pad-pagination button { min-width:38px; padding:0.5rem 0.8rem; border:1.5px solid #e5e5e5; background:white; border-radius:8px; font-size:0.82rem; font-weight:600; cursor:pointer; color:var(--gray); transition:all 0.2s; }
+        .pad-pagination button:hover:not(:disabled) { border-color:var(--brand-accent); color:var(--brand-accent); }
+        .pad-pagination button.active { background:var(--brand-accent); border-color:var(--brand-accent); color:white; }
+        .pad-pagination button:disabled { opacity:0.4; cursor:default; }
+        @media (max-width:900px){ .pad-cards{ grid-template-columns:1fr; } .pad-card img{ width:90px; height:90px; } .pad-grid{ grid-template-columns:repeat(3,1fr); } }
+        @media (max-width:640px){ .pad-grid{ grid-template-columns:repeat(2,1fr); } }
+        @media (max-width:420px){ .pad-grid{ grid-template-columns:1fr; } }
+            .footer-marcas ul { columns: 2; column-gap: 2rem; }
+            /* WHATSAPP FLOAT */
+        .whatsapp-float { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 55px; height: 55px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 4px 15px rgba(37,211,102,0.3); z-index: 999; transition: transform 0.2s; }
+        .whatsapp-float:hover { transform: scale(1.1); }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <a href="../../index.html" class="logo-text">
+            <span class="logo-bold">RADSPORT</span>
+            <span class="logo-dot">&bull;</span>
+            <span class="logo-light">GEIST</span>
+        </a>
+        <ul class="nav-links">
+            <li>
+                <a href="../../index.html#worlds">Segmentos</a>
+            </li>
+            <li>
+                <a href="../../index.html#brands">Marcas</a>
+            </li>
+            <li><a href="../../productos.html" class="active">Productos</a></li>
+            <li><a href="../../donde-comprar/moto.html">Dónde Comprar</a></li>
+            <li><a href="../../sobre-nosotros.html">Sobre Nosotros</a></li>
+            <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <!-- BRAND BAR (filtros de marca Radsport) -->
+    <div class="brand-bar">
+        <a href="../../productos.html" class="brand-all" data-brand="todos" title="Catálogo Completo">Todos</a>
+        <a href="../cst/productos.html" data-brand="cst" title="CST Tires"><img src="../../img/logos/cst.png" alt="CST"></a>
+        <a href="../leovince/productos.html" data-brand="leovince" title="Leo Vince"><img src="../../img/logos/leovince.png" alt="Leo Vince"></a>
+        <a href="../shot/productos.html" data-brand="shot" title="SHOT Race Gear"><img src="../../img/logos/shot.png" alt="SHOT"></a>
+        <a href="../uswe/productos.html" data-brand="uswe" title="USWE"><img src="../../img/logos/uswe.png" alt="USWE"></a>
+        <a href="../giantloop/productos.html" data-brand="giantloop" title="Giant Loop"><img src="../../img/logos/giantloop.png" alt="Giant Loop"></a>
+        <a href="../nils/productos.html" data-brand="nils" title="NILS"><img src="../../img/logos/nils.png" alt="NILS"></a>
+        <a href="../nitromousse/productos.html" data-brand="nitromousse" title="Nitro Mousse"><img src="../../img/logos/nitromousse.png" alt="Nitro Mousse"></a>
+        <a href="../lucioli/productos.html" data-brand="lucioli" title="Lucioli"><img src="../../img/logos/lucioli.png" alt="Lucioli"></a>
+        <a href="#" class="active" data-brand="wrp" title="WRP"><img src="../../img/logos/wrp.png" alt="WRP"></a>
+        <a href="../sidi/productos.html" data-brand="sidi" title="SIDI"><img src="../../img/logos/sidi.png" alt="SIDI"></a>
+    </div>
+
+    <div class="finder">
+        <div class="finder-head">
+            <div class="finder-eyebrow">WRP · Pastillas de freno</div>
+            <h1 class="finder-h1">Encontrá tu pastilla</h1>
+        </div>
+
+        <div class="finder-tabs">
+            <button class="finder-tab active" data-panel="moto">Buscar por Moto</button>
+            <button class="finder-tab" data-panel="pastilla">Buscar por Pastilla</button>
+        </div>
+
+        <!-- PANEL: POR MOTO -->
+        <div class="panel active" id="panel-moto">
+            <div class="finder-step-label">1 · Elegí la marca</div>
+            <div class="combo" id="marcaCombo">
+                <input type="text" class="combo-input" id="marcaInput" placeholder="Elegí o buscá la marca…" autocomplete="off">
+                <div class="combo-list" id="marcaList"></div>
+            </div>
+            <div class="finder-step-label">2 · Elegí el modelo</div>
+            <select class="model-select" id="modelSelect" disabled>
+                <option value="">Primero elegí una marca</option>
+            </select>
+            <div class="finder-result" id="finderResult">
+                <div class="result-hint">Seleccioná tu moto para ver las pastillas que le corresponden.</div>
+            </div>
+        </div>
+
+        <!-- PANEL: POR PASTILLA -->
+        <div class="panel" id="panel-pastilla">
+            <div class="pad-search-wrap">
+                <input type="text" id="padSearch" class="pad-search" placeholder="Buscá por código WRP, SBS, Brembo, EBC, Ferodo, AP Racing…">
+            </div>
+            <div class="pad-filters" id="padFilters">
+                <button class="pad-filter active" data-f="todos">Todas</button>
+                <button class="pad-filter" data-f="delantera">Delantera</button>
+                <button class="pad-filter" data-f="trasera">Trasera</button>
+                <button class="pad-filter" data-f="calle">Calle</button>
+                <button class="pad-filter" data-f="off-road">Off-Road</button>
+            </div>
+            <div class="pad-grid" id="padGrid"></div>
+            <div class="pad-noresults" id="padNoResults" style="display:none">No encontramos pastillas con ese criterio.</div>
+            <div class="pad-pagination" id="padPagination"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Segmentos</h4>
+                <ul>
+                    <li><a href="../../segmentos/moto.html">Moto</a></li>
+                    <li><a href="../../segmentos/atv.html">ATV / UTV / SSV</a></li>
+                    <li><a href="../../segmentos/bici.html">Bicicleta</a></li>
+                    <li><a href="../../segmentos/industrial.html">Industrial</a></li>
+                </ul>
+            </div>
+            <div class="footer-section footer-marcas">
+                <h4>Marcas</h4>
+                <ul>
+                    <li><a href="../../marcas/cst/cst.html">CST</a></li>
+                    <li><a href="../../marcas/leovince/leovince.html">Leo Vince</a></li>
+                    <li><a href="../../marcas/shot/shot.html">SHOT</a></li>
+                    <li><a href="../../marcas/uswe/uswe.html">USWE</a></li>
+                    <li><a href="../../marcas/giantloop/giantloop.html">Giant Loop</a></li>
+                    <li><a href="../../marcas/nils/nils.html">NILS</a></li>
+                    <li><a href="../../marcas/nitromousse/nitromousse.html">Nitro Mousse</a></li>
+                    <li><a href="../../marcas/lucioli/lucioli.html">Lucioli</a></li>
+                    <li><a href="../../marcas/wrp/wrp.html">WRP</a></li>
+                    <li><a href="../../marcas/sidi/sidi.html">SIDI</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="../../sobre-nosotros.html">Quiénes Somos</a></li>
+                    <li><a href="../../donde-comprar/moto.html">Dónde Comprar</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Redes</h4>
+                <ul>
+                    <li><a href="https://www.instagram.com/radsport_geist/" target="_blank">Instagram</a></li>
+                    <li><a href="https://wa.me/5491135713234" target="_blank">WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Radsport Geist. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- JS: Simple filter -->
+    
+    <!-- PAGINACION (16 productos por pagina, integrada con filtros existentes) -->
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    <script>
+        const MOTOS = [{"b": "CFMoto", "m": "450 CLC", "f": "WG-7306-F2", "r": "WG-7515-F6", "t": false}, {"b": "CFMoto", "m": "450 NK", "f": "WG-7306-F2", "r": "WG-7515-F6", "t": false}, {"b": "CFMoto", "m": "450 SR", "f": "WG-7500-F2", "r": "WG-7515-F6", "t": false}, {"b": "CFMoto", "m": "450 MT", "f": "WG-7306-F2", "r": "WG-7275-F3", "t": false}, {"b": "CFMoto", "m": "650 GT", "f": "WG-7274-F2", "r": "WG-7275-F3", "t": true}, {"b": "CFMoto", "m": "650 MT", "f": "WG-7274-F2", "r": "WG-7275-F3", "t": true}, {"b": "CFMoto", "m": "650 NK", "f": "WG-7274-F2", "r": "WG-7275-F3", "t": true}, {"b": "CFMoto", "m": "675 SR-R", "f": "WG-7306-F2", "r": "WG-7515-F6", "t": false}, {"b": "CFMoto", "m": "700CLX Adventure", "f": "WG-7306-F2", "r": "WG-7271-F3", "t": false}, {"b": "CFMoto", "m": "700CLX Heritage", "f": "WG-7306-F2", "r": "WG-7271-F3", "t": true}, {"b": "CFMoto", "m": "700 MT", "f": "WG-7274-F2", "r": "WG-7275-F3", "t": true}, {"b": "CFMoto", "m": "700CL-X Sport", "f": "WG-7441-F2", "r": "WG-7330-F3", "t": true}, {"b": "CFMoto", "m": "800 MT", "f": "WG-7306-F2", "r": "WG-7271-F3", "t": true}, {"b": "CFMoto", "m": "800 NK", "f": "WG-7306-F2", "r": "WG-7271-F3", "t": true}, {"b": "KTM", "m": "200 Duke", "f": "WG-7477-F2", "r": "WG-7275-F3", "t": false}, {"b": "KTM", "m": "250 Duke", "f": "WG-7477-F2", "r": "WG-7275-F3", "t": false}, {"b": "KTM", "m": "300 Champion", "f": "WG-7271-F4", "r": "WG-7391-F4", "t": false}, {"b": "KTM", "m": "RC 390", "f": "WG-7477-F2", "r": "WG-7275-F3", "t": false}, {"b": "KTM", "m": "390 Adventure", "f": "WG-7477-F2", "r": "WG-7275-F3", "t": false}, {"b": "KTM", "m": "390 Duke", "f": "WG-7477-F2", "r": "WG-7275-F3", "t": false}, {"b": "KTM", "m": "690 Duke", "f": "WG-7306-F2", "r": "WG-7275-F3", "t": false}, {"b": "KTM", "m": "690 Enduro R", "f": "WG-7274-F2", "r": "WG-7275-F3", "t": false}, {"b": "KTM", "m": "790 Duke", "f": "WG-7306-F2", "r": "WG-7275-F3", "t": true}, {"b": "KTM", "m": "790 Adventure", "f": "WG-7306-F2", "r": "WG-7271-F3", "t": true}, {"b": "KTM", "m": "890 Adventure R", "f": "WG-7306-F2", "r": "WG-7271-F3", "t": true}, {"b": "KTM", "m": "990 Adventure", "f": "WG-7274-F2", "r": "WG-7271-F3", "t": false}, {"b": "KTM", "m": "990 Duke", "f": "WG-7306-F2", "r": "WG-7275-F3", "t": true}, {"b": "KTM", "m": "1090 Adventure", "f": "WG-7306-F2", "r": "WG-7271-F3", "t": true}, {"b": "KTM", "m": "1290 Super Adventure", "f": "WG-7306-F2", "r": "WG-7271-F3", "t": true}, {"b": "KTM", "m": "1290 Super Duke GT", "f": "", "r": "WG-7330-F3", "t": false}, {"b": "KTM", "m": "1290 Super Duke R", "f": "WG-7441-F2", "r": "WG-7330-F3", "t": true}, {"b": "KTM", "m": "65 SX", "f": "WG-7391-F4", "r": "WG-7391-F4", "t": false}, {"b": "KTM", "m": "SX", "f": "WG-7271-F4", "r": "WG-7391-F4", "t": false}, {"b": "KTM", "m": "SX", "f": "WG-7271-F4R", "r": "WG-7391-F4", "t": false}, {"b": "KTM", "m": "EXC", "f": "WG-7271-F4", "r": "WG-7391-F4", "t": false}, {"b": "KTM", "m": "EXC", "f": "WG-7271-F4R", "r": "WG-7391-F4", "t": false}, {"b": "Kawasaki", "m": "KX250", "f": "WG-7294-F4R", "r": "WG-7390-F4R", "t": false}, {"b": "Kawasaki", "m": "KLX 300", "f": "WG-7211-F6", "r": "WG-7204-F6", "t": false}, {"b": "Kawasaki", "m": "Versys X 300 ABS", "f": "WG-7227-F2", "r": "WG-7238-F3", "t": false}, {"b": "Kawasaki", "m": "Z 400 ABS", "f": "WG-7555-F2", "r": "WG-7238-F3", "t": true}, {"b": "Kawasaki", "m": "Ninja 400 ABS", "f": "WG-7555-F2", "r": "WG-7238-F3", "t": true}, {"b": "Kawasaki", "m": "KX450 (<2023)", "f": "WG-7294-F4R", "r": "WG-7390-F4R", "t": false}, {"b": "Kawasaki", "m": "KX450 (2024-2026)", "f": "WG-7271-F4R", "r": "WG-7390-F4R", "t": false}, {"b": "Kawasaki", "m": "Z 500", "f": "WG-7555-F2", "r": "WG-7238-F6", "t": false}, {"b": "Kawasaki", "m": "Ninja 500 SE", "f": "WG-7555-F2", "r": "WG-7238-F3", "t": false}, {"b": "Kawasaki", "m": "KLR 650", "f": "WG-7211-F2", "r": "WG-7238-F3", "t": false}, {"b": "Kawasaki", "m": "Versys 650 ABS", "f": "WG-7227-F2", "r": "WG-7257-F3", "t": true}, {"b": "Kawasaki", "m": "Z650 ABS", "f": "WG-7227-F2", "r": "WG-7257-F3", "t": true}, {"b": "Kawasaki", "m": "Z900 ABS", "f": "WG-7382-F2", "r": "WG-7481-F3", "t": true}, {"b": "Kawasaki", "m": "Ninja ZX-10R", "f": "WG-7441-F2", "r": "WG-7434-F3", "t": true}, {"b": "Moto Morini", "m": "450", "f": "WG-7306-F2", "r": "WG-7275-F3", "t": false}, {"b": "Moto Morini", "m": "Xcape 650", "f": "WG-7274-F2", "r": "WG-7330-F3", "t": true}, {"b": "Moto Morini", "m": "Xcape 700", "f": "WG-7274-F2", "r": "WG-7330-F3", "t": true}, {"b": "Moto Morini", "m": "Bagger 700", "f": "WG-7274-F2", "r": "WG-7275-F3", "t": false}, {"b": "Husqvarna", "m": "Svartpilen 250", "f": "WG-7477-F2", "r": "WG-7275-F3", "t": false}, {"b": "Husqvarna", "m": "Vitpilen 401", "f": "WG-7477-F2", "r": "WG-7275-F3", "t": true}, {"b": "Husqvarna", "m": "Norden 901", "f": "WG-7306-F2", "r": "WG-7271-F3", "t": true}, {"b": "Husqvarna", "m": "TC 65", "f": "WG-7391-F4", "r": "WG-7391-F4", "t": false}, {"b": "Husqvarna", "m": "TC XXX", "f": "WG-7271-F4", "r": "WG-7391-F4", "t": false}, {"b": "Husqvarna", "m": "TC XXX", "f": "WG-7271-F4R", "r": "WG-7391-F4", "t": false}, {"b": "Husqvarna", "m": "TE XXX", "f": "WG-7271-F4", "r": "WG-7391-F4", "t": false}, {"b": "Husqvarna", "m": "TE XXX", "f": "WG-7271-F4R", "r": "WG-7391-F4", "t": false}, {"b": "Husqvarna", "m": "FC XXX", "f": "WG-7271-F4", "r": "WG-7391-F4", "t": false}, {"b": "Husqvarna", "m": "FC XXX", "f": "WG-7271-F4R", "r": "WG-7391-F4", "t": false}, {"b": "Husqvarna", "m": "FE XXX", "f": "WG-7271-F4", "r": "WG-7391-F4", "t": false}, {"b": "Husqvarna", "m": "FE XXX", "f": "WG-7271-F4R", "r": "WG-7391-F4", "t": false}, {"b": "Beta", "m": "Crosstrainer 300", "f": "WG-7294-F4R", "r": "WG-7390-F4R", "t": false}, {"b": "Beta", "m": "RR XXX", "f": "WG-7294-F4R", "r": "WG-7390-F4R", "t": false}, {"b": "Gas Gas", "m": "MC 125", "f": "WG-7271-F4", "r": "WG-7391-F4", "t": false}, {"b": "Gas Gas", "m": "MC 125", "f": "WG-7271-F4R", "r": "WG-7391-F4", "t": false}, {"b": "Gas Gas", "m": "MC 150", "f": "WG-7271-F4", "r": "WG-7391-F4", "t": false}, {"b": "Gas Gas", "m": "MC 150", "f": "WG-7271-F4R", "r": "WG-7391-F4", "t": false}, {"b": "Gas Gas", "m": "EC 250 (12>20)", "f": "WG-7294-F4R", "r": "WG-7390-F4R", "t": false}, {"b": "Gas Gas", "m": "EC 250 (21>23)", "f": "WG-7271-F4", "r": "WG-7391-F4", "t": false}, {"b": "Gas Gas", "m": "EC 250 (21>23)", "f": "WG-7271-F4R", "r": "WG-7391-F4", "t": false}, {"b": "Gas Gas", "m": "MC 250", "f": "WG-7271-F4", "r": "WG-7391-F4", "t": false}, {"b": "Gas Gas", "m": "MC 250", "f": "WG-7271-F4R", "r": "WG-7391-F4", "t": false}, {"b": "Gas Gas", "m": "XC 250", "f": "WG-7294-F4R", "r": "WG-7390-F4R", "t": false}, {"b": "Gas Gas", "m": "EC 300 (12>20)", "f": "WG-7294-F4R", "r": "WG-7390-F4R", "t": false}, {"b": "Gas Gas", "m": "EC 300 (19>23)", "f": "WG-7271-F4", "r": "WG-7391-F4", "t": false}, {"b": "Gas Gas", "m": "EC 300 (19>23)", "f": "WG-7271-F4R", "r": "WG-7391-F4", "t": false}, {"b": "Gas Gas", "m": "MC 300", "f": "WG-7271-F4", "r": "WG-7391-F4", "t": false}, {"b": "Gas Gas", "m": "MC 300", "f": "WG-7271-F4R", "r": "WG-7391-F4", "t": false}, {"b": "Gas Gas", "m": "XC 300", "f": "WG-7294-F4R", "r": "WG-7390-F4R", "t": false}, {"b": "Gas Gas", "m": "EC F 350", "f": "WG-7271-F4", "r": "WG-7391-F4", "t": false}, {"b": "Gas Gas", "m": "EC F 350", "f": "WG-7271-F4R", "r": "WG-7391-F4", "t": false}, {"b": "Gas Gas", "m": "MC F 350", "f": "WG-7271-F4", "r": "WG-7391-F4", "t": false}, {"b": "Gas Gas", "m": "MC F 350", "f": "WG-7271-F4R", "r": "WG-7391-F4", "t": false}, {"b": "Gas Gas", "m": "MC F 450", "f": "WG-7271-F4", "r": "WG-7391-F4", "t": false}, {"b": "Gas Gas", "m": "MC F 450", "f": "WG-7271-F4R", "r": "WG-7391-F4", "t": false}, {"b": "Sherco", "m": "SE-XXX", "f": "WG-7271-F4", "r": "WG-7391-F4", "t": false}, {"b": "Sherco", "m": "SE-XXX", "f": "WG-7271-F4R", "r": "WG-7391-F4", "t": false}, {"b": "Sherco", "m": "SEF-XXX", "f": "WG-7271-F4", "r": "WG-7391-F4", "t": false}, {"b": "Sherco", "m": "SEF-XXX", "f": "WG-7271-F4R", "r": "WG-7391-F4", "t": false}, {"b": "Suzuki", "m": "RM-Z 250", "f": "WG-7294-F4R", "r": "WG-7390-F4R", "t": false}, {"b": "Suzuki", "m": "RM-Z 450", "f": "WG-7294-F4R", "r": "WG-7390-F4R", "t": false}, {"b": "Yamaha", "m": "YZ 125", "f": "", "r": "WG-7390-F4R", "t": false}, {"b": "Yamaha", "m": "WR F 250 (15>17)", "f": "WG-7294-F4R", "r": "WG-7390-F4R", "t": false}, {"b": "Yamaha", "m": "WR F 250 (18>24)", "f": "", "r": "WG-7390-F4R", "t": false}, {"b": "Yamaha", "m": "YZ 250", "f": "", "r": "WG-7390-F4R", "t": false}, {"b": "Yamaha", "m": "WR F 450 (03>15)", "f": "WG-7294-F4R", "r": "WG-7390-F4R", "t": false}, {"b": "Yamaha", "m": "WR F 450 (16>24)", "f": "", "r": "WG-7390-F4R", "t": false}, {"b": "Yamaha", "m": "YZ F 450", "f": "", "r": "WG-7390-F4R", "t": false}, {"b": "Yamaha", "m": "YZ FX 450", "f": "", "r": "WG-7390-F4R", "t": false}, {"b": "Kove", "m": "MX 250", "f": "WG-7294-F4R", "r": "", "t": false}, {"b": "Kove", "m": "MX 450", "f": "WG-7294-F4R", "r": "", "t": false}, {"b": "Kove", "m": "Rally 450", "f": "WG-7294-F4R", "r": "", "t": false}, {"b": "Honda", "m": "CRF", "f": "WG-7294-F4R", "r": "", "t": false}];
+        const PADS = {"WG-7204-F6": {"b": "WG-7204", "c": "Estándar", "mat": "Orgánica", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Buen rendimiento y manejo fácil en todos los niveles de temperatura. Apta para discos de fundición y acero inoxidable.", "suf": "F6", "media": true, "eq": {"SBS": "604", "Brembo": "07HO26", "EBC": "FA131", "Ferodo": "FDB539", "AP Racing": "204"}, "fits": [["Kawasaki", "KLX 300", "Trasera"]]}, "WG-7211-F2": {"b": "WG-7211", "c": "Supersport", "mat": "Sinterizada", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Pastilla delantera desarrollada para uso callejero de alto rendimiento. Apta para discos OE de fundición y acero inoxidable.", "suf": "F2", "media": true, "eq": {"SBS": "611", "Brembo": "07SU12", "EBC": "FA135/FA214", "Ferodo": "FDB497", "AP Racing": "211"}, "fits": [["Kawasaki", "KLR 650", "Delantera"]]}, "WG-7211-F6": {"b": "WG-7211", "c": "Estándar", "mat": "Orgánica", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Buen rendimiento y manejo fácil en todos los niveles de temperatura. Apta para discos de fundición y acero inoxidable.", "suf": "F6", "media": true, "eq": {"SBS": "611", "Brembo": "07SU12", "EBC": "FA135/FA214", "Ferodo": "FDB497", "AP Racing": "211"}, "fits": [["Kawasaki", "KLX 300", "Delantera"]]}, "WG-7227-F2": {"b": "WG-7227", "c": "Supersport", "mat": "Sinterizada", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Pastilla delantera desarrollada para uso callejero de alto rendimiento. Apta para discos OE de fundición y acero inoxidable.", "suf": "F2", "media": true, "eq": {"SBS": "627", "Brembo": "07HO30", "EBC": "FA142/FA226", "Ferodo": "FDB2187", "AP Racing": "227"}, "fits": [["Kawasaki", "Versys X 300 ABS", "Delantera"], ["Kawasaki", "Versys 650 ABS", "Delantera ×2"], ["Kawasaki", "Z650 ABS", "Delantera ×2"]]}, "WG-7238-F3": {"b": "WG-7238", "c": "Supersport", "mat": "Sinterizada", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Pastilla trasera con coeficiente de fricción levemente reducido para un frenado controlado y máximo. Apta para discos OE de fundición y acero inoxidable.", "suf": "F3", "media": true, "eq": {"SBS": "638", "Brembo": "07YA22", "EBC": "FA165/FA215", "Ferodo": "FDB2087", "AP Racing": "238"}, "fits": [["Kawasaki", "Versys X 300 ABS", "Trasera"], ["Kawasaki", "Z 400 ABS", "Trasera"], ["Kawasaki", "Ninja 400 ABS", "Trasera"], ["Kawasaki", "Ninja 500 SE", "Trasera"], ["Kawasaki", "KLR 650", "Trasera"]]}, "WG-7238-F6": {"b": "WG-7238", "c": "Estándar", "mat": "Orgánica", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Buen rendimiento y manejo fácil en todos los niveles de temperatura. Apta para discos de fundición y acero inoxidable.", "suf": "F6", "media": true, "eq": {"SBS": "638", "Brembo": "07YA22", "EBC": "FA165/FA215", "Ferodo": "FDB2087", "AP Racing": "238"}, "fits": [["Kawasaki", "Z 500", "Trasera"]]}, "WG-7257-F3": {"b": "WG-7257", "c": "Supersport", "mat": "Sinterizada", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Pastilla trasera con coeficiente de fricción levemente reducido para un frenado controlado y máximo. Apta para discos OE de fundición y acero inoxidable.", "suf": "F3", "media": true, "eq": {"SBS": "657", "Brembo": "07HO36", "EBC": "FA174", "Ferodo": "FDB754", "AP Racing": "257"}, "fits": [["Kawasaki", "Versys 650 ABS", "Trasera"], ["Kawasaki", "Z650 ABS", "Trasera"]]}, "WG-7271-F3": {"b": "WG-7271", "c": "Supersport", "mat": "Sinterizada", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Pastilla trasera con coeficiente de fricción levemente reducido para un frenado controlado y máximo. Apta para discos OE de fundición y acero inoxidable.", "suf": "F3", "media": true, "eq": {"SBS": "671", "Brembo": "07BB04", "EBC": "FA181", "Ferodo": "FDB2018", "AP Racing": "271"}, "fits": [["CFMoto", "700CLX Adventure", "Trasera"], ["CFMoto", "700CLX Heritage", "Trasera"], ["CFMoto", "800 MT", "Trasera"], ["CFMoto", "800 NK", "Trasera"], ["KTM", "790 Adventure", "Trasera"], ["KTM", "890 Adventure R", "Trasera"], ["KTM", "990 Adventure", "Trasera"], ["KTM", "1090 Adventure", "Trasera"], ["KTM", "1290 Super Adventure", "Trasera"], ["Husqvarna", "Norden 901", "Trasera"]]}, "WG-7271-F4": {"b": "WG-7271", "c": "Estándar Off-Road", "mat": "Sinterizada", "p": "Front", "u": "Off-Road", "s": true, "a": false, "d": "Formulación para condiciones abrasivas sin perder rendimiento. Principalmente para discos OE de acero inoxidable.", "suf": "F4", "media": true, "eq": {"SBS": "671", "Brembo": "07BB04", "EBC": "FA181", "Ferodo": "FDB2018", "AP Racing": "271"}, "fits": [["KTM", "300 Champion", "Delantera"], ["KTM", "SX", "Delantera"], ["KTM", "EXC", "Delantera"], ["Husqvarna", "TC XXX", "Delantera"], ["Husqvarna", "TE XXX", "Delantera"], ["Husqvarna", "FC XXX", "Delantera"], ["Husqvarna", "FE XXX", "Delantera"], ["Gas Gas", "MC 125", "Delantera"], ["Gas Gas", "MC 150", "Delantera"], ["Gas Gas", "EC 250 (21>23)", "Delantera"], ["Gas Gas", "MC 250", "Delantera"], ["Gas Gas", "EC 300 (19>23)", "Delantera"], ["Gas Gas", "MC 300", "Delantera"], ["Gas Gas", "EC F 350", "Delantera"], ["Gas Gas", "MC F 350", "Delantera"], ["Gas Gas", "MC F 450", "Delantera"], ["Sherco", "SE-XXX", "Delantera"], ["Sherco", "SEF-XXX", "Delantera"]]}, "WG-7271-F4R": {"b": "WG-7271", "c": "Racing Off-Road", "mat": "Sinterizada", "p": "Front", "u": "Off-Road", "s": true, "a": false, "d": "Compuesto que brinda gran tacto y máxima performance en condiciones de carrera. Apta para discos OE de fundición y acero inoxidable.", "suf": "F4R", "media": true, "eq": {"SBS": "671", "Brembo": "07BB04", "EBC": "FA181", "Ferodo": "FDB2018", "AP Racing": "271"}, "fits": [["KTM", "SX", "Delantera"], ["KTM", "EXC", "Delantera"], ["Kawasaki", "KX450 (2024-2026)", "Delantera"], ["Husqvarna", "TC XXX", "Delantera"], ["Husqvarna", "TE XXX", "Delantera"], ["Husqvarna", "FC XXX", "Delantera"], ["Husqvarna", "FE XXX", "Delantera"], ["Gas Gas", "MC 125", "Delantera"], ["Gas Gas", "MC 150", "Delantera"], ["Gas Gas", "EC 250 (21>23)", "Delantera"], ["Gas Gas", "MC 250", "Delantera"], ["Gas Gas", "EC 300 (19>23)", "Delantera"], ["Gas Gas", "MC 300", "Delantera"], ["Gas Gas", "EC F 350", "Delantera"], ["Gas Gas", "MC F 350", "Delantera"], ["Gas Gas", "MC F 450", "Delantera"], ["Sherco", "SE-XXX", "Delantera"], ["Sherco", "SEF-XXX", "Delantera"]]}, "WG-7274-F2": {"b": "WG-7274", "c": "Supersport", "mat": "Sinterizada", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Pastilla delantera desarrollada para uso callejero de alto rendimiento. Apta para discos OE de fundición y acero inoxidable.", "suf": "F2", "media": true, "eq": {"SBS": "674", "Brembo": "07BB03", "EBC": "FA209/FA209/2", "Ferodo": "FDB2006", "AP Racing": "274"}, "fits": [["CFMoto", "650 GT", "Delantera ×2"], ["CFMoto", "650 MT", "Delantera ×2"], ["CFMoto", "650 NK", "Delantera ×2"], ["CFMoto", "700 MT", "Delantera ×2"], ["KTM", "690 Enduro R", "Delantera"], ["KTM", "990 Adventure", "Delantera"], ["Moto Morini", "Xcape 650", "Delantera ×2"], ["Moto Morini", "Xcape 700", "Delantera ×2"], ["Moto Morini", "Bagger 700", "Delantera"]]}, "WG-7275-F3": {"b": "WG-7275", "c": "Supersport", "mat": "Sinterizada", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Pastilla trasera con coeficiente de fricción levemente reducido para un frenado controlado y máximo. Apta para discos OE de fundición y acero inoxidable.", "suf": "F3", "media": true, "eq": {"SBS": "675", "Brembo": "07BB02", "EBC": "FA208", "Ferodo": "FDB2005", "AP Racing": "275"}, "fits": [["CFMoto", "450 MT", "Trasera"], ["CFMoto", "650 GT", "Trasera"], ["CFMoto", "650 MT", "Trasera"], ["CFMoto", "650 NK", "Trasera"], ["CFMoto", "700 MT", "Trasera"], ["KTM", "200 Duke", "Trasera"], ["KTM", "250 Duke", "Trasera"], ["KTM", "RC 390", "Trasera"], ["KTM", "390 Adventure", "Trasera"], ["KTM", "390 Duke", "Trasera"], ["KTM", "690 Duke", "Trasera"], ["KTM", "690 Enduro R", "Trasera"], ["KTM", "790 Duke", "Trasera"], ["KTM", "990 Duke", "Trasera"], ["Moto Morini", "450", "Trasera"], ["Moto Morini", "Bagger 700", "Trasera"], ["Husqvarna", "Svartpilen 250", "Trasera"], ["Husqvarna", "Vitpilen 401", "Trasera"]]}, "WG-7294-F4R": {"b": "WG-7294", "c": "Racing Off-Road", "mat": "Sinterizada", "p": "Front", "u": "Off-Road", "s": true, "a": false, "d": "Compuesto que brinda gran tacto y máxima performance en condiciones de carrera. Apta para discos OE de fundición y acero inoxidable.", "suf": "F4R", "media": true, "eq": {"SBS": "694", "Brembo": "07KA17", "EBC": "FA185/FA389", "Ferodo": "FDB892", "AP Racing": "294"}, "fits": [["Kawasaki", "KX250", "Delantera"], ["Kawasaki", "KX450 (<2023)", "Delantera"], ["Beta", "Crosstrainer 300", "Delantera"], ["Beta", "RR XXX", "Delantera"], ["Gas Gas", "EC 250 (12>20)", "Delantera"], ["Gas Gas", "XC 250", "Delantera"], ["Gas Gas", "EC 300 (12>20)", "Delantera"], ["Gas Gas", "XC 300", "Delantera"], ["Suzuki", "RM-Z 250", "Delantera"], ["Suzuki", "RM-Z 450", "Delantera"], ["Yamaha", "WR F 250 (15>17)", "Delantera"], ["Yamaha", "WR F 450 (03>15)", "Delantera"], ["Kove", "MX 250", "Delantera"], ["Kove", "MX 450", "Delantera"], ["Kove", "Rally 450", "Delantera"], ["Honda", "CRF", "Delantera"]]}, "WG-7306-F2": {"b": "WG-7306", "c": "Supersport", "mat": "Sinterizada", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Pastilla delantera desarrollada para uso callejero de alto rendimiento. Apta para discos OE de fundición y acero inoxidable.", "suf": "F2", "media": true, "eq": {"SBS": "706", "Brembo": "07BB19", "EBC": "FA244", "Ferodo": "FDB2042", "AP Racing": "306"}, "fits": [["CFMoto", "450 CLC", "Delantera"], ["CFMoto", "450 NK", "Delantera"], ["CFMoto", "450 MT", "Delantera"], ["CFMoto", "675 SR-R", "Delantera"], ["CFMoto", "700CLX Adventure", "Delantera"], ["CFMoto", "700CLX Heritage", "Delantera ×2"], ["CFMoto", "800 MT", "Delantera ×2"], ["CFMoto", "800 NK", "Delantera ×2"], ["KTM", "690 Duke", "Delantera"], ["KTM", "790 Duke", "Delantera ×2"], ["KTM", "790 Adventure", "Delantera ×2"], ["KTM", "890 Adventure R", "Delantera ×2"], ["KTM", "990 Duke", "Delantera ×2"], ["KTM", "1090 Adventure", "Delantera ×2"], ["KTM", "1290 Super Adventure", "Delantera ×2"], ["Moto Morini", "450", "Delantera"], ["Husqvarna", "Norden 901", "Delantera ×2"]]}, "WG-7330-F3": {"b": "WG-7330", "c": "Supersport", "mat": "Sinterizada", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Pastilla trasera con coeficiente de fricción levemente reducido para un frenado controlado y máximo. Apta para discos OE de fundición y acero inoxidable.", "suf": "F3", "media": true, "eq": {"SBS": "730", "Brembo": "07BB20", "EBC": "FA266", "Ferodo": "FDB2074", "AP Racing": "330"}, "fits": [["CFMoto", "700CL-X Sport", "Trasera"], ["KTM", "1290 Super Duke GT", "Trasera"], ["KTM", "1290 Super Duke R", "Trasera"], ["Moto Morini", "Xcape 650", "Trasera"], ["Moto Morini", "Xcape 700", "Trasera"]]}, "WG-7382-F2": {"b": "WG-7382", "c": "Supersport", "mat": "Sinterizada", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Pastilla delantera desarrollada para uso callejero de alto rendimiento. Apta para discos OE de fundición y acero inoxidable.", "suf": "F2", "media": true, "eq": {"SBS": "782", "Brembo": "07KA23", "EBC": "FA347", "Ferodo": "FDB2158", "AP Racing": "382"}, "fits": [["Kawasaki", "Z900 ABS", "Delantera ×2"]]}, "WG-7390-F4R": {"b": "WG-7390", "c": "Racing Off-Road", "mat": "Sinterizada", "p": "Rear", "u": "Off-Road", "s": true, "a": false, "d": "Compuesto que brinda gran tacto y máxima performance en condiciones de carrera. Apta para discos OE de fundición y acero inoxidable.", "suf": "F4R", "media": true, "eq": {"SBS": "790", "Brembo": "07YA41", "EBC": "FA367", "Ferodo": "FDB2162", "AP Racing": "390"}, "fits": [["Kawasaki", "KX250", "Trasera"], ["Kawasaki", "KX450 (<2023)", "Trasera"], ["Kawasaki", "KX450 (2024-2026)", "Trasera"], ["Beta", "Crosstrainer 300", "Trasera"], ["Beta", "RR XXX", "Trasera"], ["Gas Gas", "EC 250 (12>20)", "Trasera"], ["Gas Gas", "XC 250", "Trasera"], ["Gas Gas", "EC 300 (12>20)", "Trasera"], ["Gas Gas", "XC 300", "Trasera"], ["Suzuki", "RM-Z 250", "Trasera"], ["Suzuki", "RM-Z 450", "Trasera"], ["Yamaha", "YZ 125", "Trasera"], ["Yamaha", "WR F 250 (15>17)", "Trasera"], ["Yamaha", "WR F 250 (18>24)", "Trasera"], ["Yamaha", "YZ 250", "Trasera"], ["Yamaha", "WR F 450 (03>15)", "Trasera"], ["Yamaha", "WR F 450 (16>24)", "Trasera"], ["Yamaha", "YZ F 450", "Trasera"], ["Yamaha", "YZ FX 450", "Trasera"]]}, "WG-7391-F4": {"b": "WG-7391", "c": "Estándar Off-Road", "mat": "Sinterizada", "p": "Rear", "u": "Off-Road", "s": true, "a": false, "d": "Formulación para condiciones abrasivas sin perder rendimiento. Principalmente para discos OE de acero inoxidable.", "suf": "F4", "media": true, "eq": {"SBS": "791", "Brembo": "07BB27", "EBC": "FA368", "Ferodo": "FDB2165", "AP Racing": "391"}, "fits": [["KTM", "300 Champion", "Trasera"], ["KTM", "65 SX", "Delantera"], ["KTM", "65 SX", "Trasera"], ["KTM", "SX", "Trasera"], ["KTM", "SX", "Trasera"], ["KTM", "EXC", "Trasera"], ["KTM", "EXC", "Trasera"], ["Husqvarna", "TC 65", "Delantera"], ["Husqvarna", "TC 65", "Trasera"], ["Husqvarna", "TC XXX", "Trasera"], ["Husqvarna", "TC XXX", "Trasera"], ["Husqvarna", "TE XXX", "Trasera"], ["Husqvarna", "TE XXX", "Trasera"], ["Husqvarna", "FC XXX", "Trasera"], ["Husqvarna", "FC XXX", "Trasera"], ["Husqvarna", "FE XXX", "Trasera"], ["Husqvarna", "FE XXX", "Trasera"], ["Gas Gas", "MC 125", "Trasera"], ["Gas Gas", "MC 125", "Trasera"], ["Gas Gas", "MC 150", "Trasera"], ["Gas Gas", "MC 150", "Trasera"], ["Gas Gas", "EC 250 (21>23)", "Trasera"], ["Gas Gas", "EC 250 (21>23)", "Trasera"], ["Gas Gas", "MC 250", "Trasera"], ["Gas Gas", "MC 250", "Trasera"], ["Gas Gas", "EC 300 (19>23)", "Trasera"], ["Gas Gas", "EC 300 (19>23)", "Trasera"], ["Gas Gas", "MC 300", "Trasera"], ["Gas Gas", "MC 300", "Trasera"], ["Gas Gas", "EC F 350", "Trasera"], ["Gas Gas", "EC F 350", "Trasera"], ["Gas Gas", "MC F 350", "Trasera"], ["Gas Gas", "MC F 350", "Trasera"], ["Gas Gas", "MC F 450", "Trasera"], ["Gas Gas", "MC F 450", "Trasera"], ["Sherco", "SE-XXX", "Trasera"], ["Sherco", "SE-XXX", "Trasera"], ["Sherco", "SEF-XXX", "Trasera"], ["Sherco", "SEF-XXX", "Trasera"]]}, "WG-7434-F3": {"b": "WG-7434", "c": "Supersport", "mat": "Sinterizada", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Pastilla trasera con coeficiente de fricción levemente reducido para un frenado controlado y máximo. Apta para discos OE de fundición y acero inoxidable.", "suf": "F3", "media": true, "eq": {"SBS": "834", "Brembo": "07HO59", "EBC": "FA436", "Ferodo": "FDB2221", "AP Racing": "434"}, "fits": [["Kawasaki", "Ninja ZX-10R", "Trasera"]]}, "WG-7441-F2": {"b": "WG-7441", "c": "Supersport", "mat": "Sinterizada", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Pastilla delantera desarrollada para uso callejero de alto rendimiento. Apta para discos OE de fundición y acero inoxidable.", "suf": "F2", "media": true, "eq": {"SBS": "841", "Brembo": "07BB37", "EBC": "FA447", "Ferodo": "FDB2218", "AP Racing": "441"}, "fits": [["CFMoto", "700CL-X Sport", "Delantera ×2"], ["KTM", "1290 Super Duke R", "Delantera ×2"], ["Kawasaki", "Ninja ZX-10R", "Delantera ×2"]]}, "WG-7477-F2": {"b": "WG-7477", "c": "Supersport", "mat": "Sinterizada", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Pastilla delantera desarrollada para uso callejero de alto rendimiento. Apta para discos OE de fundición y acero inoxidable.", "suf": "F2", "media": true, "eq": {"SBS": "877", "Brembo": "07GR18", "EBC": "FA606", "AP Racing": "477"}, "fits": [["KTM", "200 Duke", "Delantera"], ["KTM", "250 Duke", "Delantera"], ["KTM", "RC 390", "Delantera"], ["KTM", "390 Adventure", "Delantera"], ["KTM", "390 Duke", "Delantera"], ["Husqvarna", "Svartpilen 250", "Delantera"], ["Husqvarna", "Vitpilen 401", "Delantera ×2"]]}, "WG-7481-F3": {"b": "WG-7481", "c": "Supersport", "mat": "Sinterizada", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Pastilla trasera con coeficiente de fricción levemente reducido para un frenado controlado y máximo. Apta para discos OE de fundición y acero inoxidable.", "suf": "F3", "media": true, "eq": {"SBS": "881", "Brembo": "07HO53", "EBC": "FA496", "Ferodo": "FDB2258", "AP Racing": "481"}, "fits": [["Kawasaki", "Z900 ABS", "Trasera"]]}, "WG-7500-F2": {"b": "WG-7500", "c": "Supersport", "mat": "Sinterizada", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Pastilla delantera desarrollada para uso callejero de alto rendimiento. Apta para discos OE de fundición y acero inoxidable.", "suf": "F2", "media": true, "eq": {"SBS": "900", "Brembo": "07BB38", "EBC": "FA630", "AP Racing": "500"}, "fits": [["CFMoto", "450 SR", "Delantera"]]}, "WG-7515-F6": {"b": "WG-7515", "c": "Estándar", "mat": "Orgánica", "p": "Rear", "u": "Calle", "s": true, "a": false, "d": "Buen rendimiento y manejo fácil en todos los niveles de temperatura. Apta para discos de fundición y acero inoxidable.", "suf": "F6", "media": true, "eq": {"SBS": "915", "Brembo": "07HO61", "EBC": "FA629", "AP Racing": "515"}, "fits": [["CFMoto", "450 CLC", "Trasera"], ["CFMoto", "450 NK", "Trasera"], ["CFMoto", "450 SR", "Trasera"], ["CFMoto", "675 SR-R", "Trasera"]]}, "WG-7555-F2": {"b": "WG-7555", "c": "Supersport", "mat": "Sinterizada", "p": "Front", "u": "Calle", "s": true, "a": false, "d": "Pastilla delantera desarrollada para uso callejero de alto rendimiento. Apta para discos OE de fundición y acero inoxidable.", "suf": "F2", "media": true, "eq": {"SBS": "955", "AP Racing": "555"}, "fits": [["Kawasaki", "Z 400 ABS", "Delantera ×2"], ["Kawasaki", "Ninja 400 ABS", "Delantera ×2"], ["Kawasaki", "Z 500", "Delantera"], ["Kawasaki", "Ninja 500 SE", "Delantera"]]}};
+        function posEs(p){ return /^front/i.test(p) ? 'Delantera' : 'Trasera'; }
+
+        const BRANDS = [];
+        MOTOS.forEach(function(m){ if (BRANDS.indexOf(m.b) < 0) BRANDS.push(m.b); });
+        const modelSelect = document.getElementById('modelSelect');
+        const finderResult = document.getElementById('finderResult');
+
+        function selectMarca(brand){
+            if (!brand){
+                modelSelect.disabled = true;
+                modelSelect.innerHTML = '<option value="">Primero elegí una marca</option>';
+                finderResult.innerHTML = '<div class="result-hint">Seleccioná tu moto para ver las pastillas que le corresponden.</div>';
+                return;
+            }
+            const list = MOTOS.filter(function(m){ return m.b === brand; });
+            modelSelect.disabled = false;
+            modelSelect.innerHTML = '<option value="">Elegí tu modelo…</option>' +
+                list.map(function(m){ return '<option value="'+MOTOS.indexOf(m)+'">'+m.m+'</option>'; }).join('');
+            finderResult.innerHTML = '<div class="result-hint">Elegí el modelo para ver las pastillas.</div>';
+        }
+
+        // Combobox buscable para la marca (input + lista filtrable)
+        (function(){
+            const input = document.getElementById('marcaInput');
+            const list = document.getElementById('marcaList');
+            let filtered = BRANDS.slice();
+            function render(){
+                const f = input.value.trim().toLowerCase();
+                filtered = BRANDS.filter(function(b){ return b.toLowerCase().indexOf(f) >= 0; });
+                if (!filtered.length){ list.innerHTML = '<div class="combo-empty">Sin resultados</div>'; return; }
+                list.innerHTML = filtered.map(function(b,i){
+                    return '<div class="combo-option'+(i===0?' active':'')+'" data-v="'+b+'">'+b+'</div>'; }).join('');
+                list.querySelectorAll('.combo-option').forEach(function(el){
+                    el.addEventListener('mousedown', function(e){ e.preventDefault(); choose(el.dataset.v); });
+                });
+            }
+            function open(){ render(); list.classList.add('open'); }
+            function close(){ list.classList.remove('open'); }
+            function choose(b){ input.value = b; close(); selectMarca(b); }
+            input.addEventListener('focus', open);
+            input.addEventListener('input', function(){ open(); selectMarca(''); });
+            input.addEventListener('keydown', function(e){
+                if (e.key === 'Enter'){ e.preventDefault(); if (filtered.length) choose(filtered[0]); }
+                else if (e.key === 'Escape'){ close(); input.blur(); }
+            });
+            document.addEventListener('click', function(e){ if (!e.target.closest('#marcaCombo')) close(); });
+        })();
+
+        function padCard(code, posLabel){
+            const p = PADS[code];
+            if (!p) return '';
+            const badge = p.a ? '<span class="pad-card-badge apedido">A pedido</span>' : '';
+            const img = p.media ? 'productos/comp/'+p.suf+'-foto.png' : 'productos/dib/'+p.b+'.png';
+            return '<a class="pad-card" href="producto.html?code='+encodeURIComponent(code)+'">' +
+                     '<img src="'+img+'" alt="WRP '+code+'">' +
+                     '<div><div class="pad-card-pos">'+posLabel+'</div>' +
+                     '<div class="pad-card-code">'+code+'</div>' +
+                     '<div class="pad-card-comp">'+p.c+' · '+p.mat+'</div>'+badge+'</div></a>';
+        }
+
+        modelSelect.addEventListener('change', function(){
+            const idx = this.value;
+            if (idx === '') { finderResult.innerHTML = '<div class="result-hint">Elegí el modelo para ver las pastillas.</div>'; return; }
+            const m = MOTOS[parseInt(idx,10)];
+            const frontLabel = 'Delantera' + (m.t ? ' ×2 (doble disco)' : '');
+            finderResult.innerHTML =
+                '<div class="result-title">Pastillas para <span>'+m.b+' '+m.m+'</span></div>' +
+                '<div class="pad-cards">' + padCard(m.f, frontLabel) + padCard(m.r, 'Trasera') + '</div>';
+        });
+
+        // Tabs
+        document.querySelectorAll('.finder-tab').forEach(function(tab){
+            tab.addEventListener('click', function(){
+                document.querySelectorAll('.finder-tab').forEach(function(t){ t.classList.remove('active'); });
+                document.querySelectorAll('.panel').forEach(function(pp){ pp.classList.remove('active'); });
+                tab.classList.add('active');
+                document.getElementById('panel-' + tab.dataset.panel).classList.add('active');
+            });
+        });
+
+        // ===== BUSCAR POR PASTILLA =====
+        const padGrid = document.getElementById('padGrid');
+        const padSearch = document.getElementById('padSearch');
+        const padNoResults = document.getElementById('padNoResults');
+        const padState = { f: 'todos', q: '' };
+        const stockPads = Object.keys(PADS).filter(function(c){ return PADS[c].s; });
+        const PADS_PER_PAGE = 15;   // 5 por fila x 3 filas
+        var padPage = 1;
+
+        function padSearchStr(c){
+            const p = PADS[c];
+            var eq = Object.keys(p.eq || {}).map(function(k){ return k + ' ' + p.eq[k]; }).join(' ');
+            return (c + ' ' + p.c + ' ' + p.mat + ' ' + p.u + ' ' + eq).toLowerCase();
+        }
+        function padGridCard(c){
+            const p = PADS[c];
+            const im = p.media ? 'productos/comp/'+p.suf+'-foto.png' : 'productos/dib/'+p.b+'.png';
+            const badge = p.a ? '<span class="pad-card-badge apedido">A pedido</span>' : '';
+            return '<a class="pad-gcard" href="producto.html?code='+encodeURIComponent(c)+'">' +
+                     '<div class="pad-gcard-img"><img src="'+im+'" alt="WRP '+c+'"></div>' +
+                     '<div class="pad-gcard-body">' +
+                       '<div class="pad-card-pos">'+posEs(p.p)+'</div>' +
+                       '<div class="pad-card-code">'+c+'</div>' +
+                       '<div class="pad-card-comp">'+p.c+' · '+p.mat+'</div>'+badge +
+                     '</div></a>';
+        }
+        const padPagination = document.getElementById('padPagination');
+        function renderPadPagination(totalPages){
+            if (totalPages <= 1){ padPagination.innerHTML = ''; return; }
+            var h = '<button data-p="'+(padPage-1)+'"'+(padPage===1?' disabled':'')+'>&larr;</button>';
+            for (var i=1; i<=totalPages; i++){ h += '<button class="'+(i===padPage?'active':'')+'" data-p="'+i+'">'+i+'</button>'; }
+            h += '<button data-p="'+(padPage+1)+'"'+(padPage===totalPages?' disabled':'')+'>&rarr;</button>';
+            padPagination.innerHTML = h;
+            padPagination.querySelectorAll('button[data-p]').forEach(function(b){
+                b.addEventListener('click', function(){
+                    var np = parseInt(b.dataset.p, 10);
+                    if (np >= 1 && np <= totalPages){ padPage = np; renderPads();
+                        window.scrollTo({ top: document.querySelector('.finder-tabs').offsetTop - 20, behavior:'smooth' }); }
+                });
+            });
+        }
+        function renderPads(){
+            const out = stockPads.filter(function(c){
+                const p = PADS[c];
+                var okF = true;
+                if (padState.f === 'delantera') okF = /^front/i.test(p.p);
+                else if (padState.f === 'trasera') okF = /^rear/i.test(p.p);
+                else if (padState.f === 'calle') okF = /calle/i.test(p.u);
+                else if (padState.f === 'off-road') okF = /off-road/i.test(p.u);
+                var okQ = !padState.q || padSearchStr(c).indexOf(padState.q) >= 0;
+                return okF && okQ;
+            });
+            const totalPages = Math.max(1, Math.ceil(out.length / PADS_PER_PAGE));
+            if (padPage > totalPages) padPage = totalPages;
+            const start = (padPage - 1) * PADS_PER_PAGE;
+            padGrid.innerHTML = out.slice(start, start + PADS_PER_PAGE).map(padGridCard).join('');
+            padNoResults.style.display = out.length ? 'none' : '';
+            renderPadPagination(totalPages);
+        }
+        document.getElementById('padFilters').querySelectorAll('.pad-filter').forEach(function(b){
+            b.addEventListener('click', function(){
+                document.querySelectorAll('.pad-filter').forEach(function(x){ x.classList.remove('active'); });
+                b.classList.add('active'); padState.f = b.dataset.f; padPage = 1; renderPads();
+            });
+        });
+        padSearch.addEventListener('input', function(){ padState.q = this.value.trim().toLowerCase(); padPage = 1; renderPads(); });
+        renderPads();
+    </script>
+
+    <a href="https://wa.me/5491135713234" class="whatsapp-float" target="_blank" rel="noopener" title="Contactar por WhatsApp" aria-label="WhatsApp"><svg viewBox="0 0 32 32" width="28" height="28" fill="#fff" aria-hidden="true"><path d="M16.04 3C9.4 3 4 8.4 4 15.04c0 2.12.55 4.19 1.6 6.02L4 29l8.13-1.55a12 12 0 0 0 3.9.65h.01C22.68 28.1 28.08 22.7 28.08 16.06 28.08 8.4 22.68 3 16.04 3zm0 21.9h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.75.72.72-3.66-.24-.38a9.86 9.86 0 0 1-1.51-5.25c0-5.46 4.45-9.9 9.92-9.9 2.65 0 5.14 1.03 7.01 2.9a9.82 9.82 0 0 1 2.9 7 9.9 9.9 0 0 1-9.9 9.84zm5.44-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg></a>
+</body>
+</html>
