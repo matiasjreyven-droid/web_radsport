@@ -1,0 +1,4 @@
+# Sitio 100% estático servido desde la raíz del repo (sin paso de build)
+[build]
+  command = ""
+  publish = "."
