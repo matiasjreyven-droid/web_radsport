@@ -1,0 +1,8 @@
+{
+  // Sitio 100% estático servido con Cloudflare Workers (solo assets, sin script)
+  "name": "web-radsport",
+  "compatibility_date": "2024-11-01",
+  "assets": {
+    "directory": "./"
+  }
+}

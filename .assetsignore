@@ -1,0 +1,10 @@
+# Qué NO subir como asset web (Cloudflare Workers Assets)
+.git
+.gitignore
+.assetsignore
+wrangler.jsonc
+node_modules
+# Scripts y notas internas (no son parte del sitio publicado)
+_build
+*.py
+*.md
