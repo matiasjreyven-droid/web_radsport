@@ -12,6 +12,7 @@
     <title>SIDI — Radsport Geist</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        html, body { overflow-x: hidden; max-width: 100%; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --red: #D32F2F; --red-dark: #B71C1C; --red-light: #FFEBEE;
@@ -150,6 +151,10 @@
         .brand-cta-box .btn-cta-comercio { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.9); }
         .brand-cta-box .btn-cta-comercio:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
         @media (max-width: 600px){ .brand-cta-box .cta-buttons { flex-direction: column; align-items: center; } .brand-cta-box { padding: 3rem 1.5rem !important; } }
+    /* FOOTER-MOBILE-FIX */
+        @media (max-width: 600px) {
+            .footer-content { grid-template-columns: repeat(2, 1fr) !important; gap: 1.5rem !important; }
+        }
     </style>
 </head>
 <body>

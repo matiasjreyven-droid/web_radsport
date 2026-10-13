@@ -12,6 +12,7 @@
     <title>LV-10 Acero Inoxidable | Leo Vince · Radsport Geist</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        html, body { overflow-x: hidden; max-width: 100%; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         :root {
             --red: #D32F2F; --red-dark: #B71C1C; --gray: #333; --gray-light: #f5f5f5; --white: #fff;
@@ -295,6 +296,10 @@
         .cta-btn.secondary:hover { background: var(--brand-accent, #111); color: white; transform: translateY(-2px); }
         .cta-btn svg { width: 16px; height: 16px; }
         @media (max-width: 600px) { .product-cta-row { flex-direction: column; } }
+    /* FOOTER-MOBILE-FIX */
+        @media (max-width: 600px) {
+            .footer-content { grid-template-columns: repeat(2, 1fr) !important; gap: 1.5rem !important; }
+        }
     </style>
 </head>
 <body>

@@ -12,6 +12,7 @@
     <title>ATV / UTV / SSV — Radsport Geist</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+        html, body { overflow-x: hidden; max-width: 100%; }
         /* ============================================
            ESTILOS BASE
            ============================================ */
@@ -343,6 +344,10 @@
             /* WHATSAPP FLOAT */
         .whatsapp-float { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 55px; height: 55px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 4px 15px rgba(37,211,102,0.3); z-index: 999; transition: transform 0.2s; }
         .whatsapp-float:hover { transform: scale(1.1); }
+    /* FOOTER-MOBILE-FIX */
+        @media (max-width: 600px) {
+            .footer-content { grid-template-columns: repeat(2, 1fr) !important; gap: 1.5rem !important; }
+        }
     </style>
 </head>
 <body>

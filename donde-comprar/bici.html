@@ -13,6 +13,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
+        html, body { overflow-x: hidden; max-width: 100%; }
         /* ============================================
            ESTILOS BASE
            ============================================ */
@@ -439,6 +440,17 @@
             /* WHATSAPP FLOAT */
         .whatsapp-float { position: fixed; bottom: 1.5rem; right: 1.5rem; width: 55px; height: 55px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 4px 15px rgba(37,211,102,0.3); z-index: 999; transition: transform 0.2s; }
         .whatsapp-float:hover { transform: scale(1.1); }
+    /* FOOTER-MOBILE-FIX */
+        @media (max-width: 600px) {
+            .footer-content { grid-template-columns: repeat(2, 1fr) !important; gap: 1.5rem !important; }
+        }
+    /* MOBILE-FIX-DC */
+        @media (max-width: 600px) {
+            .segment-tab { padding: 0.5rem 0.85rem; font-size: 0.62rem; }
+            .brand-bar { gap: 0.9rem; padding: 0.6rem 0.8rem; }
+            .brand-bar a img { height: 20px !important; max-width: 56px; width: auto; object-fit: contain; }
+            .store-brands-right { min-width: 0; gap: 0.35rem; }
+        }
     </style>
 </head>
 <body>

@@ -14,6 +14,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
+        html, body { overflow-x: hidden; max-width: 100%; }
     :root {
         --brand-accent: #000;          /* Leo Vince brand = negro (la marca usa el rojo solo en el logo) */
         --brand-accent-hover: #333;
@@ -402,6 +403,10 @@
         .footer-section a:hover { color: var(--red, #D32F2F) !important; }
         .footer-bottom { text-align: center; padding-top: 1.5rem; border-top: 1px solid #333; font-size: 0.72rem; color: #555; }
         .footer-marcas ul { columns: 2; column-gap: 2rem; }
+    /* FOOTER-MOBILE-FIX */
+        @media (max-width: 600px) {
+            .footer-content { grid-template-columns: repeat(2, 1fr) !important; gap: 1.5rem !important; }
+        }
     </style>
 </head>
 <body>
