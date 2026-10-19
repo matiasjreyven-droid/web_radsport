@@ -211,7 +211,6 @@
         .brand-bar a:not(.brand-all) { flex: 0 0 100px !important; width: 100px !important; display: flex !important; align-items: center !important; justify-content: center !important; }
         .brand-bar a:not(.brand-all) img { max-height: 50px !important; max-width: 100% !important; width: auto !important; height: auto !important; object-fit: contain !important; }
 
-
         /* "TODOS" badge en la brand-bar (vuelve al catálogo global) */
         .brand-bar a.brand-all {
             border: 2px solid var(--brand-accent);
@@ -356,6 +355,15 @@
         .product-card-variants { margin-top: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.3rem; }
         .variant-tag { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.5px; padding: 0.2rem 0.5rem; border: 1px solid #ddd; border-radius: 3px; color: var(--brand-subtle); background: #fafafa; font-weight: 500; }
         .product-card-content { margin-top: 0.5rem; font-size: 0.7rem; color: var(--brand-subtle); }
+        .card-soon-badge { position: absolute; top: 12px; left: 12px; z-index: 3;
+            background: #111; color: #fff; font-size: 0.64rem; font-weight: 800;
+            letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 11px;
+            border-radius: 7px; box-shadow: 0 3px 10px rgba(0,0,0,0.22); }
+        .card-sold-badge { position: absolute; top: 12px; left: 12px; z-index: 3;
+            background: #9e2b25; color: #fff; font-size: 0.64rem; font-weight: 800;
+            letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 11px;
+            border-radius: 7px; box-shadow: 0 3px 10px rgba(0,0,0,0.22); }
+        .product-card-content.soon { color: #111; font-weight: 800; font-size: 0.8rem; letter-spacing: 0.01em; margin-top: 0.6rem; }
         /* Color thumbs (mini fotos colores disponibles) */
         .product-card-color-thumbs { display: flex; gap: 0.4rem; margin-top: 0.7rem; flex-wrap: wrap; align-items: center; }
         .product-card-color-thumbs img { width: 56px; height: 56px; object-fit: contain; border-radius: 6px; border: 1px solid #e0e0e0; padding: 3px; background: white; cursor: pointer; transition: border-color 0.15s, transform 0.15s; }
@@ -373,8 +381,6 @@
         .pagination button.active { background: var(--brand-accent); color: white; border-color: var(--brand-accent); }
         .pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
         .pagination-info { font-size: 0.8rem; color: var(--brand-subtle); margin: 0 1rem; }
-
-
 
         .products-grid {
             max-width: 1600px; margin: 0 auto;
@@ -399,6 +405,7 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.07);
         }
         .product-card-img {
+            position: relative;
             height: 240px;
             background: var(--white);
             display: flex; align-items: center; justify-content: center;
@@ -564,7 +571,6 @@
             border-color: var(--brand-accent); border-width: 2px; padding: 2px;
         }
 
-
         /* brand-bar como primer elemento: clearance del nav fijo */
         .brand-bar { padding-top: 5rem; }
         /* separar barra de segmentos del buscador */
@@ -592,6 +598,11 @@
         @media (max-width: 600px) {
             .footer-content { grid-template-columns: repeat(2, 1fr) !important; gap: 1.5rem !important; }
         }
+    </style>
+<style id="thumb-fit-fix">
+        .product-card-color-thumbs{flex-wrap:nowrap;}
+        .product-card-color-thumbs img,.product-card-color-more{flex:0 1 56px;min-width:0;height:auto;aspect-ratio:1/1;}
+        .product-card[data-category="conjuntos"] .product-card-color-thumbs img{flex:0 1 64px;aspect-ratio:64/56;}
     </style>
 </head>
 <body>
@@ -660,14 +671,15 @@
     <div class="filters" id="filters">
         <button class="filter-btn active" data-filter="todos">Todos</button>
         <button class="filter-btn" data-filter="cascos">Cascos</button>
-        <button class="filter-btn" data-filter="conjuntos">Conjuntos</button>
         <button class="filter-btn" data-filter="botas">Botas</button>
+        <button class="filter-btn" data-filter="conjuntos">Conjuntos</button>
         <button class="filter-btn" data-filter="antiparras">Antiparras</button>
         <button class="filter-btn" data-filter="guantes">Guantes</button>
         <button class="filter-btn" data-filter="camperas">Camperas</button>
         <button class="filter-btn" data-filter="protecciones">Protecciones</button>
         <button class="filter-btn" data-filter="ninos">Niños</button>
         <button class="filter-btn" data-filter="equipaje">Equipaje</button>
+        <button class="filter-btn" data-filter="repuestos">Repuestos</button>
     </div>
 
     <!-- SUBFILTROS (segundo nivel, aparecen al elegir categoría) -->
@@ -682,40 +694,105 @@
     <div class="products-grid" id="productsGrid">
 
         <a href="producto-casco-lite.html" class="product-card" data-category="cascos" data-subcategory="cross-enduro" data-segment="moto">
-            <div class="product-card-img"><img src="productos/Lite-ultra-orange-pearly.png" alt="SHOT Cascos Lite" loading="lazy"></div>
+            <div class="product-card-img"><div class="card-soon-badge">Próximamente</div><img src="productos/Lite-glory-red-pearly.png" alt="SHOT Lite" loading="lazy"></div>
             <div class="product-card-body">
                 <div class="product-card-category">Casco</div>
                 <h3>Lite</h3>
-                <div class="product-card-color-thumbs"><img src="productos/Lite-ultra-neon-yellow-matt.png" alt="SHOT Lite Ultra Neon Yellow Matt"><img src="productos/Lite-challenger-black-white-pearly.png" alt="SHOT Lite Challenger Black White Pearly"><img src="productos/Lite-challenger-red-pearly.png" alt="SHOT Lite Challenger Red Pearly"><img src="productos/Lite-challenger-holographic-Matt.png" alt="SHOT Lite Challenger Holographic Matt"></div>
+                <div class="product-card-color-thumbs"><img src="productos/Lite-s10-black-grey-matt.png" alt="SHOT Lite | S10 Black Grey Matt"><img src="productos/Lite-s10-holographic-pearly.png" alt="SHOT Lite | S10 Holographic Pearly"><img src="productos/Lite-volt-blue-pearly.png" alt="SHOT Lite | Volt Blue Pearly"><span class="product-card-color-more">+1</span></div>
             </div>
         </a>
 
-        <a href="producto-casco-race.html" class="product-card" data-category="cascos" data-subcategory="cross-enduro" data-segment="moto">
-            <div class="product-card-img"><img src="productos/Race-camo-tactic-black-grey-matt.png" alt="SHOT Cascos Race" loading="lazy"></div>
+        <a href="producto-casco-speed.html" class="product-card" data-category="cascos" data-subcategory="cross-enduro" data-segment="moto">
+            <div class="product-card-img"><div class="card-soon-badge">Próximamente</div><img src="productos/Speed-wave-black-white-pearly.png" alt="SHOT Speed" loading="lazy"></div>
             <div class="product-card-body">
                 <div class="product-card-category">Casco</div>
-                <h3>Race</h3>
-                <div class="product-card-color-thumbs"><img src="productos/Race-sprint-black-neon-yellow-matt.png" alt="SHOT Race Sprint Black Yellow Matt"><img src="productos/Race-phaser-blue-turquioise-pearly.png" alt="SHOT Race Phaser Blue Turquoise Pearly"><img src="productos/Race-phaser-blue-red-pearly.png" alt="SHOT Race Phaser Blue Red Pearly"><img src="productos/Race-phaser-black-blue-pink-pearly.png" alt="SHOT Race Phaser Black Blue Pink Pearly"></div>
+                <h3>Speed</h3>
+                <div class="product-card-color-thumbs"><img src="productos/Speed-tiger-black-matt.png" alt="SHOT Speed | Tiger Black Matt"><img src="productos/Speed-tiger-grey-matt.png" alt="SHOT Speed | Tiger Grey Matt"><img src="productos/Speed-hybrid-red-glossy.png" alt="SHOT Speed | Hybrid Red Glossy"><span class="product-card-color-more">+5</span></div>
             </div>
         </a>
 
         <a href="producto-casco-furious.html" class="product-card" data-category="cascos" data-subcategory="cross-enduro" data-segment="moto">
-            <div class="product-card-img"><img src="productos/Furious-League-orange-Glossy.png" alt="SHOT Cascos Furious" loading="lazy"></div>
+            <div class="product-card-img"><div class="card-soon-badge">Próximamente</div><img src="productos/Furious-miami-orange-glossy.png" alt="SHOT Furious" loading="lazy"></div>
             <div class="product-card-body">
                 <div class="product-card-category">Casco</div>
                 <h3>Furious</h3>
-                <div class="product-card-color-thumbs"><img src="productos/LEAGUE-BLUE-NEON-YELLOW-GLOSSY.png" alt="SHOT Furious League Blue Neon Yellow Glossy"><img src="productos/Furious-League-Red-Glossy.png" alt="SHOT Furious League Red Glossy"><img src="productos/Furious-apex-blue-glossy.png" alt="SHOT Furious Apex Blue Glossy"><span class="product-card-color-more">+3</span></div>
+                <div class="product-card-color-thumbs"><img src="productos/Furious-stadium-black-matt.png" alt="SHOT Furious | Stadium Black Matt"><img src="productos/Furious-zebra-neon-yellow-glossy.png" alt="SHOT Furious | Zebra Neon Yellow Glossy"><img src="productos/Furious-solid-black-matt.png" alt="SHOT Furious | Solid Black Matt"><span class="product-card-color-more">+2</span></div>
+            </div>
+        </a>
+
+        <a href="producto-casco-drop.html" class="product-card" data-category="cascos" data-subcategory="cross-enduro" data-segment="moto">
+            <div class="product-card-img"><div class="card-soon-badge">Próximamente</div><img src="productos/Drop-black-matt.png" alt="SHOT Drop" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Casco</div>
+                <h3>Drop</h3>
+                
             </div>
         </a>
 
         <a href="producto-casco-trek.html" class="product-card" data-category="cascos" data-subcategory="touring" data-segment="moto">
-            <div class="product-card-img"><img src="productos/Trek-rally-black-neon-yellow-matt.png" alt="SHOT Cascos Trek" loading="lazy"></div>
+            <div class="product-card-img"><img src="productos/Trek-rally-black-neon-yellow-matt.png" alt="SHOT Trek Max Vision" loading="lazy"></div>
             <div class="product-card-body">
                 <div class="product-card-category">Casco</div>
-                <h3>Trek</h3>
-                <div class="product-card-color-thumbs"><img src="productos/Trek-rally-black-red-matt.png" alt="SHOT Trek Rally Black Red Matt"><img src="productos/Trek-rally-black-sand-glossy.png" alt="SHOT Trek Rally Black Sand Glossy"><img src="productos/Trek-solid-black-matt.png" alt="SHOT Trek Solid Black Matt"></div>
+                <h3>Trek Max Vision</h3>
+                <div class="product-card-color-thumbs"><img src="productos/Trek-rally-black-red-matt.png" alt="SHOT Trek Max Vision | Rally Black Red Matt"><img src="productos/Trek-rally-black-sand-glossy.png" alt="SHOT Trek Max Vision | Rally Black Sand Glossy"><img src="productos/Trek-solid-black-matt.png" alt="SHOT Trek Max Vision | Solid Black Matt"><span class="product-card-color-more">+1</span></div>
             </div>
         </a>
+
+        <a href="producto-bota-race-8.html" class="product-card" data-category="botas" data-segment="moto">
+            <div class="product-card-img"><img src="productos/Race-8-holographic.png" alt="SHOT Race 8" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Bota</div>
+                <h3>Race 8</h3>
+                <div class="product-card-color-thumbs"><img src="productos/Race-8-neon-yellow.png" alt="SHOT Race 8 Neon Yellow" title="Neon Yellow"><img src="productos/Race-8-white-black-chrome.png" alt="SHOT Race 8 White Black Chrome" title="White Black Chrome"></div>
+            </div>
+        </a>
+
+        <a href="producto-bota-race-6.html" class="product-card" data-category="botas" data-segment="moto">
+            <div class="product-card-img"><div class="card-soon-badge">Próximamente</div><img src="productos/Race-6-black-white-gold.png" alt="SHOT Race 6" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Bota</div>
+                <h3>Race 6</h3>
+                
+            </div>
+        </a>
+
+        <a href="producto-bota-race-2.html" class="product-card" data-category="botas" data-segment="moto">
+            <div class="product-card-img"><img src="productos/Race-2-blue-neon-yellow.png" alt="SHOT Race 2" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Bota</div>
+                <h3>Race 2</h3>
+                <div class="product-card-color-thumbs"><img src="productos/Race-2-white.png" alt="SHOT Race 2 White" title="White"><img src="productos/Race-2-black-grey.png" alt="SHOT Race 2 Black Grey" title="Black Grey"><img src="productos/Race-2-black-grey-neon-yellow.png" alt="SHOT Race 2 Black Grey Neon Yellow" title="Black Grey Neon Yellow"></div>
+            </div>
+        </a>
+
+        <a href="producto-bota-race-2-enduro.html" class="product-card" data-category="botas" data-segment="moto">
+            <div class="product-card-img"><img src="productos/Race-2-Enduro-black.png" alt="SHOT Race 2 Enduro" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Bota</div>
+                <h3>Race 2 Enduro</h3>
+                
+            </div>
+        </a>
+
+        <a href="producto-bota-atv-trail.html" class="product-card" data-category="botas" data-segment="moto">
+            <div class="product-card-img"><img src="productos/ATV-Trail-black.png" alt="SHOT ATV / Trail" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Bota</div>
+                <h3>ATV / Trail</h3>
+                
+            </div>
+        </a>
+
+        <a href="producto-bota-atv-trail-adventure.html" class="product-card" data-category="botas" data-segment="moto">
+            <div class="product-card-img"><div class="card-soon-badge">Próximamente</div><img src="productos/atv-shoes-black.png" alt="SHOT ATV / Trail" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Bota</div>
+                <h3>ATV / Trail Adventure</h3>
+                <div class="product-card-color-thumbs"><img src="productos/atv-shoes-brown.png" alt="SHOT ATV / Trail | Brown"></div>
+            </div>
+        </a>
+
+        
 
         <a href="producto-conjunto-aerolite.html" class="product-card" data-category="conjuntos" data-segment="moto">
             <div class="product-card-img"><img src="conjuntos/conjunto-aerolite-hva-blue.png" alt="SHOT Conjunto Aerolite HVA Blue" loading="lazy"></div>
@@ -733,7 +810,7 @@
                 <div class="product-card-category">Conjunto</div>
                 <h3>Contact</h3>
                 <div class="product-card-content">5 colores disponibles</div>
-                <div class="product-card-color-thumbs"><img src="conjuntos/conjunto-contact-shield-orange.png" alt="Shield Orange" title="Shield Orange"><img src="conjuntos/conjunto-contact-shield-red.png" alt="Shield Red" title="Shield Red"><img src="conjuntos/conjunto-contact-shield-blue.png" alt="Shield Blue" title="Shield Blue"><img src="conjuntos/conjunto-contact-shield-gold.png" alt="Shield Gold" title="Shield Gold"></div>
+                <div class="product-card-color-thumbs"><img src="conjuntos/conjunto-contact-shield-orange.png" alt="SHOT Contact | Shield Orange"><img src="conjuntos/conjunto-contact-shield-red.png" alt="SHOT Contact | Shield Red"><img src="conjuntos/conjunto-contact-shield-blue.png" alt="SHOT Contact | Shield Blue"><span class="product-card-color-more">+1</span></div>
             </div>
         </a>
 
@@ -757,38 +834,12 @@
             </div>
         </a>
 
-        <a href="producto-bota-race-8.html" class="product-card" data-category="botas" data-segment="moto">
-            <div class="product-card-img"><img src="productos/Race-8-White-Black-Chrome-1.png" alt="SHOT Botas Race 8" loading="lazy"></div>
-            <div class="product-card-body">
-                <div class="product-card-category">Bota</div>
-                <h3>Race 8</h3>
-                <div class="product-card-color-thumbs"><img src="productos/Race-8-Holographic-1.png" alt="SHOT Race 8 Holographic"><img src="productos/Race-8-Neon-Yellow-1.png" alt="SHOT Race 8 Neon Yellow"></div>
-            </div>
-        </a>
-
-        <a href="producto-bota-race-2.html" class="product-card" data-category="botas" data-segment="moto">
-            <div class="product-card-img"><img src="productos/Race-2-White-1-alt.png" alt="SHOT Botas Race 2" loading="lazy"></div>
-            <div class="product-card-body">
-                <div class="product-card-category">Bota</div>
-                <h3>Race 2</h3>
-                <div class="product-card-color-thumbs"><img src="productos/Race-2-Black-Grey-1.png" alt="SHOT Race 2 Black Grey"><img src="productos/Race-2-Blue-Neon-Yellow-1.png" alt="SHOT Race 2 Blue Neon Yellow"><img src="productos/Race-2-Camo-Neon-Orange-1.png" alt="SHOT Race 2 Camo Neon Orange"><img src="productos/Race-2-Enduro-Black-1.png" alt="SHOT Race 2 Enduro Black"></div>
-            </div>
-        </a>
-
-        <a href="producto-bota-atv-trail.html" class="product-card" data-category="botas" data-segment="moto">
-            <div class="product-card-img"><img src="productos/ATV-Trail-Black-1.jpg" alt="SHOT Botas ATV/Trail" loading="lazy"></div>
-            <div class="product-card-body">
-                <div class="product-card-category">Bota</div>
-                <h3>ATV / Trail</h3>
-            </div>
-        </a>
-
         <a href="producto-antiparras-core.html" class="product-card" data-category="antiparras" data-segment="moto">
             <div class="product-card-img"><img src="productos/CORE_Goggles_Neon-Yellow_Matt_SILVER-IRIDIUM-LENS_1_A0A-29E1-A03_0-1.png" alt="SHOT Antiparras Core" loading="lazy"></div>
             <div class="product-card-body">
                 <div class="product-card-category">Antiparra</div>
                 <h3>Core</h3>
-                <div class="product-card-color-thumbs"><img src="productos/CORE_Goggles_Red_Glossy_RED-IRIDIUM-LENS_1_A0A-29E1-A06_0-1.png" alt="SHOT Antiparras Core | Solid Red"><img src="productos/CORE_Goggles_Black_Matt_SILVER-IRIDIUM-LENS_1_A0A-29E1-A01_0-2.png" alt="SHOT Antiparras Core | Silver Iridium"><img src="productos/CORE_GOGGLES_STRIPE_ORANGE_GLOSSY_ORANGE-IRIDIUM-LENS_1_A07-29E1-D01-1.png" alt="SHOT Antiparras Core | Stripe Orange Glossy"><img src="productos/CORE_GOGGLES_WEAL_GOLD_MATT_ILVER-IRIDIUM-LENS_1_A07-29E1-C02-1.png" alt="SHOT Antiparras Core | Weal Gold Matt"></div>
+                <div class="product-card-color-thumbs"><img src="productos/CORE_Goggles_Black_Matt_SILVER-IRIDIUM-LENS_1_A0A-29E1-A01_0-2.png" alt="SHOT Core | Solid Black"><img src="productos/CORE_Goggles_Red_Glossy_RED-IRIDIUM-LENS_1_A0A-29E1-A06_0-1.png" alt="SHOT Core | Solid Red"><img src="productos/CORE_GOGGLES_STRIPE_ORANGE_GLOSSY_ORANGE-IRIDIUM-LENS_1_A07-29E1-D01-1.png" alt="SHOT Core | Stripe Orange Glossy"><span class="product-card-color-more">+1</span></div>
             </div>
         </a>
 
@@ -797,7 +848,7 @@
             <div class="product-card-body">
                 <div class="product-card-category">Antiparra</div>
                 <h3>Iris 2.0</h3>
-                <div class="product-card-color-thumbs"><img src="productos/IRIS-2.0_Goggles_Solid_Orange_Matt_RAINBOW-IRIDIUM-LENS_1_A09-29A1-D05-1.png" alt="SHOT Antiparras Iris 2.0 | Solid Orange Matt"><img src="productos/IRIS-2.0_Goggles_Solid_Black_Glossy_SILVER-IRIDIUM-LENS_1_A09-29A1-D01-1.png" alt="SHOT Antiparras Iris 2.0 | Solid Black Glossy"><img src="productos/IRIS-2.0_Goggles_Tech_White-Red_Glossy_RED-IRIDIUM-LENS_1_A09-29A1-C10-1.png" alt="SHOT Antiparras Iris 2.0 | Tech White Red Glossy"><span class="product-card-color-more">+8</span></div>
+                <div class="product-card-color-thumbs"><img src="productos/IRIS-2.0_Goggles_Solid_Black_Glossy_SILVER-IRIDIUM-LENS_1_A09-29A1-D01-1.png" alt="SHOT Iris 2.0 | Solid Black Glossy"><img src="productos/IRIS-2.0_Goggles_Solid_Orange_Matt_RAINBOW-IRIDIUM-LENS_1_A09-29A1-D05-1.png" alt="SHOT Iris 2.0 | Solid Orange Matt"><img src="productos/IRIS-2.0_Goggles_Tech_Silver_Glossy_SILVER-IRIDIUM-LENS_1_A09-29A1-C09-1.png" alt="SHOT Iris 2.0 | Tech Silver Glossy"><span class="product-card-color-more">+8</span></div>
             </div>
         </a>
 
@@ -806,7 +857,7 @@
             <div class="product-card-body">
                 <div class="product-card-category">Antiparra</div>
                 <h3>Assault 2.0</h3>
-                <div class="product-card-color-thumbs"><img src="productos/ASSAULT-2.0_CLAW_GOGGLES_NEON-YELLOW_GLOSSY_CLEAR-LENS_1_A06-29OD-A03.png" alt="SHOT Antiparras Assault 2.0 | Claw Neon Yellow"><img src="productos/ASSAULT-2.0_CLAW_GOGGLES_NEON-ORANGE_GLOSSY_CLEAR-LENS_1_A06-29OD-A02.png" alt="SHOT Antiparras Assault 2.0 | Claw Neon Orange"><img src="productos/ASSAULT-2.0_Goggles_Solid_Neon-Orange_Glossy_CLEAR-LENS_1_A09-29B1-C05.png" alt="SHOT Antiparras Assault 2.0 | Solid Neon Orange Glossy"><span class="product-card-color-more">+6</span></div>
+                <div class="product-card-color-thumbs"><img src="productos/lp-assault-20-solar-black-matt.png" alt="SHOT Assault 2.0 | Solar Black Matt"><img src="productos/ASSAULT-2.0_Goggles_Solid_Neon-Orange_Glossy_CLEAR-LENS_1_A09-29B1-C05.png" alt="SHOT Assault 2.0 | Solid Neon Orange Glossy"><img src="productos/ASSAULT-2.0_Goggles_Solid_Red_Glossy_CLEAR-LENS_1_A09-29B1-C09.png" alt="SHOT Assault 2.0 | Solid Red Glossy"><span class="product-card-color-more">+6</span></div>
             </div>
         </a>
 
@@ -855,6 +906,24 @@
             </div>
         </a>
 
+        <a href="producto-guantes-vision.html" class="product-card" data-category="guantes" data-segment="moto">
+            <div class="product-card-img"><div class="card-soon-badge">Próximamente</div><img src="productos/vision-tech-grey.png" alt="SHOT Vision" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Guante</div>
+                <h3>Vision</h3>
+                
+            </div>
+        </a>
+
+        <a href="producto-guantes-drift.html" class="product-card" data-category="guantes" data-segment="moto">
+            <div class="product-card-img"><div class="card-soon-badge">Próximamente</div><img src="productos/drift-onyx-black.png" alt="SHOT Drift" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Guante</div>
+                <h3>Drift</h3>
+                <div class="product-card-color-thumbs"><img src="productos/drift-onyx-blue.png" alt="SHOT Drift | Onyx Blue"><img src="productos/drift-onyx-red.png" alt="SHOT Drift | Onyx Red"><img src="productos/drift-rim-orange.png" alt="SHOT Drift | Rim Orange"><span class="product-card-color-more">+1</span></div>
+            </div>
+        </a>
+
         <a href="producto-proteccion-knee-guard.html" class="product-card" data-category="protecciones" data-segment="moto">
             <div class="product-card-img"><img src="productos/lp-protecciones-knee-guard-airflow.png" alt="SHOT Knee Guard Airflow" loading="lazy"></div>
             <div class="product-card-body">
@@ -864,7 +933,7 @@
         </a>
 
         <a href="producto-proteccion-chest-protector.html" class="product-card" data-category="protecciones" data-segment="moto">
-            <div class="product-card-img"><img src="productos/lp-protecciones-chest-protector-airflow.png" alt="SHOT Chest Protector Airflow" loading="lazy"></div>
+            <div class="product-card-img"><div class="card-sold-badge">Agotado</div><img src="productos/lp-protecciones-chest-protector-airflow.png" alt="SHOT Chest Protector Airflow" loading="lazy"></div>
             <div class="product-card-body">
                 <div class="product-card-category">Protección</div>
                 <h3>Airflow Chest Protector</h3>
@@ -903,6 +972,15 @@
             </div>
         </a>
 
+        <a href="producto-proteccion-codera-optimal.html" class="product-card" data-category="protecciones" data-segment="moto">
+            <div class="product-card-img"><div class="card-soon-badge">Próximamente</div><img src="productos/codera-optimal-black-neon-yellow.png" alt="SHOT Codera Optimal 2.0" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Protección</div>
+                <h3>Codera Optimal 2.0</h3>
+                
+            </div>
+        </a>
+
         <a href="producto-campera-softshell-lite.html" class="product-card" data-category="camperas" data-segment="moto">
             <div class="product-card-img"><img src="productos/lp-camperas-lite-black-red.png" alt="SHOT Campera Softshell Lite" loading="lazy"></div>
             <div class="product-card-body">
@@ -918,6 +996,15 @@
                 <div class="product-card-category">Campera</div>
                 <h3>Contact Assault Jacket</h3>
                 <div class="product-card-color-thumbs"><img src="productos/lp-camperas-contact-assault-grey-neon-yellow.png" alt="Contact Assault Grey Neon Yellow"><img src="productos/lp-camperas-contact-assault-black-orange.png" alt="Contact Assault Black Orange"></div>
+            </div>
+        </a>
+
+        <a href="producto-campera-climatic.html" class="product-card" data-category="camperas" data-segment="moto">
+            <div class="product-card-img"><div class="card-soon-badge">Próximamente</div><img src="productos/climatic-black-neon-yellow.png" alt="SHOT Climatic" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Campera</div>
+                <h3>Climatic</h3>
+                
             </div>
         </a>
 
@@ -949,11 +1036,10 @@
         </a>
 
         <a href="producto-bota-race-2-kid.html" class="product-card" data-category="ninos" data-subcategory="botas" data-segment="moto">
-            <div class="product-card-img"><img src="productos/race-2-kid-black-1.png" alt="SHOT Race 2 Kid" loading="lazy"></div>
+            <div class="product-card-img"><div class="card-soon-badge">Próximamente</div><img src="productos/Race-2-Kid-black.png" alt="SHOT Race 2 Kid" loading="lazy"></div>
             <div class="product-card-body">
                 <div class="product-card-category">Bota · Niños</div>
                 <h3>Race 2 Kid</h3>
-                <div class="product-card-content">Próximamente</div>
             </div>
         </a>
 
@@ -1005,662 +1091,41 @@
             </div>
         </a>
 
-        <div class="no-results" id="noResults">No hay productos en esta categoría.</div>
-    </div>
-
-    <!-- CTA DONDE COMPRAR -->
-    <section class="cta-bottom">
-        <div class="cta-bottom-box">
-            <div class="cta-bottom-text">
-                <h3>¿Querés comprar nuestros productos?</h3>
-                <p>Encontrá tu punto de venta más cercano.</p>
+        <a href="producto-repuesto-pinlock.html" class="product-card" data-category="repuestos" data-segment="moto">
+            <div class="product-card-img"><div class="card-soon-badge">Próximamente</div><img src="productos/pinlock-max-vision.png" alt="SHOT Pinlock Max Vision" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Repuesto</div>
+                <h3>Pinlock Max Vision</h3>
+                
             </div>
-            <a href="../../donde-comprar/moto.html" class="cta-bottom-btn">Dónde comprar &rarr;</a>
-        </div>
-    </section>
+        </a>
 
-    <!-- FOOTER -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Segmentos</h4>
-                <ul>
-                    <li><a href="../../segmentos/moto.html">Moto</a></li>
-                    <li><a href="../../segmentos/atv.html">ATV / UTV / SSV</a></li>
-                    <li><a href="../../segmentos/bici.html">Bicicleta</a></li>
-                    <li><a href="../../segmentos/industrial.html">Industrial</a></li>
-                </ul>
+        <a href="producto-repuesto-visera-furious.html" class="product-card" data-category="repuestos" data-segment="moto">
+            <div class="product-card-img"><div class="card-soon-badge">Próximamente</div><img src="productos/visera-furious-black.png" alt="SHOT Visera Furious" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Repuesto</div>
+                <h3>Visera Furious</h3>
+                <div class="product-card-color-thumbs"><img src="productos/visera-furious-transparent.png" alt="SHOT Visera Furious | Transparent"></div>
             </div>
-            <div class="footer-section footer-marcas">
-                <h4>Marcas</h4>
-                <ul>
-                    <li><a href="../../marcas/cst/cst.html">CST</a></li>
-                    <li><a href="../../marcas/leovince/leovince.html">Leo Vince</a></li>
-                    <li><a href="../../marcas/shot/shot.html">SHOT</a></li>
-                    <li><a href="../../marcas/uswe/uswe.html">USWE</a></li>
-                    <li><a href="../../marcas/giantloop/giantloop.html">Giant Loop</a></li>
-                    <li><a href="../../marcas/nils/nils.html">NILS</a></li>
-                    <li><a href="../../marcas/nitromousse/nitromousse.html">Nitro Mousse</a></li>
-                    <li><a href="../../marcas/lucioli/lucioli.html">Lucioli</a></li>
-                    <li><a href="../../marcas/wrp/wrp.html">WRP</a></li>
-                    <li><a href="../../marcas/sidi/sidi.html">SIDI</a></li>
-                </ul>
+        </a>
+
+        <a href="producto-repuesto-visera-lite.html" class="product-card" data-category="repuestos" data-segment="moto">
+            <div class="product-card-img"><div class="card-soon-badge">Próximamente</div><img src="productos/visera-lite-black.png" alt="SHOT Visera Lite" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Repuesto</div>
+                <h3>Visera Lite</h3>
+                <div class="product-card-color-thumbs"><img src="productos/visera-lite-transparent.png" alt="SHOT Visera Lite | Transparent"></div>
             </div>
-            <div class="footer-section">
-                <h4>Empresa</h4>
-                <ul>
-                    <li><a href="../../sobre-nosotros.html">Quiénes Somos</a></li>
-                    <li><a href="../../donde-comprar/moto.html">Dónde Comprar</a></li>
-                    <li><a href="https://wa.me/5491135713234" target="_blank">Contacto</a></li>
-                </ul>
+        </a>
+
+        <a href="producto-repuesto-visera-speed.html" class="product-card" data-category="repuestos" data-segment="moto">
+            <div class="product-card-img"><div class="card-soon-badge">Próximamente</div><img src="productos/visera-speed-black.png" alt="SHOT Visera Speed" loading="lazy"></div>
+            <div class="product-card-body">
+                <div class="product-card-category">Repuesto</div>
+                <h3>Visera Speed</h3>
+                <div class="product-card-color-thumbs"><img src="productos/visera-speed-white.png" alt="SHOT Visera Speed | Solid White Glossy"><img src="productos/visera-speed-transparent.png" alt="SHOT Visera Speed | Transparent"></div>
             </div>
-            <div class="footer-section">
-                <h4>Redes</h4>
-                <ul>
-                    <li><a href="https://www.instagram.com/radsport_geist/" target="_blank">Instagram</a></li>
-                    <li><a href="https://wa.me/5491135713234" target="_blank">WhatsApp</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2026 Radsport Geist. Todos los derechos reservados.</p>
-        </div>
-    </footer>
-
-    <!-- ============================================
-         JAVASCRIPT: Filtros y conteo
-         ============================================ -->
-    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
-    <script>
-        const filters = document.getElementById('filters');
-        const subfiltersEl = document.getElementById('subfilters');
-        const countEl = document.getElementById('productCount');
-        const noResults = document.getElementById('noResults');
-        const cards = document.querySelectorAll('.product-card');
-        const segmentTabs = document.getElementById('segmentTabs');
-        const breadcrumbSegment = document.getElementById('breadcrumbSegment');
-
-        const searchInput = document.getElementById('searchInput');
-        let activeSegment = 'todos';
-        let activeCategory = 'todos';
-        let activeSubcategory = 'todos';
-        let searchQuery = '';
-
-        const segmentLabels = {
-            todos: 'Productos',
-            moto: 'Moto',
-            atv: 'ATV / UTV / SSV'
-        };
-
-        // Brands per segment
-        const segmentBrands = {
-            todos: ['cst','leovince','shot','uswe','giantloop','nils','nitromousse','lucioli','wrp','sidi'],
-            moto: ['shot','sidi','leovince','cst','uswe','giantloop','nils','nitromousse','wrp','lucioli'],
-            atv: ['cst','shot'],
-            bici: ['cst','uswe','sidi'],
-            industrial: ['cst']
-        };
-
-        const brandBar = document.querySelector('.brand-bar');
-        const brandLinks = brandBar ? brandBar.querySelectorAll('a[data-brand]') : [];
-
-        function filterBrandBar(segment) {
-            const allowed = segmentBrands[segment] || segmentBrands.todos;
-            brandLinks.forEach(link => {
-                // El badge "Todos" siempre se muestra (es link al catálogo global)
-                if (link.classList.contains('brand-all')) return;
-                link.classList.toggle('brand-hidden', !allowed.includes(link.dataset.brand));
-            });
-        }
-
-        // Mapa de subcategorías por categoría
-        const subcategories = {
-            cascos: [
-                { value: 'todos', label: 'Todos los cascos' },
-                { value: 'cross-enduro', label: 'Cross / Enduro' },
-                { value: 'touring', label: 'Touring' }
-            ]
-            // jerseys: [{ value: 'todos', label: 'Todos' }, ...],
-            // botas: [{ value: 'todos', label: 'Todas' }, ...],
-        };
-
-        // Diccionario de sinónimos — todas las marcas Radsport
-        const synonymMap = {
-            // ===== SHOT — Indumentaria & protecciones =====
-            'casco': 'helmet cascos head cabeza',
-            'cascos': 'helmets casco helmet head cabeza',
-            'helmet': 'casco cascos helmets',
-            'helmets': 'cascos casco helmet',
-            'jersey': 'jerseys maillot camiseta remera buzo',
-            'jerseys': 'jersey maillots camisetas remeras buzos',
-            'maillot': 'jersey jerseys camiseta',
-            'camiseta': 'jersey jerseys maillot remera',
-            'pantalon': 'pantalones pants pantalón',
-            'pantalones': 'pantalon pants pantalón',
-            'pants': 'pantalon pantalones',
-            'bota': 'botas boots boot calzado zapatilla',
-            'botas': 'bota boots boot calzado zapatillas',
-            'boots': 'botas bota boot calzado',
-            'boot': 'bota botas boots',
-            'zapatilla': 'zapatillas shoe shoes calzado bota botas',
-            'zapatillas': 'zapatilla shoes shoe calzado botas bota',
-            'shoes': 'zapatillas zapatilla calzado botas',
-            'antiparra': 'antiparras goggles goggle anteojos lentes',
-            'antiparras': 'antiparra goggles goggle anteojos lentes',
-            'goggles': 'antiparras antiparra anteojos lentes',
-            'goggle': 'antiparra antiparras goggles',
-            'anteojos': 'antiparras goggles lentes',
-            'lentes': 'antiparras goggles anteojos',
-            'guante': 'guantes gloves glove',
-            'guantes': 'guante gloves glove',
-            'gloves': 'guantes guante',
-            'glove': 'guante guantes',
-            'proteccion': 'protecciones protection protections armor armour pechera codera rodera espaldera',
-            'protecciones': 'proteccion protection protections armor armour pechera body',
-            'armor': 'protecciones proteccion armour pechera',
-            'armour': 'protecciones proteccion armor pechera',
-            'pechera': 'protecciones armor chest',
-
-            // ===== CST — Neumáticos =====
-            'neumatico': 'neumaticos neumático neumáticos cubierta cubiertas tire tires llanta llantas goma gomas rueda',
-            'neumaticos': 'neumatico neumático neumáticos cubierta cubiertas tires tire llantas llanta gomas goma ruedas',
-            'cubierta': 'cubiertas neumatico neumaticos tire tires goma',
-            'cubiertas': 'cubierta neumaticos neumatico tires tire gomas',
-            'tire': 'tires neumatico neumaticos cubierta cubiertas llanta goma',
-            'tires': 'tire neumaticos neumatico cubiertas cubierta llantas gomas',
-            'llanta': 'llantas neumatico neumaticos tire tires',
-            'llantas': 'llanta neumaticos neumatico tires tire',
-            'goma': 'gomas neumatico cubierta tire',
-            'gomas': 'goma neumaticos cubiertas tires',
-
-            // ===== SIDI — Calzado moto & bici =====
-            'calzado': 'botas zapatillas boots shoes bota zapatilla',
-
-            // ===== NILS — Lubricantes =====
-            'lubricante': 'lubricantes aceite aceites oil oils lubricant',
-            'lubricantes': 'lubricante aceite aceites oils oil lubricants',
-            'aceite': 'aceites lubricante lubricantes oil oils',
-            'aceites': 'aceite lubricantes lubricante oils oil',
-            'oil': 'oils aceite aceites lubricante',
-            'oils': 'oil aceites aceite lubricantes',
-            'grasa': 'grasas grease lubricante',
-            'refrigerante': 'coolant anticongelante liquido',
-            'coolant': 'refrigerante anticongelante',
-
-            // ===== Leo Vince — Escapes =====
-            'escape': 'escapes exhaust exhausts silenciador silenciadores caño tubo',
-            'escapes': 'escape exhaust exhausts silenciador silenciadores caños tubos',
-            'exhaust': 'exhausts escape escapes silenciador muffler',
-            'exhausts': 'exhaust escapes escape silenciadores mufflers',
-            'silenciador': 'silenciadores escape escapes muffler exhaust',
-            'silenciadores': 'silenciador escapes escape mufflers exhausts',
-            'muffler': 'mufflers silenciador escape exhaust',
-            'caño': 'caños escape pipe tubo',
-
-            // ===== USWE — Mochilas & hidratación =====
-            'mochila': 'mochilas backpack pack hidratacion hydration camelback',
-            'mochilas': 'mochila backpacks packs hidratacion hydration',
-            'backpack': 'backpacks mochila mochilas pack',
-            'hidratacion': 'hidratación hydration mochila mochilas camelback camelbak',
-            'hydration': 'hidratacion hidratación mochila mochilas camelback camelbak',
-            'camelback': 'camelbak hidratacion mochila hydration',
-            'camelbak': 'camelback hidratacion mochila hydration',
-
-            // ===== Giant Loop — Equipaje moto =====
-            'bolso': 'bolsos bag bags equipaje luggage alforja',
-            'bolsos': 'bolso bags bag equipaje luggage alforjas',
-            'bag': 'bags bolso bolsos equipaje luggage',
-            'bags': 'bag bolsos bolso equipaje luggage',
-            'equipaje': 'luggage bolso bolsos bag bags alforja alforjas',
-            'luggage': 'equipaje bolso bolsos bags bag alforjas',
-            'alforja': 'alforjas saddlebag bolso equipaje',
-            'alforjas': 'alforja saddlebags bolsos equipaje',
-            'tankbag': 'tanque bolso tank bag',
-
-            // ===== Lucioli — Suspensiones =====
-            'suspension': 'suspensiones suspensión fork horquilla amortiguador shock',
-            'suspensiones': 'suspension suspensión forks horquillas amortiguadores shocks',
-            'horquilla': 'horquillas fork forks suspension',
-            'horquillas': 'horquilla forks fork suspensiones',
-            'fork': 'forks horquilla horquillas suspension',
-            'amortiguador': 'amortiguadores shock shocks suspension',
-            'amortiguadores': 'amortiguador shocks shock suspensiones',
-            'shock': 'shocks amortiguador suspension',
-
-            // ===== Nitro Mousse — Mousse para neumáticos =====
-            'mousse': 'antipinchazos antipinchazo insert inserts foam',
-            'antipinchazos': 'antipinchazo mousse insert inserts',
-            'insert': 'inserts mousse antipinchazos',
-
-            // ===== WRP — Repuestos racing =====
-            'repuesto': 'repuestos spare spares part parts pieza piezas',
-            'repuestos': 'repuesto spares spare parts part piezas pieza',
-            'piñon': 'piñones sprocket corona cadena',
-            'corona': 'coronas sprocket piñon cadena',
-            'cadena': 'cadenas chain chains piñon corona',
-            'chain': 'chains cadena cadenas',
-            'sprocket': 'piñon corona sprockets',
-            'piston': 'pistones pistón',
-            'pistones': 'piston pistón pistons',
-            'biela': 'bielas rod connecting',
-            'juntas': 'junta gasket gaskets empaquetadura',
-            'gasket': 'gaskets junta juntas empaquetadura',
-            'embrague': 'clutch disco discos',
-            'clutch': 'embrague disco discos',
-            'freno': 'frenos brake brakes pastilla pastillas disco',
-            'brake': 'brakes freno frenos pastilla',
-            'pastilla': 'pastillas brake pad pads freno',
-
-            // ===== Segmentos =====
-            'cross': 'motocross mx offroad off-road enduro',
-            'enduro': 'cross motocross mx offroad off-road',
-            'motocross': 'cross mx enduro offroad off-road',
-            'mx': 'motocross cross enduro offroad',
-            'offroad': 'off-road cross enduro motocross mx',
-            'touring': 'ruta road street calle viaje',
-            'ruta': 'touring road street calle',
-            'road': 'ruta touring street calle',
-            'street': 'ruta road touring calle',
-            'atv': 'utv ssv quad cuatriciclo side-by-side',
-            'utv': 'atv ssv quad side-by-side',
-            'quad': 'atv utv cuatriciclo',
-            'cuatriciclo': 'quad atv utv',
-            'bicicleta': 'bici bike cycling ciclismo bicycle mtb',
-            'bici': 'bicicleta bike cycling ciclismo bicycle mtb',
-            'bike': 'bicicleta bici cycling ciclismo bicycle mtb',
-            'mtb': 'mountain bike bicicleta bici',
-            'moto': 'motocicleta motorcycle',
-            'motocicleta': 'moto motorcycle',
-
-            // ===== Colores =====
-            'rojo': 'red colorado',
-            'azul': 'blue',
-            'negro': 'black',
-            'blanco': 'white',
-            'gris': 'grey gray',
-            'amarillo': 'yellow',
-            'verde': 'green',
-            'naranja': 'orange',
-            'rosa': 'pink',
-            'red': 'rojo',
-            'blue': 'azul',
-            'black': 'negro',
-            'white': 'blanco',
-            'grey': 'gris gray',
-            'gray': 'gris grey',
-            'yellow': 'amarillo',
-            'green': 'verde',
-            'orange': 'naranja',
-            'pink': 'rosa',
-            'chrome': 'cromo cromado',
-            'matt': 'mate matte opaco',
-            'matte': 'mate matt opaco',
-            'glossy': 'brillante brillo gloss',
-        };
-
-        function getSynonyms(text) {
-            const words = text.toLowerCase().split(/\s+/);
-            const extra = words.map(w => synonymMap[w] || '').filter(Boolean);
-            return extra.join(' ');
-        }
-
-        // Armar índice Fuse.js con datos de cada card + sinónimos
-        const cardData = Array.from(cards).map((card, i) => {
-            const name = card.querySelector('h3').textContent;
-            const category = card.querySelector('.product-card-category').textContent;
-            return {
-                index: i,
-                name: name,
-                category: category,
-                synonyms: getSynonyms(name) + ' ' + getSynonyms(category),
-                dataCategory: card.dataset.category,
-                dataSubcategory: card.dataset.subcategory || ''
-            };
-        });
-
-        const fuse = new Fuse(cardData, {
-            keys: [
-                { name: 'name', weight: 0.5 },
-                { name: 'category', weight: 0.25 },
-                { name: 'synonyms', weight: 0.25 }
-            ],
-            threshold: 0.35,
-            ignoreLocation: true,
-            minMatchCharLength: 2
-        });
-
-        function updateCount(visible) {
-            countEl.textContent = visible + (visible === 1 ? ' producto' : ' productos');
-        }
-
-        function filterProducts() {
-            // Si hay búsqueda, obtener los índices que matchean con Fuse
-            let fuseMatches = null;
-            if (searchQuery.length >= 2) {
-                const results = fuse.search(searchQuery);
-                fuseMatches = new Set(results.map(r => r.item.index));
-            }
-
-            let visible = 0;
-            cards.forEach((card, i) => {
-                const segMatch = activeSegment === 'todos' || card.dataset.segment === activeSegment;
-                const catMatch = activeCategory === 'todos' || card.dataset.category === activeCategory;
-                const subMatch = activeSubcategory === 'todos' || card.dataset.subcategory === activeSubcategory;
-                const searchMatch = fuseMatches === null || fuseMatches.has(i);
-                const match = segMatch && catMatch && subMatch && searchMatch;
-                card.style.display = match ? 'block' : 'none';
-                if (match) {
-                    card.style.animationDelay = (visible * 0.05) + 's';
-                    card.style.opacity = '0';
-                    card.classList.remove('product-card');
-                    void card.offsetWidth;
-                    card.classList.add('product-card');
-                    visible++;
-                }
-            });
-            noResults.style.display = visible === 0 ? 'block' : 'none';
-            updateCount(visible);
-        }
-
-        function renderSubfilters(category) {
-            const subs = subcategories[category];
-            if (!subs) {
-                subfiltersEl.classList.remove('visible');
-                subfiltersEl.innerHTML = '';
-                return;
-            }
-            subfiltersEl.innerHTML = subs.map(s =>
-                `<button class="subfilter-btn${s.value === 'todos' ? ' active' : ''}" data-subfilter="${s.value}">${s.label}</button>`
-            ).join('');
-            subfiltersEl.classList.add('visible');
-        }
-
-        // ============================================
-        // SEGMENT TABS
-        // ============================================
-        segmentTabs.addEventListener('click', (e) => {
-            const tab = e.target.closest('.segment-tab');
-            if (!tab) return;
-
-            segmentTabs.querySelectorAll('.segment-tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            activeSegment = tab.dataset.segment;
-
-            // Reset category filter
-            activeCategory = 'todos';
-            activeSubcategory = 'todos';
-            filters.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'todos'));
-            subfiltersEl.classList.remove('visible');
-            subfiltersEl.innerHTML = '';
-
-            // Update breadcrumb
-            breadcrumbSegment.textContent = segmentLabels[activeSegment];
-
-            filterBrandBar(activeSegment);
-            filterProducts();
-        });
-
-        // Click en filtro principal
-        filters.addEventListener('click', (e) => {
-            if (!e.target.classList.contains('filter-btn')) return;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            activeCategory = e.target.dataset.filter;
-            activeSubcategory = 'todos';
-            renderSubfilters(activeCategory);
-            filterProducts();
-        });
-
-        // Búsqueda por texto (Fuse.js fuzzy search) — resetea filtros
-        searchInput.addEventListener('input', (e) => {
-            searchQuery = e.target.value.trim();
-            if (searchQuery.length >= 2) {
-                activeSegment = 'todos';
-                activeCategory = 'todos';
-                activeSubcategory = 'todos';
-                filters.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === 'todos'));
-                segmentTabs.querySelectorAll('.segment-tab').forEach(t => t.classList.toggle('active', t.dataset.segment === 'todos'));
-                subfiltersEl.classList.remove('visible');
-                subfiltersEl.innerHTML = '';
-                breadcrumbSegment.textContent = segmentLabels.todos;
-                filterBrandBar('todos');
-            }
-            filterProducts();
-        });
-
-        // Click en subfiltro
-        subfiltersEl.addEventListener('click', (e) => {
-            if (!e.target.classList.contains('subfilter-btn')) return;
-            document.querySelectorAll('.subfilter-btn').forEach(b => b.classList.remove('active'));
-            e.target.classList.add('active');
-            activeSubcategory = e.target.dataset.subfilter;
-            filterProducts();
-        });
-
-        // Check URL params
-        const params = new URLSearchParams(window.location.search);
-
-        // Segment param (e.g., ?segmento=moto)
-        const segParam = params.get('segmento');
-        if (segParam) {
-            const tab = segmentTabs.querySelector(`[data-segment="${segParam}"]`);
-            if (tab) {
-                segmentTabs.querySelectorAll('.segment-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-                activeSegment = segParam;
-                breadcrumbSegment.textContent = segmentLabels[activeSegment];
-                filterBrandBar(activeSegment);
-            }
-        }
-
-        // Category param (e.g., ?cat=cascos&sub=touring)
-        const catParam = params.get('cat');
-        const subParam = params.get('sub');
-        if (catParam) {
-            const btn = document.querySelector(`[data-filter="${catParam}"]`);
-            if (btn) {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                activeCategory = catParam;
-                renderSubfilters(activeCategory);
-                if (subParam) {
-                    activeSubcategory = subParam;
-                    document.querySelectorAll('.subfilter-btn').forEach(b => {
-                        b.classList.toggle('active', b.dataset.subfilter === subParam);
-                    });
-                }
-                filterProducts();
-            } else {
-                filterProducts();
-            }
-        } else {
-            filterProducts();
-        }
-    </script>
-
-    <!-- PAGINACION (16 productos por pagina, integrada con filtros existentes) -->
-    <script>
-    (function() {
-        const PAGE_SIZE = 16;
-        let currentPage = 1;
-        const grid = document.getElementById('productsGrid');
-        if (!grid) return;
-        const allCards = Array.from(grid.querySelectorAll('.product-card'));
-
-        function applyPagination() {
-            const visible = allCards.filter(c => c.style.display !== 'none');
-            const totalPages = Math.max(1, Math.ceil(visible.length / PAGE_SIZE));
-            if (currentPage > totalPages) currentPage = totalPages;
-            if (currentPage < 1) currentPage = 1;
-            visible.forEach((c, i) => {
-                const page = Math.floor(i / PAGE_SIZE) + 1;
-                if (page !== currentPage) c.style.display = 'none';
-            });
-            renderPagination(totalPages);
-        }
-
-        function renderPagination(totalPages) {
-            let pag = document.getElementById('pagination');
-            if (!pag) {
-                pag = document.createElement('div');
-                pag.id = 'pagination';
-                pag.className = 'pagination';
-                grid.parentNode.insertBefore(pag, grid.nextSibling);
-            }
-            if (totalPages <= 1) { pag.innerHTML = ''; return; }
-            let html = '<button onclick="goToPage(' + (currentPage-1) + ')" '
-                + (currentPage===1?'disabled':'') + '>&larr; Anterior</button>';
-            for (let i = 1; i <= totalPages; i++) {
-                html += '<button class="' + (i===currentPage?'active':'')
-                    + '" onclick="goToPage(' + i + ')">' + i + '</button>';
-            }
-            html += '<button onclick="goToPage(' + (currentPage+1) + ')" '
-                + (currentPage===totalPages?'disabled':'') + '>Siguiente &rarr;</button>';
-            html += '<span class="pagination-info">Pagina ' + currentPage
-                + ' de ' + totalPages + '</span>';
-            pag.innerHTML = html;
-        }
-
-        function reRunFilter() {
-            // Vuelve a correr el filter existente (filterProducts o filter)
-            // para resetear display de todas las cards segun criterios actuales
-            if (typeof window.filterProducts === 'function') window.filterProducts();
-            else if (typeof window.filter === 'function') window.filter();
-        }
-
-        window.goToPage = function(p) {
-            currentPage = p;
-            reRunFilter();
-            applyPagination();
-            window.scrollTo({top: grid.offsetTop - 100, behavior: 'smooth'});
-        };
-
-        // Cuando el usuario cambia filtros/segmentos/busqueda, resetear a pagina 1
-        // y paginar luego de que el filtro existente haya hecho su trabajo (bubble phase)
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('.filter-btn, .segment-tab, .brand-bar a:not(.brand-all)')) {
-                currentPage = 1;
-                setTimeout(applyPagination, 10);
-            }
-        });
-        document.addEventListener('input', function(e) {
-            if (e.target.matches('.search-input, #searchInput, input[type="search"]')) {
-                currentPage = 1;
-                setTimeout(applyPagination, 10);
-            }
-        });
-
-        // Paginacion inicial despues de que el filter inicial haya corrido
-        setTimeout(applyPagination, 50);
-    })();
-    </script>
-
-    <!-- COLOR THUMB HOVER/CLICK: cambia imagen principal del card con preload.
-         Soporta cards de imagen única (cascos, guantes, etc.) y cards duales
-         (conjuntos, donde hay un <img> de jersey y otro de pantalón). Para los
-         duales, los thumbs traen data-jersey + data-pant para indicar qué par
-         cargar al cambiar de color. -->
-    <script>
-    (function() {
-        document.querySelectorAll('.product-card').forEach(card => {
-            const wrap = card.querySelector('.product-card-img');
-            if (!wrap) return;
-            const mainImgs = Array.from(wrap.querySelectorAll('img'));
-            if (mainImgs.length === 0) return;
-            const thumbsWrap = card.querySelector('.product-card-color-thumbs');
-            if (!thumbsWrap) return;
-
-            // Detección: ¿el card tiene jersey + pantalón en lugar de una sola imagen?
-            const isDual = wrap.classList.contains('product-card-img-dual') && mainImgs.length >= 2;
-            const mainJersey = mainImgs[0];
-            const mainPant   = isDual ? mainImgs[1] : null;
-
-            const defaultJersey = mainJersey.getAttribute('src');
-            const defaultAlt    = mainJersey.getAttribute('alt');
-            const defaultPant   = mainPant ? mainPant.getAttribute('src') : null;
-
-            // Insertar el color "principal" como primer thumb con borde activo.
-            // En cards duales, el thumb muestra el jersey y trae data-jersey/data-pant
-            // para que al hover/click se restaure el par correcto.
-            const mainThumb = document.createElement('img');
-            mainThumb.src = defaultJersey;
-            mainThumb.alt = defaultAlt;
-            mainThumb.classList.add('thumb-active');
-            if (isDual) {
-                mainThumb.dataset.jersey = defaultJersey;
-                if (defaultPant) mainThumb.dataset.pant = defaultPant;
-            }
-            thumbsWrap.insertBefore(mainThumb, thumbsWrap.firstChild);
-
-            const thumbs = Array.from(thumbsWrap.querySelectorAll('img'));
-
-            // Preload todas las imágenes para que el swap sea instantáneo
-            const cache = new Set();
-            function preload(src) {
-                if (!src || cache.has(src)) return;
-                cache.add(src);
-                const tmp = new Image();
-                tmp.src = src;
-            }
-            preload(defaultJersey);
-            preload(defaultPant);
-            thumbs.forEach(t => {
-                preload(t.src);
-                if (t.dataset.jersey) preload(t.dataset.jersey);
-                if (t.dataset.pant) preload(t.dataset.pant);
-            });
-
-            let activeThumb = thumbs[0];
-
-            // Swap: para cards duales actualiza jersey + pant; para single cards,
-            // solo la imagen principal.
-            function endsWith(haystack, needle) {
-                return haystack === needle || haystack.endsWith(needle);
-            }
-            function swap(thumb) {
-                if (isDual) {
-                    const jerseySrc = thumb.dataset.jersey || thumb.src;
-                    const pantSrc   = thumb.dataset.pant;
-                    if (!endsWith(mainJersey.src, jerseySrc)) mainJersey.src = jerseySrc;
-                    if (mainPant && pantSrc && !endsWith(mainPant.src, pantSrc)) mainPant.src = pantSrc;
-                } else {
-                    if (!endsWith(mainJersey.src, thumb.src)) mainJersey.src = thumb.src;
-                }
-                if (thumb.alt) mainJersey.alt = thumb.alt;
-            }
-
-            function highlight(thumb) {
-                thumbs.forEach(x => x.classList.toggle('thumb-active', x === thumb));
-            }
-
-            // Hover sobre un thumb → preview + borde
-            thumbs.forEach(t => {
-                t.addEventListener('mouseenter', () => {
-                    highlight(t);
-                    swap(t);
-                });
-            });
-
-            // Mouse leave del área de thumbs → restaurar al activo
-            thumbsWrap.addEventListener('mouseleave', () => {
-                highlight(activeThumb);
-                swap(activeThumb);
-            });
-
-            // Click sobre un thumb → "lockear" ese color como nuevo activo
-            thumbs.forEach(t => {
-                t.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    activeThumb = t;
-                    highlight(t);
-                    swap(t);
-                });
-            });
-        });
-    })();
-    </script>
-
-    <a href="https://wa.me/5491135713234" class="whatsapp-float" target="_blank" rel="noopener" title="Contactar por WhatsApp" aria-label="WhatsApp"><svg viewBox="0 0 32 32" width="28" height="28" fill="#fff" aria-hidden="true"><path d="M16.04 3C9.4 3 4 8.4 4 15.04c0 2.12.55 4.19 1.6 6.02L4 29l8.13-1.55a12 12 0 0 0 3.9.65h.01C22.68 28.1 28.08 22.7 28.08 16.06 28.08 8.4 22.68 3 16.04 3zm0 21.9h-.01a9.9 9.9 0 0 1-5.04-1.38l-.36-.21-3.75.72.72-3.66-.24-.38a9.86 9.86 0 0 1-1.51-5.25c0-5.46 4.45-9.9 9.92-9.9 2.65 0 5.14 1.03 7.01 2.9a9.82 9.82 0 0 1 2.9 7 9.9 9.9 0 0 1-9.9 9.84zm5.44-7.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg></a>
+        </a>
+    
 </body>
 </html>

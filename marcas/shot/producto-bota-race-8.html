@@ -9,7 +9,7 @@
     <link rel="manifest" href="/site.webmanifest">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHOT Race 8 · Botas Motocross / Enduro | Radsport Geist</title>
+    <title>SHOT Race 8 · Botas Motocross | Radsport Geist</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         html, body { overflow-x: hidden; max-width: 100%; }
@@ -413,13 +413,13 @@
                         <circle cx="11" cy="11" r="8"/>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"/>
                     </svg>
-                    <img id="mainImg" src="productos/Race-8-White-Black-Chrome-1.png" alt="SHOT Race 8">
+                    <img id="mainImg" src="productos/Race-8-holographic.png" alt="SHOT Race 8">
                 </div>
             </div>
 
             <!-- INFO SIDE -->
             <div class="product-info-side">
-                <div class="product-kicker">Botas Motocross / Enduro</div>
+                <div class="product-kicker">Botas Motocross</div>
                 <h1 class="product-title">Race 8</h1>
                 <p class="product-tagline">Botas motocross/enduro <strong>articuladas</strong>, con chasis anatómico pre-curvado en cuero sintético premium. Protección D3O en maléolos, refuerzos TPU y suela cementada doble densidad. Homologación EN13634.</p>
 
@@ -427,7 +427,7 @@
                 <div class="color-selector">
                     <div class="color-selector-header">
                         <span class="color-selector-label">Color</span>
-                        <span class="color-selector-current" id="colorCurrent">White Black Chrome</span>
+                        <span class="color-selector-current" id="colorCurrent">Holographic</span>
                     </div>
                     <div class="color-swatches" id="colorSwatches">
                         <!-- Swatches se generan via JS -->
@@ -546,17 +546,17 @@
             <h2 class="related-header">Otros productos <span>SHOT</span></h2>
             <div class="related-grid">
                 <a href="producto-casco-lite.html" class="related-card">
-                    <div class="related-img"><img src="productos/Lite-ultra-orange-pearly.png" alt="SHOT Lite"></div>
+                    <div class="related-img"><img src="productos/Lite-glory-red-pearly.png" alt="SHOT Lite"></div>
                     <div class="related-body">
                         <div class="related-cat">Casco</div>
                         <div class="related-name">Lite</div>
                     </div>
                 </a>
-                <a href="producto.html" class="related-card">
-                    <div class="related-img"><img src="productos/Race-camo-tactic-black-grey-matt.png" alt="SHOT Race"></div>
+                <a href="producto-casco-speed.html" class="related-card">
+                    <div class="related-img"><img src="productos/Speed-wave-black-white-pearly.png" alt="SHOT Speed"></div>
                     <div class="related-body">
                         <div class="related-cat">Casco</div>
-                        <div class="related-name">Race</div>
+                        <div class="related-name">Speed</div>
                     </div>
                 </a>
                 <a href="producto.html" class="related-card">
@@ -668,37 +668,38 @@
         // del color correspondiente para activar el carrusel.
         // ==========================================
         const COLORS = [
-            {
-                id: 'white-black-chrome',
-                name: 'White Black Chrome',
-                swatch: 'productos/Race-8-White-Black-Chrome-1.png',
-                angles: [
-                    'productos/Race-8-White-Black-Chrome-1.png',
-                    'productos/Race-8-White-Black-Chrome-2.png',
-                    'productos/Race-8-White-Black-Chrome-3.png',
-                ],
-            },
-            {
-                id: 'holographic',
-                name: 'Holographic',
-                swatch: 'productos/Race-8-Holographic-1.png',
-                angles: [
-                    'productos/Race-8-Holographic-1.png',
-                    'productos/Race-8-Holographic-2.png',
-                    'productos/Race-8-Holographic-3.png',
-                ],
-            },
-            {
-                id: 'neon-yellow',
-                name: 'Neon Yellow',
-                swatch: 'productos/Race-8-Neon-Yellow-1.png',
-                angles: [
-                    'productos/Race-8-Neon-Yellow-1.png',
-                    'productos/Race-8-Neon-Yellow-2.png',
-                    'productos/Race-8-Neon-Yellow-3.png',
-                ],
-            },
-        ];
+    {
+        "id": "holographic",
+        "name": "Holographic",
+        "swatch": "productos/Race-8-holographic.png",
+        "angles": [
+            "productos/Race-8-holographic.png",
+            "productos/Race-8-holographic-2.png",
+            "productos/Race-8-holographic-3.png"
+        ],
+        "soon": false
+    },
+    {
+        "id": "neon-yellow",
+        "name": "Neon Yellow",
+        "swatch": "productos/Race-8-neon-yellow.png",
+        "angles": [
+            "productos/Race-8-neon-yellow.png",
+            "productos/Race-8-neon-yellow-2.png",
+            "productos/Race-8-neon-yellow-3.png"
+        ],
+        "soon": false
+    },
+    {
+        "id": "white-black-chrome",
+        "name": "White Black Chrome",
+        "swatch": "productos/Race-8-white-black-chrome.png",
+        "angles": [
+            "productos/Race-8-white-black-chrome.png"
+        ],
+        "soon": false
+    }
+];
 
         const mainImg       = document.getElementById('mainImg');
         const galleryMain   = document.getElementById('galleryMain');
@@ -752,7 +753,7 @@
             const color = COLORS.find(c => c.id === colorId);
             mainImg.src = color.angles[0];
             mainImg.alt = 'SHOT Race 8 ' + color.name;
-            currentColorEl.textContent = color.name;
+            currentColorEl.textContent = color.name + (color.soon ? ' · Próximamente' : '');
             // Update swatches active state
             swatchesEl.querySelectorAll('.color-swatch').forEach(s => {
                 s.classList.toggle('active', s.dataset.colorId === colorId);

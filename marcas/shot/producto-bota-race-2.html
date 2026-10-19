@@ -9,7 +9,7 @@
     <link rel="manifest" href="/site.webmanifest">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SHOT Race 2 · Botas Enduro | Radsport Geist</title>
+    <title>SHOT Race 2 · Botas Motocross | Radsport Geist</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         html, body { overflow-x: hidden; max-width: 100%; }
@@ -413,21 +413,21 @@
                         <circle cx="11" cy="11" r="8"/>
                         <line x1="21" y1="21" x2="16.65" y2="16.65"/>
                     </svg>
-                    <img id="mainImg" src="productos/Race-2-White-1-alt.png" alt="SHOT Race 2">
+                    <img id="mainImg" src="productos/Race-2-blue-neon-yellow.png" alt="SHOT Race 2">
                 </div>
             </div>
 
             <!-- INFO SIDE -->
             <div class="product-info-side">
-                <div class="product-kicker">Botas Enduro</div>
+                <div class="product-kicker">Botas Motocross</div>
                 <h1 class="product-title">Race 2</h1>
-                <p class="product-tagline">Botas de enduro con chasis pre-curvado en cuero sintético premium. Suela Goodyear doble costura, puntera metálica reemplazable y 3 hebillas micrométricas. Línea Off-Road accesible.</p>
+                <p class="product-tagline">Botas de motocross y enduro con chasis pre-curvado en cuero sintético premium. Suela Goodyear doble costura, puntera metálica reemplazable y 3 hebillas micrométricas.</p>
 
                 <!-- COLOR SELECTOR -->
                 <div class="color-selector">
                     <div class="color-selector-header">
                         <span class="color-selector-label">Color</span>
-                        <span class="color-selector-current" id="colorCurrent">White</span>
+                        <span class="color-selector-current" id="colorCurrent">Blue Neon Yellow</span>
                     </div>
                     <div class="color-swatches" id="colorSwatches">
                         <!-- Swatches se generan via JS -->
@@ -437,7 +437,7 @@
                 <div class="specs-table">
                     <div class="specs-row">
                         <span class="specs-key">Disciplina</span>
-                        <span class="specs-value">Enduro</span>
+                        <span class="specs-value">Motocross / Enduro</span>
                     </div>
                     <div class="specs-row">
                         <span class="specs-key">Material</span>
@@ -531,7 +531,7 @@
         <!-- DESCRIPCION -->
         <div class="product-description-section">
             <div class="description-header">Descripción</div>
-            <p>Las <em>SHOT Race 2</em> son botas de <em>enduro</em> construidas en cuero sintético premium pre-curvado — liviano y resistente — con empeines frontal y posterior que aportan flexibilidad natural al movimiento del piloto. Pensadas para quienes entran al off-road buscando una bota completa sin saltar al segmento top.</p>
+            <p>Las <em>SHOT Race 2</em> son botas de <em>motocross y enduro</em> construidas en cuero sintético premium pre-curvado — liviano y resistente — con empeines frontal y posterior que aportan flexibilidad natural al movimiento del piloto. Pensadas para quienes entran al off-road buscando una bota completa sin saltar al segmento top.</p>
             <p>La protección incluye <em>placas de tibia y talón cortadas a láser</em>, zona reforzada en las áreas de mayor desgaste, y <em>inserciones acolchadas protectoras</em> en el tobillo. La caja de puntera es <em>metálica y reemplazable</em>, garantizando vida útil prolongada incluso con uso intensivo del pedal de cambios.</p>
             <p>La <em>suela Goodyear de caucho con doble costura</em> es el corazón de esta bota: ofrece amortiguación de impactos, agarre superior y excelente sensación en el footrest. El compuesto está diseñado específicamente para resistencia a la abrasión y control sobre la moto.</p>
             <p>El sistema de cierre combina velcro frontal con <em>3 hebillas plásticas reemplazables de doble cierre micrométrico</em> que permiten ajuste preciso por talla. El forro interior es transpirable y confortable para sesiones largas. Disponible en 4 colores.</p>
@@ -542,7 +542,7 @@
             <h2 class="related-header">Otros productos <span>SHOT</span></h2>
             <div class="related-grid">
                 <a href="producto-casco-lite.html" class="related-card">
-                    <div class="related-img"><img src="productos/Lite-ultra-orange-pearly.png" alt="SHOT Lite"></div>
+                    <div class="related-img"><img src="productos/Lite-glory-red-pearly.png" alt="SHOT Lite"></div>
                     <div class="related-body">
                         <div class="related-cat">Casco</div>
                         <div class="related-name">Lite</div>
@@ -664,47 +664,43 @@
         // del color correspondiente para activar el carrusel.
         // ==========================================
         const COLORS = [
-            {
-                id: 'white',
-                name: 'White',
-                swatch: 'productos/Race-2-White-1-alt.png',
-                angles: [
-                    'productos/Race-2-White-1-alt.png',
-                ],
-            },
-            {
-                id: 'black-grey',
-                name: 'Black Grey',
-                swatch: 'productos/Race-2-Black-Grey-1.png',
-                angles: [
-                    'productos/Race-2-Black-Grey-1.png',
-                ],
-            },
-            {
-                id: 'blue-neon-yellow',
-                name: 'Blue Neon Yellow',
-                swatch: 'productos/Race-2-Blue-Neon-Yellow-1.png',
-                angles: [
-                    'productos/Race-2-Blue-Neon-Yellow-1.png',
-                ],
-            },
-            {
-                id: 'camo-neon-orange',
-                name: 'Camo Neon Orange',
-                swatch: 'productos/Race-2-Camo-Neon-Orange-1.png',
-                angles: [
-                    'productos/Race-2-Camo-Neon-Orange-1.png',
-                ],
-            },
-            {
-                id: 'enduro-black',
-                name: 'Enduro Black',
-                swatch: 'productos/Race-2-Enduro-Black-1.png',
-                angles: [
-                    'productos/Race-2-Enduro-Black-1.png',
-                ],
-            },
-        ];
+    {
+        "id": "blue-neon-yellow",
+        "name": "Blue Neon Yellow",
+        "swatch": "productos/Race-2-blue-neon-yellow.png",
+        "angles": [
+            "productos/Race-2-blue-neon-yellow.png"
+        ],
+        "soon": false
+    },
+    {
+        "id": "white",
+        "name": "White",
+        "swatch": "productos/Race-2-white.png",
+        "angles": [
+            "productos/Race-2-white.png"
+        ],
+        "soon": true
+    },
+    {
+        "id": "black-grey",
+        "name": "Black Grey",
+        "swatch": "productos/Race-2-black-grey.png",
+        "angles": [
+            "productos/Race-2-black-grey.png"
+        ],
+        "soon": true
+    },
+    {
+        "id": "black-grey-neon-yellow",
+        "name": "Black Grey Neon Yellow",
+        "swatch": "productos/Race-2-black-grey-neon-yellow.png",
+        "angles": [
+            "productos/Race-2-black-grey-neon-yellow.png"
+        ],
+        "soon": true
+    }
+];
 
         const mainImg       = document.getElementById('mainImg');
         const galleryMain   = document.getElementById('galleryMain');
@@ -758,7 +754,7 @@
             const color = COLORS.find(c => c.id === colorId);
             mainImg.src = color.angles[0];
             mainImg.alt = 'SHOT Race 2 ' + color.name;
-            currentColorEl.textContent = color.name;
+            currentColorEl.textContent = color.name + (color.soon ? ' · Próximamente' : '');
             // Update swatches active state
             swatchesEl.querySelectorAll('.color-swatch').forEach(s => {
                 s.classList.toggle('active', s.dataset.colorId === colorId);

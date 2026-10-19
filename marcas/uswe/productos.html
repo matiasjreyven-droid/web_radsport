@@ -222,6 +222,11 @@
             .footer-content { grid-template-columns: repeat(2, 1fr) !important; gap: 1.5rem !important; }
         }
     </style>
+<style id="thumb-fit-fix">
+        .product-card-color-thumbs{flex-wrap:nowrap;}
+        .product-card-color-thumbs img,.product-card-color-more{flex:0 1 56px;min-width:0;height:auto;aspect-ratio:1/1;}
+        .product-card[data-category="conjuntos"] .product-card-color-thumbs img{flex:0 1 64px;aspect-ratio:64/56;}
+    </style>
 </head>
 <body>
 
