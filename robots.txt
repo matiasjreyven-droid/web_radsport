@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://radsport.com.ar/sitemap.xml
