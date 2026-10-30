@@ -37,11 +37,11 @@ def build(i):
     motos_txt=", ".join(f"{m[0]} {m[1]}" for m in motos[:4])
     if motos and not acc:
         b0,m0=motos[0][0],motos[0][1]
-        title=f"Escape LeoVince {name} para {b0} {m0} – Importador oficial Argentina"
+        title=f"Escape LeoVince {name} para {b0} {m0} | Radsport Geist"
     else:
-        title=f"{name} LeoVince{(' '+mat) if mat else ''} – Importador oficial Argentina"
+        title=f"{name} LeoVince{(' '+mat) if mat else ''} | Radsport Geist"
     meta=(f"{'Escape ' if (motos and not acc) else ''}LeoVince {name} {mat} "
-          f"{'para '+motos_txt if motos else ''}. {g['desc'][0]} Importador oficial en Argentina.")[:300]
+          f"{'para '+motos_txt if motos else ''}. {g['desc'][0]} Radsport Geist, importador oficial en Argentina.")[:300]
     byb={}; 
     for m in motos: byb.setdefault(m[0],[]).append(m)
     fit=""
