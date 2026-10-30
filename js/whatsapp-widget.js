@@ -28,47 +28,48 @@
     return "¡Hola! Me interesa un producto de " + brand + " de Radsport Geist. ¿Me podrían asesorar?";
   }
 
+  var RED = '#D32F2F', RED_DARK = '#B71C1C';
   var CSS = ''
   + '.rsw-panel{position:fixed;right:1.5rem;bottom:6.2rem;width:340px;max-width:calc(100vw - 2rem);'
   + 'background:#fff;border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.22);z-index:1000;'
   + 'overflow:hidden;font-family:"Inter",system-ui,sans-serif;opacity:0;visibility:hidden;'
   + 'transform:translateY(16px) scale(.98);transition:opacity .22s ease,transform .22s ease,visibility .22s;}'
   + '.rsw-panel.rsw-open{opacity:1;visibility:visible;transform:translateY(0) scale(1);}'
-  + '.rsw-head{background:#075E54;color:#fff;padding:1rem 1.1rem;display:flex;align-items:center;gap:.7rem;}'
-  + '.rsw-ava{width:42px;height:42px;border-radius:50%;background:#128C7E;display:flex;align-items:center;justify-content:center;flex:0 0 42px;}'
-  + '.rsw-ava svg{width:24px;height:24px;fill:#fff;}'
-  + '.rsw-head-txt{line-height:1.2;flex:1;min-width:0;}'
+  + '.rsw-head{background:linear-gradient(135deg,' + RED + ' 0%,' + RED_DARK + ' 100%);color:#fff;padding:1rem 1.1rem;display:flex;align-items:center;gap:.7rem;}'
+  + '.rsw-ava{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;flex:0 0 42px;}'
+  + '.rsw-ava svg{width:23px;height:23px;fill:#fff;}'
+  + '.rsw-head-txt{line-height:1.25;flex:1;min-width:0;}'
   + '.rsw-head-txt b{font-size:.92rem;font-weight:700;display:block;}'
-  + '.rsw-head-txt span{font-size:.72rem;opacity:.85;display:flex;align-items:center;gap:.3rem;}'
-  + '.rsw-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;display:inline-block;}'
+  + '.rsw-head-txt span{font-size:.72rem;opacity:.9;}'
   + '.rsw-close{background:none;border:none;color:#fff;cursor:pointer;font-size:1.3rem;line-height:1;opacity:.85;padding:.2rem;border-radius:6px;}'
-  + '.rsw-close:hover{opacity:1;background:rgba(255,255,255,.12);}'
-  + '.rsw-body{background:#E5DDD5;background-image:linear-gradient(rgba(229,221,213,.6),rgba(229,221,213,.6));'
-  + 'padding:1.1rem;max-height:62vh;overflow-y:auto;}'
-  + '.rsw-bubble{background:#fff;border-radius:0 12px 12px 12px;padding:.8rem .9rem;font-size:.86rem;color:#111;'
-  + 'box-shadow:0 1px 1px rgba(0,0,0,.08);max-width:92%;margin-bottom:.9rem;line-height:1.45;}'
+  + '.rsw-close:hover{opacity:1;background:rgba(255,255,255,.14);}'
+  + '.rsw-body{background:#f4f4f6;padding:1.1rem;max-height:62vh;overflow-y:auto;}'
+  + '.rsw-bubble{background:#fff;border-radius:3px 14px 14px 14px;padding:.75rem .9rem;font-size:.86rem;color:#1b1b1b;'
+  + 'box-shadow:0 1px 2px rgba(0,0,0,.08);max-width:90%;margin-bottom:.6rem;line-height:1.5;position:relative;}'
+  + '.rsw-bubble:last-of-type{margin-bottom:.95rem;}'
   + '.rsw-bubble b{font-weight:700;}'
   + '.rsw-opts{display:flex;flex-direction:column;gap:.55rem;}'
   + '.rsw-opt{display:flex;align-items:center;gap:.7rem;width:100%;text-align:left;cursor:pointer;'
   + 'background:#fff;border:1px solid #e3e3e3;border-radius:12px;padding:.8rem .9rem;font-family:inherit;'
   + 'font-size:.85rem;font-weight:600;color:#111;transition:border-color .15s,transform .12s,box-shadow .15s;}'
-  + '.rsw-opt:hover{border-color:#25D366;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.08);}'
-  + '.rsw-opt .rsw-ico{width:34px;height:34px;flex:0 0 34px;border-radius:9px;background:#f0faf3;'
+  + '.rsw-opt:hover{border-color:' + RED + ';transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.08);}'
+  + '.rsw-opt .rsw-ico{width:34px;height:34px;flex:0 0 34px;border-radius:9px;background:#fdeceb;'
   + 'display:flex;align-items:center;justify-content:center;font-size:1.1rem;}'
   + '.rsw-opt .rsw-opt-sub{display:block;font-size:.72rem;font-weight:400;color:#777;margin-top:.1rem;}'
-  + '.rsw-back{background:none;border:none;cursor:pointer;color:#075E54;font-weight:700;font-size:.8rem;'
+  + '.rsw-back{background:none;border:none;cursor:pointer;color:' + RED + ';font-weight:700;font-size:.8rem;'
   + 'font-family:inherit;display:inline-flex;align-items:center;gap:.3rem;margin-bottom:.7rem;padding:0;}'
   + '.rsw-brands{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}'
   + '.rsw-brand{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;cursor:pointer;'
   + 'background:#fff;border:1px solid #e3e3e3;border-radius:12px;padding:.7rem .4rem;font-family:inherit;'
   + 'transition:border-color .15s,transform .12s,box-shadow .15s;min-height:74px;}'
-  + '.rsw-brand:hover{border-color:#25D366;transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.08);}'
+  + '.rsw-brand:hover{border-color:' + RED + ';transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.08);}'
   + '.rsw-brand img{max-height:26px;max-width:84px;width:auto;object-fit:contain;}'
   + '.rsw-brand span{font-size:.68rem;font-weight:600;color:#444;}'
   + '.rsw-foot{background:#fff;padding:.5rem;text-align:center;font-size:.64rem;color:#9aa;border-top:1px solid #f0f0f0;}'
   + '@media (max-width:480px){.rsw-panel{right:1rem;left:1rem;width:auto;bottom:5.6rem;}}';
 
-  var WA_SVG = '<svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16.04 3C9.4 3 4 8.4 4 15.04c0 2.12.55 4.19 1.6 6.02L4 29l8.13-1.55a12 12 0 0 0 3.9.65h.01C22.68 28.1 28.08 22.7 28.08 16.06 28.08 8.4 22.68 3 16.04 3zm5.44 14.5c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51l-.57-.01c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.49 0 1.47 1.07 2.89 1.22 3.09.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2-1.41.25-.69.25-1.28.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg>';
+  // Icono de soporte/auricular (persona que atiende)
+  var AVATAR_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a8 8 0 0 0-8 8v5.5A2.5 2.5 0 0 0 6.5 18H8a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H6v-1a6 6 0 0 1 12 0v1h-2a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h1.5a2.5 2.5 0 0 1-2.4 1.8h-1.6a1.6 1.6 0 0 0-1.5-1h-.5a1.5 1.5 0 0 0 0 3h.5a1.6 1.6 0 0 0 1.5-1h1.6A4.5 4.5 0 0 0 20 15.5V10a8 8 0 0 0-8-8z"/></svg>';
 
   function el(tag, cls, html) {
     var e = document.createElement(tag);
@@ -92,8 +93,8 @@
     panel.setAttribute("aria-label", "Contacto por WhatsApp");
     panel.innerHTML =
       '<div class="rsw-head">' +
-        '<div class="rsw-ava">' + WA_SVG + '</div>' +
-        '<div class="rsw-head-txt"><b>Radsport Geist</b><span><i class="rsw-dot"></i> En línea · responde rápido</span></div>' +
+        '<div class="rsw-ava">' + AVATAR_SVG + '</div>' +
+        '<div class="rsw-head-txt"><b>Radsport Geist</b><span>Atención al cliente</span></div>' +
         '<button class="rsw-close" aria-label="Cerrar">&times;</button>' +
       '</div>' +
       '<div class="rsw-body"><div class="rsw-content"></div></div>' +
@@ -105,7 +106,9 @@
     function renderHome() {
       content.innerHTML = "";
       content.appendChild(el("div", "rsw-bubble",
-        "¡Hola! 👋 Bienvenido/a a <b>Radsport Geist</b>.<br>¿Cómo podemos ayudarte?"));
+        "¡Hola! 👋 Gracias por comunicarte con <b>Radsport Geist</b>."));
+      content.appendChild(el("div", "rsw-bubble",
+        "En instantes te atiende una persona de nuestro equipo. Para derivarte con el asesor indicado, contanos qué necesitás:"));
       var opts = el("div", "rsw-opts");
       var oBuy = el("button", "rsw-opt",
         '<span class="rsw-ico">🛒</span><span>Me interesa un producto<span class="rsw-opt-sub">Te asesoramos según la marca</span></span>');
