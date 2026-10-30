@@ -108,7 +108,7 @@
       content.appendChild(el("div", "rsw-bubble",
         "¡Hola! 👋 Gracias por comunicarte con <b>Radsport Geist</b>."));
       content.appendChild(el("div", "rsw-bubble",
-        "En instantes te atiende una persona de nuestro equipo. Para derivarte con el asesor indicado, contanos qué necesitás:"));
+        "Para derivarte con el asesor indicado, contanos qué necesitás:"));
       var opts = el("div", "rsw-opts");
       var oBuy = el("button", "rsw-opt",
         '<span class="rsw-ico">🛒</span><span>Me interesa un producto<span class="rsw-opt-sub">Te asesoramos según la marca</span></span>');
