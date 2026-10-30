@@ -61,10 +61,9 @@
   + '.rsw-brands{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}'
   + '.rsw-brand{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem;cursor:pointer;'
   + 'background:#fff;border:1px solid #e3e3e3;border-radius:12px;padding:.7rem .4rem;font-family:inherit;'
-  + 'transition:border-color .15s,transform .12s,box-shadow .15s;min-height:74px;}'
+  + 'transition:border-color .15s,transform .12s,box-shadow .15s;min-height:62px;}'
   + '.rsw-brand:hover{border-color:' + RED + ';transform:translateY(-1px);box-shadow:0 4px 12px rgba(0,0,0,.08);}'
-  + '.rsw-brand img{max-height:26px;max-width:84px;width:auto;object-fit:contain;}'
-  + '.rsw-brand span{font-size:.68rem;font-weight:600;color:#444;}'
+  + '.rsw-brand img{max-height:34px;max-width:100px;width:auto;object-fit:contain;}'
   + '.rsw-foot{background:#fff;padding:.5rem;text-align:center;font-size:.64rem;color:#9aa;border-top:1px solid #f0f0f0;}'
   + '@media (max-width:480px){.rsw-panel{right:1rem;left:1rem;width:auto;bottom:5.6rem;}}';
 
@@ -129,7 +128,9 @@
       var grid = el("div", "rsw-brands");
       BRANDS.forEach(function (b) {
         var btn = el("button", "rsw-brand",
-          '<img src="' + b.logo + '" alt="' + b.name + '" loading="lazy"><span>' + b.name + '</span>');
+          '<img src="' + b.logo + '" alt="' + b.name + '" loading="lazy">');
+        btn.setAttribute("title", b.name);
+        btn.setAttribute("aria-label", b.name);
         btn.addEventListener("click", function () { go(PHONE_BUY, msgBuy(b.name)); });
         grid.appendChild(btn);
       });
