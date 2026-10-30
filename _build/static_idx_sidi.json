@@ -1,0 +1,107 @@
+[
+ {
+  "id": "atojo",
+  "file": "botas-sidi-atojo.html",
+  "name": "Atojo",
+  "title": "Botas SIDI Atojo | Radsport Geist",
+  "kicker": "Off Road"
+ },
+ {
+  "id": "crossair",
+  "file": "botas-sidi-crossair.html",
+  "name": "Crossair",
+  "title": "Botas SIDI Crossair | Radsport Geist",
+  "kicker": "Off Road"
+ },
+ {
+  "id": "x-power",
+  "file": "botas-sidi-x-power.html",
+  "name": "X-Power",
+  "title": "Botas SIDI X-Power | Radsport Geist",
+  "kicker": "Off Road"
+ },
+ {
+  "id": "mid-adventure-2-gore",
+  "file": "botas-sidi-mid-adventure-2-gore.html",
+  "name": "Mid Adventure 2 Gore",
+  "title": "Botas SIDI Mid Adventure 2 Gore | Radsport Geist",
+  "kicker": "Touring"
+ },
+ {
+  "id": "adventure-2-gore",
+  "file": "botas-sidi-adventure-2-gore.html",
+  "name": "Adventure 2 Gore",
+  "title": "Botas SIDI Adventure 2 Gore | Radsport Geist",
+  "kicker": "Touring"
+ },
+ {
+  "id": "canyon-gore",
+  "file": "botas-sidi-canyon-gore.html",
+  "name": "Canyon Gore",
+  "title": "Botas SIDI Canyon Gore | Radsport Geist",
+  "kicker": "Touring"
+ },
+ {
+  "id": "trace-2",
+  "file": "botas-sidi-trace-2.html",
+  "name": "Trace 2",
+  "title": "Botas SIDI Trace 2 | Radsport Geist",
+  "kicker": "MTB"
+ },
+ {
+  "id": "speed",
+  "file": "botas-sidi-speed.html",
+  "name": "Speed",
+  "title": "Botas SIDI Speed | Radsport Geist",
+  "kicker": "MTB"
+ },
+ {
+  "id": "dust",
+  "file": "botas-sidi-dust.html",
+  "name": "Dust",
+  "title": "Botas SIDI Dust | Radsport Geist",
+  "kicker": "MTB"
+ },
+ {
+  "id": "eagle-10",
+  "file": "botas-sidi-eagle-10.html",
+  "name": "Eagle 10",
+  "title": "Botas SIDI Eagle 10 | Radsport Geist",
+  "kicker": "MTB"
+ },
+ {
+  "id": "gravel",
+  "file": "botas-sidi-gravel.html",
+  "name": "Gravel",
+  "title": "Botas SIDI Gravel | Radsport Geist",
+  "kicker": "Gravel"
+ },
+ {
+  "id": "alba-2",
+  "file": "botas-sidi-alba-2.html",
+  "name": "Alba 2",
+  "title": "Botas SIDI Alba 2 | Radsport Geist",
+  "kicker": "Ruta"
+ },
+ {
+  "id": "alba-2-woman",
+  "file": "botas-sidi-alba-2-woman.html",
+  "name": "Alba 2 Woman",
+  "title": "Botas SIDI Alba 2 Woman | Radsport Geist",
+  "kicker": "Ruta"
+ },
+ {
+  "id": "fast",
+  "file": "botas-sidi-fast.html",
+  "name": "Fast",
+  "title": "Botas SIDI Fast | Radsport Geist",
+  "kicker": "Ruta"
+ },
+ {
+  "id": "genius-10",
+  "file": "botas-sidi-genius-10.html",
+  "name": "Genius 10",
+  "title": "Botas SIDI Genius 10 | Radsport Geist",
+  "kicker": "Ruta"
+ }
+]

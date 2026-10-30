@@ -383,7 +383,7 @@
             document.getElementById('spCod').textContent = c.cod;
         }
         if (p) {
-            document.title = p.name + ' | SIDI · Radsport Geist';
+            if(!window.FORCE_ID) document.title = p.name + ' | SIDI · Radsport Geist';
             document.getElementById('bcName').textContent = p.name;
             document.getElementById('pKicker').textContent = (p.seg==='moto'?'Bota':'Zapatilla') + ' · ' + p.catlabel;
             document.getElementById('pTitle').textContent = p.name;

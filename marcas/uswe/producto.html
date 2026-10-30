@@ -386,7 +386,7 @@
             if (document.getElementById('spDisp')) document.getElementById('spDisp').textContent = c.disp || '—';
         }
         if (p) {
-            document.title = p.name + ' | USWE · Radsport Geist';
+            if(!window.FORCE_ID) document.title = p.name + ' | USWE · Radsport Geist';
             document.getElementById('bcName').textContent = p.name;
             document.getElementById('pKicker').textContent = p.catlabel;
             document.getElementById('pTitle').textContent = p.name;

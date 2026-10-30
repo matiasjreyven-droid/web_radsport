@@ -369,10 +369,10 @@
         const PRODUCTS = {"camaras-para-moto": {"model": "Cámaras para moto", "kicker": "Repuesto · Cámara de Moto", "tag": "Cámaras de aire italianas en caucho butílico, para calle y off-road.", "specs": [["Tipo", "Cámara de aire"], ["Material", "Caucho butílico"], ["Uso", "Moto (calle / off-road)"], ["Válvula", "Goma / metálica según medida"], ["Origen", "Italia"]], "desc": ["Las <em>Cámaras para moto</em> de Lucioli están fabricadas en Italia con caucho butílico de alta calidad, que ofrece una excelente retención de aire y durabilidad.", "Disponibles en distintas medidas para cubrir las llantas más comunes de calle y off-road, con paredes uniformes y válvula resistente que minimizan el riesgo de pinchaduras."], "img": "productos/D_NQ_NP_608830-MLB46885170921_072021-W.jpg"}};
         const TITLE_SUFFIX = "Lucioli · Radsport Geist";
         const params = new URLSearchParams(location.search);
-        const id = params.get('id');
+        const id = (window.FORCE_ID||params.get('id'));
         const p = PRODUCTS[id] || PRODUCTS[Object.keys(PRODUCTS)[0]];
         if (p) {
-            document.title = p.model + ' | ' + TITLE_SUFFIX;
+            if(!window.FORCE_ID) document.title = p.model + ' | ' + TITLE_SUFFIX;
             document.getElementById('bcName').textContent = p.model;
             document.getElementById('pKicker').textContent = p.kicker;
             document.getElementById('pTitle').textContent = p.model;
